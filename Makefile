@@ -42,7 +42,7 @@ install:
 	composer install
 
 # Vérifier le code sans modification (dry-run)
-.PHONY: ci
+.PHONY: cs-ci
 ci:
 	echo "🔍 Vérification du code sans modification (dry-run)..."
 	php $(BIN)/php-cs-fixer fix --dry-run
@@ -52,3 +52,19 @@ ci:
 cs-fix:
 	echo "✨ Correction automatique du code..."
 	php $(BIN)/php-cs-fixer fix
+
+# Lancer les tests Pest
+.PHONY: pest
+pest:
+	@echo "🧪 Exécution des tests Pest..."
+	php artisan test
+
+# Lancer l'analyse statique avec PHPStan
+.PHONY: phpstan
+phpstan:
+	@echo "🔎 Lancement de l'analyse statique avec PHPStan..."
+	php $(BIN)/phpstan analyse app
+
+# Lancer les tests Pest et PHPStan
+.PHONY: test
+test: pest phpstan
