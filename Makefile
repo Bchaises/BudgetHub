@@ -1,3 +1,5 @@
+BIN=vendor/bin
+
 # Lancer le serveur Laravel localement
 .PHONY: start
 start:
@@ -38,3 +40,15 @@ migrate-reset:
 install:
 	@echo "📂 Installation des dépendances via Composer..."
 	composer install
+
+# Vérifier le code sans modification (dry-run)
+.PHONY: ci
+ci:
+	echo "🔍 Vérification du code sans modification (dry-run)..."
+	php $(BIN)/php-cs-fixer fix --dry-run
+
+# Corriger automatiquement le code
+.PHONY: cs-fix
+cs-fix:
+	echo "✨ Correction automatique du code..."
+	php $(BIN)/php-cs-fixer fix
