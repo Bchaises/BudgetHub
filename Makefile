@@ -29,6 +29,12 @@ migrate:
 	@echo "📦 Application des migrations..."
 	php artisan migrate
 
+# Roll-Back et migrate la base de données
+.PHONY: refresh
+refresh:
+	@echo "♻️ roll-back et application des migrations..."
+	php artisan migrate:refresh
+
 # Appliquer les migrations avec un reset
 .PHONY: migrate-reset
 migrate-reset:
