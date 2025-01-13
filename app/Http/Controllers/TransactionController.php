@@ -12,7 +12,7 @@ class TransactionController extends Controller
     {
         return view('transaction', [
             'title' => 'Transaction',
-            'transactions' => Transaction::all()
+            'transactions' => Transaction::all(),
         ]);
     }
 }

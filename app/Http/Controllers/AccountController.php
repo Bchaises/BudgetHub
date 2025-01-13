@@ -13,7 +13,7 @@ class AccountController extends Controller
     {
         return view('account', [
             'title' => 'Account',
-            'accounts' => Account::all()
+            'accounts' => Account::all(),
         ]);
     }
 
