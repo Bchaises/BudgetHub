@@ -49,7 +49,7 @@ install:
 
 # Vérifier le code sans modification (dry-run)
 .PHONY: cs-ci
-ci:
+cs-ci:
 	echo "🔍 Vérification du code sans modification (dry-run)..."
 	php $(BIN)/php-cs-fixer fix --dry-run
 
