@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('label')->nullable();
             $table->double('amount');
+            $table->enum('status', ['debit', 'credit']);
             $table->foreignId('account_id')->constrained(
                 table: 'accounts',
                 column: 'id'

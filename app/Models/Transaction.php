@@ -10,6 +10,7 @@ class Transaction extends Model
     protected $fillable = [
         'label',
         'amount',
+        'status',
     ];
 
     public function account(): BelongsTo
