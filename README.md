@@ -86,8 +86,3 @@ make cs-ci
 
 ## 📔 Licence
 Ce projet est sous licence [MIT](LICENSE).
-
----
-
-## ✉️ Contact
-Pour toute question ou suggestion, contactez-moi à [votre.email@example.com](mailto:votre.email@example.com).
