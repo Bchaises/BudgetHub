@@ -5,14 +5,20 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Dashboard
+Route::get('/', [DashboardController::class, 'show']);
+
+// Routes pour les transactions
+Route::prefix('transaction')->controller(TransactionController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'show']);
-
-Route::get('/transaction', [TransactionController::class, 'show']);
-
-Route::get('/account', [AccountController::class, 'show']);
-Route::post('/account/store', [AccountController::class, 'store']);
-Route::delete('/account/delete/{id}', [AccountController::class, 'delete']);
+// Routes pour les comptes
+Route::prefix('account')->controller(AccountController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/{id}', 'show')->name('show');
+    Route::patch('/update/{id}', 'update')->name('update');
+    Route::delete('/delete/{id}', 'delete')->name('delete');
+});
