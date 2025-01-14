@@ -31,8 +31,8 @@ Budget Hub est construit avec **Laravel** pour offrir une expérience rapide, s�
 
 1. **Cloner le projet** :
    ```bash
-   git clone https://github.com/votre-utilisateur/budget-hub.git
-   cd budget-hub
+   git clone https://github.com/Bchaises/BudgetHub.git
+   cd BudgetHub
    ```
 
 2. **Installer les dépendances PHP et Node.js** :
