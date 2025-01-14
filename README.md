@@ -1,15 +1,93 @@
-# BudgetHub
-Projet destiné à aider les utilisateurs à gérer efficacement leurs finances personnelles et à avoir une vue claire de leurs dépenses.
+# Budget Hub 💰
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+> **⚡ Site en construction : Certaines fonctionnalités peuvent être incomplètes ou en cours de développement. Merci de votre compréhension.**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Un site web moderne pour suivre vos finances personnelles et gérer vos budgets de manière efficace. Avec Budget Hub, vous pouvez :
+- Suivre vos transactions.
+- Planifier vos budgets mensuels.
+- Gérer plusieurs types de comptes financiers.
 
-## License
+Budget Hub est construit avec **Laravel** pour offrir une expérience rapide, sécurisée et flexible.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ✨ Fonctionnalités
+- 📈 **Visualisation des finances** : Consultez vos dépenses et vos revenus en temps réel.
+- 🛠️ **Personnalisation des budgets** : Configurez vos catégories de dépenses selon vos besoins.
+- 🔒 **Sécurité** : Protégez vos données avec des pratiques de sécurité modernes.
+- 📂 **Multi-comptes** : Gérez plusieurs comptes bancaires, épargnes ou autres.
+
+---
+
+## 🚀 Installation
+
+### Prérequis
+- PHP (>= 8.2)
+- Composer
+- PostgreSQL
+- Node.js & npm (pour la compilation des assets front-end)
+
+### Étapes d'installation
+
+1. **Cloner le projet** :
+   ```bash
+   git clone https://github.com/votre-utilisateur/budget-hub.git
+   cd budget-hub
+   ```
+
+2. **Installer les dépendances PHP et Node.js** :
+   ```bash
+   make install
+   ```
+
+3. **Configurer l'application** :
+   - Dupliquez le fichier `.env.example` :
+     ```bash
+     cp .env.example .env
+     ```
+   - Modifiez les paramètres de connexion à la base de données et autres clés dans `.env`.
+
+4. **Créer une base de données avec Docker** :
+   ```bash
+   make docker
+   ```
+
+5. **Migrer la base de données** :
+   ```bash
+   make migrate
+   ```
+
+6. **Lancer le serveur local** :
+   ```bash
+   make start
+   ```
+   Cette commande effectue également un `npm run build` pour compiler les assets front-end.
+   Accédez au site sur [http://localhost:8000](http://localhost:8000).
+
+---
+
+## 🧪 Tests
+Exécutez les tests pour vous assurer que tout fonctionne comme prévu :
+```bash
+make tests
+```
+
+Pour les tests de qualité du code, utilisez :
+```bash
+make cs-ci
+```
+
+---
+
+## 📒 Documentation
+- Consultez la [documentation Laravel](https://laravel.com/docs) pour plus de détails sur le framework.
+
+---
+
+## 📔 Licence
+Ce projet est sous licence [MIT](LICENSE).
+
+---
+
+## ✉️ Contact
+Pour toute question ou suggestion, contactez-moi à [votre.email@example.com](mailto:votre.email@example.com).
