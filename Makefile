@@ -4,6 +4,7 @@ BIN=vendor/bin
 .PHONY: start
 start:
 	@echo "🚀 Démarrage du serveur Laravel..."
+	npm run build
 	php artisan serve
 
 # Démarrer les conteneurs Docker
@@ -44,7 +45,8 @@ migrate-reset:
 # Installer les dépendances Composer
 .PHONY: install
 install:
-	@echo "📂 Installation des dépendances via Composer..."
+	@echo "📂 Installation des dépendances via Composer et NPM..."
+	npm install
 	composer install
 
 # Vérifier le code sans modification (dry-run)
