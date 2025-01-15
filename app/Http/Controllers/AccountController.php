@@ -51,8 +51,7 @@ class AccountController extends Controller
 
     public function delete(string $id): RedirectResponse
     {
-        Account::all()->find($id)->delete();
-
+        Account::destroy($id);
         return redirect('/account');
     }
 }
