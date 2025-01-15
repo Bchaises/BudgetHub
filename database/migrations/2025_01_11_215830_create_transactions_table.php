@@ -12,9 +12,10 @@ return new class() extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('label')->nullable();
+            $table->string('label');
             $table->double('amount');
             $table->enum('status', ['debit', 'credit']);
+            $table->dateTime('date');
             $table->foreignId('account_id')->constrained(
                 table: 'accounts',
                 column: 'id'
