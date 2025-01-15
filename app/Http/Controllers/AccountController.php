@@ -35,7 +35,7 @@ class AccountController extends Controller
         $account->balance = $request->balance;
         $account->save();
 
-        return redirect('/account');
+        return redirect()->route('account.index');
     }
 
     public function update(Request $request, string $id): RedirectResponse
@@ -46,12 +46,12 @@ class AccountController extends Controller
         $account->balance = $request->balance;
         $account->save();
 
-        return redirect('/account');
+        return redirect()->route('account.index');
     }
 
     public function delete(string $id): RedirectResponse
     {
         Account::destroy($id);
-        return redirect('/account');
+        return redirect()->route('account.index');
     }
 }
