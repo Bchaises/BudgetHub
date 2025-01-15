@@ -59,7 +59,7 @@ class TransactionController extends Controller
         return redirect()->route('transaction.index');
     }
 
-    public function delete(string $id): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
         Transaction::destroy($id);
         return redirect()->route('transaction.index');

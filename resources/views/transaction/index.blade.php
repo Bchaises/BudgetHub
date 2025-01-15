@@ -3,7 +3,7 @@
         {{ $title }}
     </x-slot>
 
-    <a href="/">Retour au dashboard</a>
+    <a href="/" class="m-2">Retour au dashboard</a>
 
     <div class="flex flex-col items-center">
         <h1 class="text-xl">Voici les dernières transactions</h1>
@@ -115,6 +115,12 @@
                     </div>
                 </form>
             </div>
+        </div>
+
+        <div class="w-2/3">
+            <a href="/transaction/category" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg ml-8">
+                Modifier les catégories
+            </a>
         </div>
     </div>
 </x-layout>

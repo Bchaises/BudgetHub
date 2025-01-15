@@ -49,7 +49,7 @@ class AccountController extends Controller
         return redirect()->route('account.index');
     }
 
-    public function delete(string $id): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
         Account::destroy($id);
         return redirect()->route('account.index');
