@@ -8,7 +8,7 @@
     <div class="flex flex-col items-center">
         <h1 class="text-xl">Voici les dernières transactions</h1>
         <div class="w-2/3 flex justify-center">
-            <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full">
+            <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full basis-2/3">
                 <table class="table-auto border-collapse w-full text-left text-sm bg-white">
                     <thead>
                     <tr class="bg-gray-100 text-gray-800 border-b">
@@ -51,7 +51,7 @@
                 </table>
             </div>
 
-            <div class="m-8 w-full">
+            <div class="m-8 w-full basis-1/3">
                 <form method="POST" action="/transaction/store" class="flex flex-col ">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="mt-2">
