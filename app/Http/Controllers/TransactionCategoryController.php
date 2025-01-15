@@ -21,7 +21,7 @@ class TransactionCategoryController extends Controller
     {
         return view('transaction.category.show', [
             'title' => 'Transaction Category',
-            'category' => TransactionCategory::find($id)
+            'category' => TransactionCategory::findOrFail($id)
         ]);
     }
 

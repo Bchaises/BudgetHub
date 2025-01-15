@@ -25,7 +25,7 @@ class TransactionController extends Controller
     {
         return view('transaction.show', [
             'title' => 'Une transaction',
-            'transaction' => Transaction::find($id),
+            'transaction' => Transaction::findOrFail($id),
             'accounts' => Account::all(),
             'categories' => TransactionCategory::all(),
         ]);

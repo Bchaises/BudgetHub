@@ -22,7 +22,7 @@ class AccountController extends Controller
     {
         return view('account.show', [
             'title' => 'Account',
-            'account' => Account::find($id),
+            'account' => Account::findOrFail($id),
             'transactions' => Transaction::where('account_id', $id)->get(),
         ]);
     }
