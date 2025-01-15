@@ -50,10 +50,10 @@
                             </span>
 
                             <div id="datepicker" class="w-full bg-transparent pl-[50px] pr-8 py-2.5 border rounded-lg text-dark-2 border-stroke outline-none transition focus:border-primary">
-                                Selected a date
+                                {{ isset($value) ? date('d/m/Y', strtotime($value)) : 'Selected a date' }}
                             </div>
 
-                            <input id="date" name="date" type="text" hidden required>
+                            <input id="date" name="date" value="{{ $value ?? '' }}}" type="text" hidden required>
 
                             <span class="absolute right-0 pr-4 text-dark-5 cursor-pointer" id="toggleDatepicker">
                                 <!-- Arrow Down Icon -->

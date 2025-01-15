@@ -72,6 +72,8 @@
                         </div>
                     </div>
 
+                    <x-datepicker value="{{ $transaction->date }}"/>
+
                     <div class="mt-4">
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg">Sauvegarder</button>
                     </div>
