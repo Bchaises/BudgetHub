@@ -12,7 +12,8 @@ Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
 // Routes pour les transactions
 Route::prefix('transaction')->controller(TransactionController::class)->group(function () {
     Route::get('/', 'index')->name('transaction.index');
-    Route::get('/{id}', 'show')->name('transaction.show')->where('id', '[0-9]+');;
+    Route::get('/{id}', 'show')->name('transaction.show')->where('id', '[0-9]+');
+    ;
     Route::post('/store', 'store')->name('transaction.store');
     Route::patch('/update/{id}', 'update')->name('transaction.update');
     Route::delete('/delete/{id}', 'destroy')->name('transaction.delete');
