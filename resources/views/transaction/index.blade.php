@@ -18,6 +18,7 @@
                         <th class="p-4 font-medium">Status</th>
                         <th class="p-4 font-medium">Account</th>
                         <th class="p-4 font-medium">Category</th>
+                        <th class="p-4 font-medium">Date</th>
                         <th class="p-4 font-medium">Actions</th>
                     </tr>
                     </thead>
@@ -30,6 +31,7 @@
                             <td class="p-4 text-gray-700"><div class="{{ $transaction->status == 'debit' ? "text-red-500" : "text-green-500" }}">{{ $transaction->status }}</div></td>
                             <td class="p-4 text-gray-700">{{ $transaction->account->title }}</td>
                             <td class="p-4 text-gray-700">{{ $transaction->category->title }}</td>
+                            <td class="p-4 text-gray-700">{{ date('d/m/Y', strtotime($transaction->date)) }}</td>
                             <td class="p-4 text-gray-700 flex items-center">
                                 <form method="POST" action="/transaction/delete/{{ $transaction->id }}" class="m-0">
                                     @method('delete')
@@ -105,6 +107,8 @@
                             </select>
                         </div>
                     </div>
+
+                    <x-datepicker/>
 
                     <div class="mt-4">
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg">Sauvegarder</button>

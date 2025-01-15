@@ -37,6 +37,7 @@ class TransactionController extends Controller
         $transaction->label = $request->label;
         $transaction->amount = $request->amount;
         $transaction->status = $request->status;
+        $transaction->date = $request->date;
         $transaction->account_id = $request->account;
         $transaction->category_id = $request->category;
         $transaction->save();
@@ -50,6 +51,7 @@ class TransactionController extends Controller
         $transaction->label = $request->label;
         $transaction->amount = $request->amount;
         $transaction->status = $request->status;
+        $transaction->date = $request->date;
         $transaction->account_id = $request->account;
         $transaction->category_id = $request->category;
         $transaction->save();
