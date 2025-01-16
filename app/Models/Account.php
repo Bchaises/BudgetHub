@@ -11,4 +11,10 @@ class Account extends Model
         'title',
         'description',
     ];
+
+    public static array $rules = [
+        'title' => 'required|string|max:255',
+        'description' => 'string',
+        'balance' => 'required|integer',
+    ];
 }
