@@ -27,27 +27,29 @@ class TransactionCategoryController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $validated = $request->validate(TransactionCategory::$rules);
         $category = new TransactionCategory();
-        $category->title = $request->title;
-        $category->description = $request->description;
+        $category->title = ucfirst($validated['title']);
+        $category->description = ucfirst($validated['description']);
         $category->save();
 
-        return redirect()->route('category.index');
+        return redirect()->back();
     }
 
     public function update(Request $request): RedirectResponse
     {
+        $validated = $request->validate(TransactionCategory::$rules);
         $category = new TransactionCategory();
-        $category->title = $request->title;
-        $category->description = $request->description;
+        $category->title = ucfirst($validated['title']);
+        $category->description = ucfirst($validated['description']);
         $category->save();
 
-        return redirect()->route('category.index');
+        return redirect()->back();
     }
 
     public function destroy(string $id): RedirectResponse
     {
         TransactionCategory::destroy($id);
-        return redirect()->route('category.index');
+        return redirect()->back();
     }
 }

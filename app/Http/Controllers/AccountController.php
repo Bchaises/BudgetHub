@@ -29,29 +29,33 @@ class AccountController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $validated = $request->validate(Account::$rules);
+
         $account = new Account();
-        $account->title = $request->title;
-        $account->description = $request->description;
-        $account->balance = $request->balance;
+        $account->title = ucfirst($validated['title']);
+        $account->description = ucfirst($validated['description']);
+        $account->balance = $validated['balance'];
         $account->save();
 
-        return redirect()->route('account.index');
+        return redirect()->back();
     }
 
     public function update(Request $request, string $id): RedirectResponse
     {
+        $validated = $request->validate(Account::$rules);
+
         $account = Account::find($id);
-        $account->title = $request->title;
-        $account->description = $request->description;
-        $account->balance = $request->balance;
+        $account->title = ucfirst($validated['title']);
+        $account->description = ucfirst($validated['description']);
+        $account->balance = $validated['balance'];
         $account->save();
 
-        return redirect()->route('account.index');
+        return redirect()->back();
     }
 
     public function destroy(string $id): RedirectResponse
     {
         Account::destroy($id);
-        return redirect()->route('account.index');
+        return redirect()->back();
     }
 }
