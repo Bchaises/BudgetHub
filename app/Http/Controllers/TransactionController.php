@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class TransactionController extends Controller
@@ -33,35 +34,70 @@ class TransactionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $transaction = new Transaction();
-        $transaction->label = $request->label;
-        $transaction->amount = $request->amount;
-        $transaction->status = $request->status;
-        $transaction->date = $request->date;
-        $transaction->account_id = $request->account;
-        $transaction->category_id = $request->category;
-        $transaction->save();
+        $validated = $request->validate(Transaction::$rules);
+        $account = Account::findOrFail($validated['account']);
 
-        return redirect()->route('transaction.index');
+        DB::transaction(function () use ($validated, $account) {
+            $transaction = new Transaction();
+            $transaction->label = ucfirst($validated['label']);
+            $transaction->amount = $validated['amount'];
+            $transaction->status = $validated['status'];
+            $transaction->date = $validated['date'];
+            $transaction->account_id = $validated['account'];
+            $transaction->category_id = $validated['category'];
+
+            $balanceChange = $transaction->status === 'debit'
+                ? -$transaction->amount
+                : $transaction->amount;
+
+            if ($balanceChange !== 0) {
+                $account->update([
+                    'balance' => $account->balance + $balanceChange,
+                ]);
+            }
+
+            $transaction->save();
+        });
+
+        return redirect()->back();
     }
 
     public function update(string $id, Request $request): RedirectResponse
     {
-        $transaction = Transaction::find($id);
-        $transaction->label = $request->label;
-        $transaction->amount = $request->amount;
-        $transaction->status = $request->status;
-        $transaction->date = $request->date;
-        $transaction->account_id = $request->account;
-        $transaction->category_id = $request->category;
+        $validated = $request->validate(Transaction::$rules);
+
+        $transaction = Transaction::findOrFail($id);
+        $transaction->label = ucfirst($validated['label']);
+        $transaction->amount = $validated['amount'];
+        $transaction->status = $validated['status'];
+        $transaction->date = $validated['date'];
+        $transaction->account_id = $validated['account'];
+        $transaction->category_id = $validated['category'];
         $transaction->save();
 
-        return redirect()->route('transaction.index');
+        return redirect()->back();
     }
 
     public function destroy(string $id): RedirectResponse
     {
-        Transaction::destroy($id);
-        return redirect()->route('transaction.index');
+        $transaction = Transaction::findOrFail($id);
+        $account = Account::findOrFail($transaction->account_id);
+
+        DB::transaction(function () use ($transaction, $account) {
+
+            $balanceChange = $transaction->status === 'debit'
+                ? $transaction->amount
+                : -$transaction->amount;
+
+            if ($balanceChange !== 0) {
+                $account->update([
+                    'balance' => $account->balance + $balanceChange,
+                ]);
+            }
+
+            Transaction::destroy($transaction->id);
+        });
+
+        return redirect()->back();
     }
 }
