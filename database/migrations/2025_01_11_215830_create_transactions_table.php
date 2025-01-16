@@ -16,14 +16,15 @@ return new class() extends Migration {
             $table->double('amount');
             $table->enum('status', ['debit', 'credit']);
             $table->dateTime('date');
-            $table->foreignId('account_id')->constrained(
-                table: 'accounts',
-                column: 'id'
-            );
-            $table->foreignId('category_id')->constrained(
-                table: 'transaction_categories',
-                column: 'id'
-            );
+            $table->foreignId('account_id')
+                ->references('id')
+                ->on('accounts')
+                ->onDelete('cascade');
+            $table->foreignId('category_id')
+                ->nullable()
+                ->references('id')
+                ->on('transaction_categories')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }
