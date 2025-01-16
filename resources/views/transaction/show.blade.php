@@ -62,12 +62,21 @@
                         <label for="category" class="block text-sm/6 font-medium text-gray-900">Modifiez la categorie :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                             <select name="category" id="category" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                <option value="{{ $transaction->category->id }}">{{ $transaction->category->title }}</option>
+                                @if(isset($transaction->category))
+                                    <option value="{{ $transaction->category->id }}">{{ $transaction->category->title }}</option>
+                                @else
+                                    <option value="">None</option>
+                                @endif
+
                                 @foreach($categories as $category)
-                                    @if($category->id !== $transaction->category->id)
+                                    @if(!isset($transaction->category) || $category->id !== $transaction->category->id)
                                         <option value="{{ $category->id }}">{{ $category->title }}</option>
                                     @endif
                                 @endforeach
+
+                                @if(!isset($stransaction->category))
+                                    <option value="">None</option>
+                                @endif
                             </select>
                         </div>
                     </div>

@@ -53,7 +53,7 @@
                                 {{ isset($value) ? date('d/m/Y', strtotime($value)) : 'Selected a date' }}
                             </div>
 
-                            <input id="date" name="date" value="{{ $value ?? '' }}}" type="text" hidden required>
+                            <input id="date" name="date" value="{{ $value ?? '' }}" type="text" hidden required>
 
                             <span class="absolute right-0 pr-4 text-dark-5 cursor-pointer" id="toggleDatepicker">
                                 <!-- Arrow Down Icon -->
