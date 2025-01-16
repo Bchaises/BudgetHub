@@ -3,13 +3,15 @@
         {{ $title }}
     </x-slot>
 
-    <a href="/account">Retour aux comptes</a>
+    <div class="m-4">
+        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('account.index') }}">/Accounts</a>
+    </div>
 
     <div class="flex flex-col items-center">
         <h1 class="text-xl">Vous êtes sur le compte {{ $account->title }}</h1>
         <div class="w-2/3">
             <div class="m-8">
-                <form method="POST" action="/account/update/{{ $account->id }}" class="flex flex-col ">
+                <form method="POST" action="{{ route('account.update', ['id' => $account->id]) }}" class="flex flex-col ">
                     @csrf <!-- {{ csrf_field() }} -->
                     @method('PATCH')
                     <div class="mt-2">

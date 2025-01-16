@@ -3,13 +3,15 @@
         {{ $title }}
     </x-slot>
 
-    <a href="/transaction">Retour aux transactions</a>
+    <div class="m-4">
+        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('transaction.index') }}">/Transactions</a>
+    </div>
 
     <div class="flex flex-col items-center justify-center">
         <h1 class="text-xl">Vous êtes sur la transaction {{ $transaction->label }}</h1>
         <div class="w-1/2">
             <div class="m-8">
-                <form method="POST" action="/transaction/update/{{ $transaction->id }}" class="flex flex-col ">
+                <form method="POST" action="{{ route('transaction.update', ['id' => $transaction->id ]) }}" class="flex flex-col ">
                     @csrf <!-- {{ csrf_field() }} -->
                     @method('PATCH')
                     <div class="mt-2">

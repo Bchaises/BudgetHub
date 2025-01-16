@@ -3,13 +3,14 @@
         {{ $title }}
     </x-slot>
 
-    <h1>Bienvenue dans votre dashboard</h1>
+    <div class="m-4">
+        <h1 class="text-2xl mb-1">Bienvenue dans votre dashboard</h1>
+        <p class="text-md">Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
+    </div>
 
-    <p>Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
-
-    <div>
-        <a href="{{ route('transaction.index') }}">Go to Transaction</a><br>
-        <a href="{{ route('account.index') }}">Go to Account</a>
+    <div class="m-2 flex flex-col w-44 items-start">
+        <x-button title="Go to Transaction" link="{{ route('transaction.index') }}"/>
+        <x-button title="Go to Account" link="{{ route('account.index') }}"/>
     </div>
 
     <div class="w-full flex justify-center">
@@ -31,5 +32,4 @@
             </div>
         </div>
     </div>
-
 </x-layout>

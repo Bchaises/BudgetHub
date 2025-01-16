@@ -32,7 +32,7 @@ class TransactionCategoryController extends Controller
         $category->description = $request->description;
         $category->save();
 
-        return redirect()->route('transaction.category.index');
+        return redirect()->route('category.index');
     }
 
     public function update(Request $request): RedirectResponse
@@ -42,12 +42,12 @@ class TransactionCategoryController extends Controller
         $category->description = $request->description;
         $category->save();
 
-        return redirect()->route('transaction.category.index');
+        return redirect()->route('category.index');
     }
 
     public function destroy(string $id): RedirectResponse
     {
         TransactionCategory::destroy($id);
-        return redirect()->route('transaction.category.index');
+        return redirect()->route('category.index');
     }
 }
