@@ -13,7 +13,6 @@ class AccountController extends Controller
     public function index(): View
     {
         return view('account.index', [
-            'title' => 'Account',
             'accounts' => Account::all(),
         ]);
     }
@@ -21,7 +20,6 @@ class AccountController extends Controller
     public function show(string $id): View
     {
         return view('account.show', [
-            'title' => 'Account',
             'account' => Account::findOrFail($id),
             'transactions' => Transaction::where('account_id', $id)->get(),
         ]);

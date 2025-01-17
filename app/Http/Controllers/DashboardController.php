@@ -10,7 +10,6 @@ class DashboardController extends Controller
     public function show(): View
     {
         return view('dashboard', [
-            'title' => 'Dashboard',
             'accounts' => Account::all(),
         ]);
     }

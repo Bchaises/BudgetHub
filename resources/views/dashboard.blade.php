@@ -1,7 +1,4 @@
 <x-layout>
-    <x-slot:title>
-        {{ $title }}
-    </x-slot>
 
     <div class="m-4">
         <h1 class="text-2xl mb-1">Bienvenue dans votre dashboard</h1>

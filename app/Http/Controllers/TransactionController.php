@@ -15,7 +15,6 @@ class TransactionController extends Controller
     public function index(): View
     {
         return view('transaction.index', [
-            'title' => 'Transaction',
             'transactions' => Transaction::all(),
             'accounts' => Account::all(),
             'categories' => TransactionCategory::all(),
@@ -25,7 +24,6 @@ class TransactionController extends Controller
     public function show(string $id): View
     {
         return view('transaction.show', [
-            'title' => 'Une transaction',
             'transaction' => Transaction::findOrFail($id),
             'accounts' => Account::all(),
             'categories' => TransactionCategory::all(),
