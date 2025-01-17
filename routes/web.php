@@ -35,3 +35,5 @@ Route::prefix('account')->controller(AccountController::class)->group(function (
     Route::patch('/{id}/edit', 'update')->name('account.update');
     Route::delete('/{id}', 'destroy')->name('account.destroy');
 });
+
+require __DIR__.'/auth.php';

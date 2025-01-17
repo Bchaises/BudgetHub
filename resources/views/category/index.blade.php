@@ -1,7 +1,4 @@
 <x-layout>
-    <x-slot:title>
-        {{ $title }}
-    </x-slot>
 
     <div class="m-4">
         <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('transaction.index') }}">/Transactions</a>

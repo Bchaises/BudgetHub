@@ -11,7 +11,7 @@ class TransactionCategoryController extends Controller
 {
     public function index(): View
     {
-        return view('transaction.category.index', [
+        return view('category.index', [
             'title' => 'Transaction Category',
             'categories' => TransactionCategory::all()
         ]);
@@ -19,7 +19,7 @@ class TransactionCategoryController extends Controller
 
     public function show(string $id): View
     {
-        return view('transaction.category.show', [
+        return view('category.show', [
             'title' => 'Transaction Category',
             'category' => TransactionCategory::findOrFail($id)
         ]);
