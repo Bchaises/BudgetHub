@@ -27,7 +27,7 @@ class TransactionCategoryController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate(TransactionCategory::$rules);
+        $validated = $request->validate(TransactionCategory::rules());
         $category = new TransactionCategory();
         $category->title = ucfirst($validated['title']);
         $category->description = ucfirst($validated['description']);
@@ -38,7 +38,7 @@ class TransactionCategoryController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $validated = $request->validate(TransactionCategory::$rules);
+        $validated = $request->validate(TransactionCategory::rules());
         $category = new TransactionCategory();
         $category->title = ucfirst($validated['title']);
         $category->description = ucfirst($validated['description']);

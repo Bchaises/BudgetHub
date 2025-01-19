@@ -27,7 +27,7 @@ class AccountController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate(Account::$rules);
+        $validated = $request->validate(Account::rules());
 
         $account = new Account();
         $account->title = ucfirst($validated['title']);
@@ -40,7 +40,7 @@ class AccountController extends Controller
 
     public function update(Request $request, string $id): RedirectResponse
     {
-        $validated = $request->validate(Account::$rules);
+        $validated = $request->validate(Account::rules());
 
         $account = Account::find($id);
         $account->title = ucfirst($validated['title']);
