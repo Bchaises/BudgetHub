@@ -32,7 +32,7 @@ class TransactionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate(Transaction::$rules);
+        $validated = $request->validate(Transaction::rules());
         $account = Account::findOrFail($validated['account']);
 
         DB::transaction(function () use ($validated, $account) {
@@ -62,7 +62,7 @@ class TransactionController extends Controller
 
     public function update(string $id, Request $request): RedirectResponse
     {
-        $validated = $request->validate(Transaction::$rules);
+        $validated = $request->validate(Transaction::rules());
 
         $transaction = Transaction::findOrFail($id);
         $transaction->label = ucfirst($validated['label']);

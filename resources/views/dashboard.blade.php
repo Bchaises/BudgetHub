@@ -5,6 +5,15 @@
         <p class="text-md">Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
     </div>
 
+    <!-- Authentication -->
+    <form method="POST" action="{{ route('logout') }}" class="m-2">
+        @csrf
+
+        <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+            Log Out
+        </a>
+    </form>
+
     <div class="m-2 flex flex-col w-44 items-start">
         <x-button title="Go to Transaction" link="{{ route('transaction.index') }}"/>
         <x-button title="Go to Account" link="{{ route('account.index') }}"/>

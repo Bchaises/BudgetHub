@@ -13,8 +13,11 @@ class TransactionCategory extends Model
         'description',
     ];
 
-    public static array $rules = [
-        'title' => 'required|string|max:255',
-        'description' => 'string',
-    ];
+    public static function rules(): array
+    {
+        return [
+            'title' => 'required|string|max:255',
+            'description' => 'string',
+        ];
+    }
 }
