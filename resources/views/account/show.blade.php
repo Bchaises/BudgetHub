@@ -1,4 +1,4 @@
-<x-layout>
+<x-app-layout>
 
     <div class="m-4">
         <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('account.index') }}">/Accounts</a>
@@ -74,5 +74,5 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-app-layout>
 
