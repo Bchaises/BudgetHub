@@ -7,7 +7,7 @@ use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => view('welcome'));
+Route::get('/', fn () => view('welcome'));
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
