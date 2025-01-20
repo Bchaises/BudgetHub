@@ -1,25 +1,28 @@
 <x-layout>
 
-    <div class="m-4">
-        <h1 class="text-2xl mb-1">Bienvenue dans votre dashboard</h1>
-        <p class="text-md">Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
+    <div class="m-2 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl mb-1">Bonjour 👋 {{ strtolower($user->name) }} ! Bienvenue dans votre dashboard.</h1>
+            <p class="text-md">Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
+        </div>
+
+        <div class="flex">
+            <form method="POST" action="{{ route('logout') }}" class="mr-2">
+                @csrf
+
+                <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                    Log Out
+                </a>
+            </form>
+
+            <div>
+                <x-button title="Transaction" link="{{ route('transaction.index') }}"/>
+                <x-button title="Account" link="{{ route('account.index') }}"/>
+            </div>
+        </div>
     </div>
 
-    <!-- Authentication -->
-    <form method="POST" action="{{ route('logout') }}" class="m-2">
-        @csrf
-
-        <a href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-            Log Out
-        </a>
-    </form>
-
-    <div class="m-2 flex flex-col w-44 items-start">
-        <x-button title="Go to Transaction" link="{{ route('transaction.index') }}"/>
-        <x-button title="Go to Account" link="{{ route('account.index') }}"/>
-    </div>
-
-    <div class="w-full flex justify-center">
+    <div class="w-full mt-8 flex justify-center">
         <div class="w-2/3">
             <div class="flex flex-wrap">
                 @foreach($accounts as $account)

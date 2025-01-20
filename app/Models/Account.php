@@ -16,7 +16,7 @@ class Account extends Model
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'string',
+            'description' => 'nullable|string',
             'balance' => 'required|integer',
         ];
     }
