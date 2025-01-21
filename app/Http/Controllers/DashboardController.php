@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function show(): View
     {
         return view('dashboard', [
-            'accounts' => Account::all(),
+            'accounts' => Account::where('user_id', Auth::id())->get(),
             'user' => Auth::user(),
         ]);
     }

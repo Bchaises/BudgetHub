@@ -3,21 +3,46 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
     protected $fillable = [
-        'balance',
         'title',
         'description',
+        'balance',
+        'user_id',
     ];
 
-    public static function rules(): array
+    protected $guarded = [
+        'balance',
+        'user_id'
+    ];
+
+    public static function rules(bool $isUpdate = false): array
     {
-        return [
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'balance' => 'required|integer',
+            'balance' => 'prohibited',
+            'user_id' => 'prohibited',
         ];
+
+        if (!$isUpdate) {
+            $rules['balance'] = 'required|integer';
+        }
+
+        return $rules;
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

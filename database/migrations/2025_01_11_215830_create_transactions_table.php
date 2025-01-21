@@ -25,6 +25,10 @@ return new class() extends Migration {
                 ->references('id')
                 ->on('transaction_categories')
                 ->onDelete('set null');
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
