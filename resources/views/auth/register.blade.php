@@ -1,4 +1,10 @@
 <x-guest-layout>
+
+    <x-slot:title>{{ __('Register') }}</x-slot:title>
+    <x-slot:icon>fa-user</x-slot:icon>
+    <x-slot:buttonText>{{ __('Already registered ? Please log in') }}</x-slot:buttonText>
+    <x-slot:buttonRoute>{{ route('login') }}</x-slot:buttonRoute>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -11,7 +17,7 @@
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('E-mail')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
@@ -39,13 +45,9 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="/">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
+        <div class="mt-10">
+            <x-primary-button class="w-full justify-center">
+                {{ __('Sign In') }}
             </x-primary-button>
         </div>
     </form>
