@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -15,9 +16,9 @@ class TransactionController extends Controller
     public function index(): View
     {
         return view('transaction.index', [
-            'transactions' => Transaction::all(),
-            'accounts' => Account::all(),
-            'categories' => TransactionCategory::all(),
+            'transactions' => Transaction::where('user_id', Auth::id())->get(),
+            'accounts' => Account::where('user_id', Auth::id())->get(),
+            'categories' => TransactionCategory::where('user_id', Auth::id())->get(),
         ]);
     }
 
@@ -25,24 +26,25 @@ class TransactionController extends Controller
     {
         return view('transaction.show', [
             'transaction' => Transaction::findOrFail($id),
-            'accounts' => Account::all(),
-            'categories' => TransactionCategory::all(),
+            'accounts' => Account::where('user_id', Auth::id())->get(),
+            'categories' => TransactionCategory::where('user_id', Auth::id())->get(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate(Transaction::rules());
-        $account = Account::findOrFail($validated['account']);
+        $validate = $request->validate(Transaction::rules());
+        $account = Account::findOrFail($validate['account']);
 
-        DB::transaction(function () use ($validated, $account) {
+        DB::transaction(function () use ($validate, $account) {
             $transaction = new Transaction();
-            $transaction->label = ucfirst($validated['label']);
-            $transaction->amount = $validated['amount'];
-            $transaction->status = $validated['status'];
-            $transaction->date = $validated['date'];
-            $transaction->account_id = $validated['account'];
-            $transaction->category_id = $validated['category'];
+            $transaction->label = ucfirst($validate['label']);
+            $transaction->amount = $validate['amount'];
+            $transaction->status = $validate['status'];
+            $transaction->date = $validate['date'];
+            $transaction->account_id = $validate['account'];
+            $transaction->category_id = $validate['category'];
+            $transaction->user_id = Auth::id();
 
             $balanceChange = $transaction->status === 'debit'
                 ? -$transaction->amount
@@ -57,7 +59,7 @@ class TransactionController extends Controller
             $transaction->save();
         });
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Transaction created!');
     }
 
     public function update(string $id, Request $request): RedirectResponse
@@ -65,15 +67,10 @@ class TransactionController extends Controller
         $validated = $request->validate(Transaction::rules());
 
         $transaction = Transaction::findOrFail($id);
-        $transaction->label = ucfirst($validated['label']);
-        $transaction->amount = $validated['amount'];
-        $transaction->status = $validated['status'];
-        $transaction->date = $validated['date'];
-        $transaction->account_id = $validated['account'];
-        $transaction->category_id = $validated['category'];
-        $transaction->save();
 
-        return redirect()->back();
+        $transaction->fill($validated)->save();
+
+        return redirect()->back()->with('success', 'Transaction updated!');
     }
 
     public function destroy(string $id): RedirectResponse
@@ -96,6 +93,6 @@ class TransactionController extends Controller
             Transaction::destroy($transaction->id);
         });
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Transaction deleted!');
     }
 }

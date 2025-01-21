@@ -13,6 +13,10 @@ class Transaction extends Model
         'status',
     ];
 
+    protected $guarded = [
+        'user_id'
+    ];
+
     public static function rules(): array
     {
         return [
@@ -22,6 +26,7 @@ class Transaction extends Model
             'date' => 'required|date',
             'account' => 'required|exists:accounts,id',
             'category' => 'nullable|exists:transaction_categories,id',
+            'user_id' => 'prohibited'
         ];
     }
 
@@ -33,5 +38,10 @@ class Transaction extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
