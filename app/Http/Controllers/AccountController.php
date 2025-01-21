@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -13,42 +13,42 @@ class AccountController extends Controller
     public function index(): View
     {
         return view('account.index', [
-            'accounts' => Account::all(),
+            'accounts' => Account::where('user_id', Auth::id())->get(),
         ]);
     }
 
     public function show(string $id): View
     {
+        $account = Account::where('user_id', Auth::id())
+            ->where('id', $id)
+            ->firstOrFail();
+
         return view('account.show', [
-            'account' => Account::findOrFail($id),
-            'transactions' => Transaction::where('account_id', $id)->get(),
+            'account' => $account,
+            'transactions' => $account->transactions,
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate(Account::rules());
+        $validate = $request->validate(Account::rules());
 
-        $account = new Account();
-        $account->title = ucfirst($validated['title']);
-        $account->description = ucfirst($validated['description']);
-        $account->balance = $validated['balance'];
-        $account->save();
+        $validate['user_id'] = Auth::id();
 
-        return redirect()->back();
+        Account::create($validate);
+
+        return redirect()->back()->with('success', 'Bank account created successfully!');
     }
 
     public function update(Request $request, string $id): RedirectResponse
     {
-        $validated = $request->validate(Account::rules());
+        $validate = $request->validate(Account::rules(true));
 
-        $account = Account::find($id);
-        $account->title = ucfirst($validated['title']);
-        $account->description = ucfirst($validated['description']);
-        $account->balance = $validated['balance'];
-        $account->save();
+        $account = Account::findOrFail($id);
 
-        return redirect()->back();
+        $account->fill($validate)->save();
+
+        return redirect()->back()->with('success', 'Bank account updated successfully!');
     }
 
     public function destroy(string $id): RedirectResponse
