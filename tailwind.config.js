@@ -13,17 +13,16 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                default: ['Albert Sans', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                primary: {
+                    DEFAULT: '#F7E2D8',
+                    dark: '#D6A89C'
+                },
+                secondary: '#383330'
+            }
         },
-        colors: {
-            ...colors,
-            primary: {
-                DEFAULT: '#F7E2D8',
-                dark: '#D6A89C'
-            },
-            secondary: '#383330'
-        }
     },
     plugins: [],
 };
