@@ -30,11 +30,9 @@
                 </div>
             </div>
             <div class="mt-12">
-                <a href="{{ $buttonRoute ?? route('login') }}">
-                    <x-secondary-button class="text-xs px-4 !text-gray-500">
-                        {{ $buttonText ?? __('Default text') }}
-                    </x-secondary-button>
-                </a>
+                <x-secondary-button onclick="location.href='{{ $buttonRoute ?? route('login') }}'" class="text-xs px-4 !text-gray-500">
+                    {{ $buttonText ?? __('Default text') }}
+                </x-secondary-button>
             </div>
         </div>
     </body>

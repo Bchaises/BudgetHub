@@ -29,13 +29,12 @@
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-5">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                       class="w-4 h-4 rounded border bg-white text-white accent-primary border-primary focus:ring-offset-1 focus:ring-primary focus:ring-2"
-                       name="remember">
-                <span class="ms-2 text-base text-secondary">{{ __('Remember me') }}</span>
-            </label>
+        <div class="mt-5 gap-2 flex relative">
+            <input id="remember_me" type="checkbox"
+                   class="appearance-none w-5 h-5 shrink-0 rounded bg-white text-primary border-2 border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150 peer"
+                   name="remember">
+            <i class="fa-solid fa-check fs-xs absolute inset-0 w-4 h-4 hidden peer-checked:block text-white" style="pointer-events: none;left:0.20em;top:0.20em"></i>
+            <label for="remember_me" class="text-base text-secondary">{{ __('Remember me') }}</label>
         </div>
 
         <!-- Submit and Forgot Password -->
@@ -44,11 +43,9 @@
                 {{ __('Log in') }}
             </x-primary-button>
 
-            <a href="{{ route('password.request') }}" class="ml-2 flex-1">
-                <x-secondary-button type="button" class="w-full justify-center">
-                    {{ __('Forgot password ?') }}
-                </x-secondary-button>
-            </a>
+            <x-secondary-button onclick="location.href='{{ route('password.request') }}'" type="button" class="ml-2 flex-1 justify-center">
+                {{ __('Forgot password ?') }}
+            </x-secondary-button>
         </div>
     </form>
 </x-guest-layout>
