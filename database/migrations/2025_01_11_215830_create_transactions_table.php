@@ -15,7 +15,7 @@ return new class() extends Migration {
             $table->string('label');
             $table->double('amount');
             $table->enum('status', ['debit', 'credit']);
-            $table->dateTime('date');
+            $table->date('date');
             $table->foreignId('account_id')
                 ->references('id')
                 ->on('accounts')
