@@ -10,21 +10,16 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->string('label');
-            $table->double('amount');
-            $table->enum('status', ['debit', 'credit']);
-            $table->date('date');
+        Schema::create('user_account', function (Blueprint $table) {
+            $table->foreignId('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
             $table->foreignId('account_id')
                 ->references('id')
                 ->on('accounts')
                 ->onDelete('cascade');
-            $table->foreignId('category_id')
-                ->nullable()
-                ->references('id')
-                ->on('transaction_categories')
-                ->onDelete('set null');
+            $table->enum('role', ['owner', 'editor', 'viewer'])->default('owner');
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('user_account');
     }
 };

@@ -13,11 +13,8 @@ return new class() extends Migration {
         Schema::create('transaction_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->foreignId('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            $table->string('color');
+            $table->string('icon');
             $table->timestamps();
         });
     }

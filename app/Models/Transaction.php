@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Transaction extends Model
 {
@@ -11,10 +12,6 @@ class Transaction extends Model
         'label',
         'amount',
         'status',
-    ];
-
-    protected $guarded = [
-        'user_id'
     ];
 
     public static function rules(): array
@@ -26,7 +23,6 @@ class Transaction extends Model
             'date' => 'required|date',
             'account' => 'required|exists:accounts,id',
             'category' => 'nullable|exists:transaction_categories,id',
-            'user_id' => 'prohibited'
         ];
     }
 
@@ -40,8 +36,8 @@ class Transaction extends Model
         return $this->belongsTo(TransactionCategory::class);
     }
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'user_transaction');
     }
 }

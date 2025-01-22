@@ -10,21 +10,22 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->string('label');
-            $table->double('amount');
-            $table->enum('status', ['debit', 'credit']);
-            $table->date('date');
             $table->foreignId('account_id')
                 ->references('id')
                 ->on('accounts')
                 ->onDelete('cascade');
-            $table->foreignId('category_id')
-                ->nullable()
+            $table->foreignId('receiver_id')
                 ->references('id')
-                ->on('transaction_categories')
-                ->onDelete('set null');
+                ->on('users')
+                ->onDelete('cascade');
+            $table->foreignId('sender_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->dateTime('expired_at');
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('invitations');
     }
 };

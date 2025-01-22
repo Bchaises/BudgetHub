@@ -56,6 +56,7 @@
                         <th class="p-4 font-medium">Status</th>
                         <th class="p-4 font-medium">Account</th>
                         <th class="p-4 font-medium">Category</th>
+                        <th class="p-4 font-medium">Date</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -67,6 +68,7 @@
                             <td class="p-4 text-gray-700"><div class="{{ $transaction->status == 'debit' ? "text-red-500" : "text-green-500" }}">{{ $transaction->status }}</div></td>
                             <td class="p-4 text-gray-700">{{ $transaction->account->title }}</td>
                             <td class="p-4 text-gray-700">{{ $transaction->category->title ?? 'None' }}</td>
+                            <td class="p-4 text-gray-700">{{ date('d/m/Y', strtotime($transaction->date)) }}</td>
                         </tr>
                     @endforeach
                     </tbody>

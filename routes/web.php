@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
@@ -45,6 +46,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', 'edit')->name('profile.edit');
         Route::patch('/', 'update')->name('profile.update');
         Route::delete('/', 'destroy')->name('profile.destroy');
+    });
+
+    Route::prefix('invitation')->controller(InvitationController::class)->group(function () {
+        Route::get('/', 'index')->name('invitation.index');
     });
 });
 
