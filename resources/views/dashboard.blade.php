@@ -17,6 +17,7 @@
             <div>
                 <x-button title="Transaction" link="{{ route('transaction.index') }}"/>
                 <x-button title="Account" link="{{ route('account.index') }}"/>
+                <x-button title="Invitation" link="{{ route('invitation.index') }}"/>
             </div>
         </div>
     </div>

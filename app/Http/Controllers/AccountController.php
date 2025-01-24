@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,19 +14,16 @@ class AccountController extends Controller
     public function index(): View
     {
         return view('account.index', [
-            'accounts' => Account::where('user_id', Auth::id())->get(),
+            'accounts' => User::find(Auth::id())->accounts,
         ]);
     }
 
     public function show(string $id): View
     {
-        $account = Account::where('user_id', Auth::id())
-            ->where('id', $id)
-            ->firstOrFail();
-
+        $account = User::findOrFail(Auth::id())->accounts->where('id', $id)->first();
         return view('account.show', [
             'account' => $account,
-            'transactions' => $account->transactions,
+            'transactions' => $account->transactions->sortByDesc('date'),
         ]);
     }
 
@@ -33,9 +31,8 @@ class AccountController extends Controller
     {
         $validate = $request->validate(Account::rules());
 
-        $validate['user_id'] = Auth::id();
-
-        Account::create($validate);
+        $account = Account::create($validate);
+        $account->users()->attach(Auth::id(), ['role' => 'owner', 'created_at' => now(), 'updated_at' => now()]);
 
         return redirect()->back()->with('success', 'Bank account created successfully!');
     }

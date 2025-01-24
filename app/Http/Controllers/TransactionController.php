@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,19 +16,21 @@ class TransactionController extends Controller
 {
     public function index(): View
     {
+        $user = User::findOrFail(Auth::id());
         return view('transaction.index', [
-            'transactions' => Transaction::where('user_id', Auth::id())->get(),
-            'accounts' => Account::where('user_id', Auth::id())->get(),
-            'categories' => TransactionCategory::where('user_id', Auth::id())->get(),
+            'transactions' => $user->transactions,
+            'accounts' => $user->accounts,
+            'categories' => TransactionCategory::all(),
         ]);
     }
 
     public function show(string $id): View
     {
+        $user = User::findOrFail(Auth::id());
         return view('transaction.show', [
-            'transaction' => Transaction::findOrFail($id),
-            'accounts' => Account::where('user_id', Auth::id())->get(),
-            'categories' => TransactionCategory::where('user_id', Auth::id())->get(),
+            'transaction' => $user->transactions->where('id', $id)->firstOrFail(),
+            'accounts' => $user->accounts,
+            'categories' => TransactionCategory::all(),
         ]);
     }
 
@@ -44,7 +47,6 @@ class TransactionController extends Controller
             $transaction->date = $validate['date'];
             $transaction->account_id = $validate['account'];
             $transaction->category_id = $validate['category'];
-            $transaction->user_id = Auth::id();
 
             $balanceChange = $transaction->status === 'debit'
                 ? -$transaction->amount
@@ -57,6 +59,7 @@ class TransactionController extends Controller
             }
 
             $transaction->save();
+            $transaction->users()->attach(Auth::id(), ['is_initiator' => true, 'created_at' => now(), 'updated_at' => now()]);
         });
 
         return redirect()->back()->with('success', 'Transaction created!');

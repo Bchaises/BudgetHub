@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn () => view('welcome'))->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
@@ -45,6 +46,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', 'edit')->name('profile.edit');
         Route::patch('/', 'update')->name('profile.update');
         Route::delete('/', 'destroy')->name('profile.destroy');
+    });
+
+    Route::prefix('invitation')->controller(InvitationController::class)->group(function () {
+        Route::get('/', 'index')->name('invitation.index');
+        Route::post('/', 'store')->name('invitation.store');
+        Route::delete('/{invitation}', 'destroy')->name('invitation.destroy');
+        Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');
     });
 });
 
