@@ -86,7 +86,7 @@ class InvitationController
 
     public function destroy(Invitation $invitation): RedirectResponse
     {
-        if(Auth::id() !== $invitation->sender_id) {
+        if (Auth::id() !== $invitation->sender_id) {
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'You are not authorized to delete this invitation.']);
