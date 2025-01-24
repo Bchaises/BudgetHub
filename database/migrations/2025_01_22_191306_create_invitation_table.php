@@ -25,7 +25,9 @@ return new class() extends Migration {
                 ->on('users')
                 ->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('role', ['editor', 'viewer'])->default('viewer');
             $table->dateTime('expired_at');
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }
