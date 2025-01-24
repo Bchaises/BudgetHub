@@ -11,6 +11,7 @@ return new class() extends Migration {
     public function up(): void
     {
         Schema::create('user_transaction', function (Blueprint $table) {
+            $table->primary(['user_id', 'transaction_id']);
             $table->foreignId('user_id')
                 ->references('id')
                 ->on('users')
