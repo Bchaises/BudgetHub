@@ -16,6 +16,7 @@
                         <th class="p-4 font-medium">Receiver</th>
                         <th class="p-4 font-medium">Sender</th>
                         <th class="p-4 font-medium">Status</th>
+                        <th class="p-4 font-medium">Role</th>
                         <th class="p-4 font-medium">Expired at</th>
                         <th class="p-4 font-medium">Actions</th>
                     </tr>
@@ -28,9 +29,10 @@
                             <td class="p-4 text-gray-700">{{ $invitation->receiver->name }}</td>
                             <td class="p-4 text-gray-700">{{ $invitation->sender->name }}</td>
                             <td class="p-4 text-gray-700">{{ $invitation->status }}</td>
+                            <td class="p-4 text-gray-700">{{ $invitation->role }}</td>
                             <td class="p-4 text-gray-700">{{ $invitation->expired_at }}</td>
                             <td class="p-4 text-gray-700 flex items-center">
-                                <form method="POST" action="{{ route('transaction.destroy', ['id' => $invitation->id]) }}" class="m-0">
+                                <form method="POST" action="{{ route('invitation.destroy', ['invitation' => $invitation->id]) }}" class="m-0">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="">
@@ -45,13 +47,14 @@
             </div>
 
             <div class="m-8 w-full basis-1/3">
-                <form method="POST" action="{{ route('dashboard') }}" class="flex flex-col ">
+                <form method="POST" action="{{ route('invitation.store') }}" class="flex flex-col ">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="mt-2">
                         <label for="receiver_email" class="block text-sm/6 font-medium text-gray-900">E-mail de l'utilisateur : </label>
                         <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                             <input type="email" name="receiver_email" id="receiver_email" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" required>
                         </div>
+                        <x-input-error :messages="$errors->get('receiver_email')" class="mt-2" />
                     </div>
 
                     <div class="mt-2 flex flex-col">
@@ -63,20 +66,27 @@
                                 @endforeach
                             </select>
                         </div>
+                        <x-input-error :messages="$errors->get('account')" class="mt-2" />
                     </div>
 
                     <div class="mt-2 flex flex-col">
-                        <label for="account" class="block text-sm/6 font-medium text-gray-900">Avec quel rôle :</label>
+                        <label for="role" class="block text-sm/6 font-medium text-gray-900">Avec quel rôle :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <select name="account" id="account" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                            <select name="role" id="role" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
                                     <option value="editor">Editor</option>
                                     <option value="viewer">Viewer</option>
                             </select>
                         </div>
+                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg">Sauvegarder</button>
+                        @if(session('status') === 'invitation-sent')
+                            <div class="mb-4 font-medium text-sm text-green-600">
+                                {{ __('An invitation link has been sent.') }}
+                            </div>
+                        @endif
                     </div>
                 </form>
             </div>
