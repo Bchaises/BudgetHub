@@ -35,7 +35,7 @@
                        class="appearance-none w-5 h-5 shrink-0 rounded bg-white text-primary border-2 border-primary checked:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150 peer"
                        name="remember">
                 <i class="fa-solid fa-check fs-xs absolute inset-0 w-4 h-4 hidden peer-checked:block text-white" style="pointer-events: none;left:0.20em;top:0.20em"></i>
-                <label for="remember_me" class="text-base text-secondary">{{ __('Remember me') }}</label>
+                <label for="remember_me" class="text-base text-police-light">{{ __('Remember me') }}</label>
             </div>
         </div>
 
