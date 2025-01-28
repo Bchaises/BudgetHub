@@ -1,11 +1,9 @@
 <x-app-layout>
-    <div class="my-4 flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl mb-1">Bonjour 👋 {{ strtolower($user->name) }} ! Bienvenue dans votre dashboard.</h1>
-            <p class="text-md">Ici vous retrouverez les graphiques et les statistiques de vos comptes</p>
-        </div>
 
-        <div class="flex">
+    <x-slot:title>{{ "Hi, Welcome back ".strtolower($user->name)." 👋!" }}</x-slot:title>
+
+    <div class="w-full mt-8">
+        <div class="mb-8">
             <form method="POST" action="{{ route('logout') }}" class="mr-2">
                 @csrf
 
@@ -14,9 +12,7 @@
                 </a>
             </form>
         </div>
-    </div>
 
-    <div class="w-full mt-8">
         <div class="flex flex-wrap">
             @foreach($accounts as $account)
                 <a href="{{ route('account.show', ['id' => $account->id]) }}">

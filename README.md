@@ -66,6 +66,22 @@ Budget Hub est construit avec **Laravel** pour offrir une expérience rapide, s�
 
 ---
 
+## ✉️ Mails
+Pour activer les fonctionnalités liées aux emails, comme la récupération de mot de passe, la vérification des adresses email ou les invitations, vous devez configurer un fournisseur de service mail. Voici les étapes :
+
+Configurer les variables d'environnement dans le fichier .env :
+
+```dotenv
+MAIL_MAILER=your_mailer         # Exemple : smtp, sendmail, mailgun, etc.
+MAIL_FROM_ADDRESS=no-reply@example.com
+MAIL_FROM_NAME=BudgetHub
+RESEND_KEY=your_resend_api_token
+```
+
+Configurer votre fournisseur de messagerie : Assurez-vous d’avoir configuré correctement votre fournisseur (par exemple : SMTP, Mailgun, Resend, etc.) dans le fichier .env ou dans votre panel d'administration. Consultez la documentation officielle de Laravel pour plus d'informations.
+
+---
+
 ## 🧪 Tests
 Exécutez les tests pour vous assurer que tout fonctionne comme prévu :
 ```bash

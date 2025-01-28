@@ -1,11 +1,12 @@
 <x-app-layout>
 
-    <div class="m-4">
+    <x-slot:title>{{ "Here, your transactions" }}</x-slot:title>
+
+    <div>
         <a href="{{ route('dashboard') }}">Dashboard</a>
     </div>
 
     <div class="flex flex-col items-center">
-        <h1 class="text-xl">Voici les dernières transactions</h1>
         <div class="w-2/3 flex justify-center">
             <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full basis-2/3">
                 <table class="table-auto border-collapse w-full text-left text-sm bg-white">
@@ -16,6 +17,7 @@
                         <th class="p-4 font-medium">Amount</th>
                         <th class="p-4 font-medium">Status</th>
                         <th class="p-4 font-medium">Account</th>
+                        <th class="p-4 font-medium">Target Account</th>
                         <th class="p-4 font-medium">Category</th>
                         <th class="p-4 font-medium">Date</th>
                         <th class="p-4 font-medium">Actions</th>
@@ -29,6 +31,7 @@
                             <td class="p-4 text-gray-700">{{ $transaction->amount }}€</td>
                             <td class="p-4 text-gray-700"><div class="{{ $transaction->status == 'debit' ? "text-red-500" : "text-green-500" }}">{{ $transaction->status }}</div></td>
                             <td class="p-4 text-gray-700">{{ $transaction->account->title }}</td>
+                            <td class="p-4 text-gray-700">{{ $transaction->target_account?->title }}</td>
                             <td class="p-4 text-gray-700">{{ $transaction->category->title ?? 'None' }}</td>
                             <td class="p-4 text-gray-700">{{ date('d/m/Y', strtotime($transaction->date)) }}</td>
                             <td class="p-4 text-gray-700 flex items-center">
@@ -101,6 +104,18 @@
                         <label for="account" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
                             <select name="account" id="account" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                                @foreach($accounts as $account)
+                                    <option value="{{ $account->id }}">{{ $account->title }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 flex flex-col">
+                        <label for="target_account" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte à cibler :</label>
+                        <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+                            <select name="target_account" id="target_account" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                                <option value="">None</option>
                                 @foreach($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->title }}</option>
                                 @endforeach

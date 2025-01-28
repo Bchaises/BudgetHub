@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'))->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+// Add 'verified' if you want only users verified
+Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 

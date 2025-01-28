@@ -1,11 +1,12 @@
 <x-app-layout>
 
-    <div class="m-4">
+    <x-slot:title>{{ "Here, your invitations" }}</x-slot:title>
+
+    <div>
         <a href="{{ route('dashboard') }}">Dashboard</a>
     </div>
 
     <div class="flex flex-col items-center">
-        <h1 class="text-xl">Vos invitations</h1>
         <div class="w-2/3 flex justify-center">
             <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full basis-2/3">
                 <table class="table-auto border-collapse w-full text-left text-sm bg-white">

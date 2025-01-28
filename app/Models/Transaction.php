@@ -22,6 +22,7 @@ class Transaction extends Model
             'status' => 'required|in:debit,credit',
             'date' => 'required|date',
             'account' => 'required|exists:accounts,id',
+            'target_account' => 'nullable|exists:accounts,id|different:account',
             'category' => 'nullable|exists:transaction_categories,id',
         ];
     }
@@ -29,6 +30,11 @@ class Transaction extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function targetAccount(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'target_account_id');
     }
 
     public function category(): BelongsTo

@@ -38,14 +38,16 @@ class TransactionController extends Controller
     {
         $validate = $request->validate(Transaction::rules());
         $account = Account::findOrFail($validate['account']);
+        $targetAccount = $validate['target_account'] !== null ? Account::findOrFail($validate['target_account']) : null;
 
-        DB::transaction(function () use ($validate, $account) {
+        DB::transaction(function () use ($validate, $account, $targetAccount) {
             $transaction = new Transaction();
             $transaction->label = ucfirst($validate['label']);
             $transaction->amount = $validate['amount'];
             $transaction->status = $validate['status'];
             $transaction->date = $validate['date'];
             $transaction->account_id = $validate['account'];
+            $transaction->target_account_id = $validate['target_account'];
             $transaction->category_id = $validate['category'];
 
             $balanceChange = $transaction->status === 'debit'
@@ -56,6 +58,12 @@ class TransactionController extends Controller
                 $account->update([
                     'balance' => $account->balance + $balanceChange,
                 ]);
+
+                if ($targetAccount) {
+                    $targetAccount->update([
+                        'balance' => $targetAccount->balance - $balanceChange,
+                    ]);
+                }
             }
 
             $transaction->save();
@@ -80,8 +88,9 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($id);
         $account = Account::findOrFail($transaction->account_id);
+        $targetAccount = $transaction->target_account_id !== null ? Account::findOrFail($transaction->target_account_id) : null;
 
-        DB::transaction(function () use ($transaction, $account) {
+        DB::transaction(function () use ($transaction, $account, $targetAccount) {
 
             $balanceChange = $transaction->status === 'debit'
                 ? $transaction->amount
@@ -91,6 +100,12 @@ class TransactionController extends Controller
                 $account->update([
                     'balance' => $account->balance + $balanceChange,
                 ]);
+
+                if ($targetAccount) {
+                    $targetAccount->update([
+                        'balance' => $targetAccount->balance - $balanceChange,
+                    ]);
+                }
             }
 
             Transaction::destroy($transaction->id);

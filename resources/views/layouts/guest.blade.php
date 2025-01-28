@@ -23,7 +23,7 @@
             </header>
             <div class="w-full max-w-xl shadow-xl overflow-hidden rounded-lg">
                 <div class="p-4 bg-primary flex items-center justify-between">
-                    <h1 class="text-xl text-secondary flex-1 text-center">{{ $title ?? __('Default title') }}</h1>
+                    <h1 class="text-xl text-police flex-1 text-center">{{ $title ?? __('Default title') }}</h1>
                     <i class="{{ $icon ?? 'fa-user' }} fa-solid fa-lg"></i>
                 </div>
                 <div class="px-16 py-12 flex flex-col bg-white" style="min-height: 30em">
