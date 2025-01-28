@@ -1,11 +1,12 @@
 <x-app-layout>
 
-    <div class="m-4">
-        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('transaction.index') }}">/Transactions</a>
+    <x-slot:title>{{ "Here, the categories" }}</x-slot:title>
+
+    <div>
+        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('transaction.index') }}"> / Transactions</a>
     </div>
 
     <div class="flex flex-col items-center">
-        <h1 class="text-xl">Les catégories de transactions</h1>
         <div class="w-2/3 flex justify-center">
             <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full basis-2/3">
                 <table class="table-auto border-collapse w-full text-left text-sm bg-white">

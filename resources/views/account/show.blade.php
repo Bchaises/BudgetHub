@@ -1,11 +1,12 @@
 <x-app-layout>
 
-    <div class="m-4">
-        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('account.index') }}">/Accounts</a>
+    <x-slot:title>{{ "Here, your account \"$account->title\"" }}</x-slot:title>
+
+    <div>
+        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('account.index') }}"> / Accounts</a>
     </div>
 
     <div class="flex flex-col items-center">
-        <h1 class="text-xl">Vous êtes sur le compte {{ $account->title }}</h1>
         <div class="w-2/3">
             <div class="m-8">
                 <form method="POST" action="{{ route('account.update', ['id' => $account->id]) }}" class="flex flex-col ">
