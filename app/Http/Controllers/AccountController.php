@@ -23,7 +23,7 @@ class AccountController extends Controller
         $account = User::findOrFail(Auth::id())->accounts->where('id', $id)->first();
         return view('account.show', [
             'account' => $account,
-            'transactions' => $account->allTransactions()->sortByDesc('date'),
+            'transactions' => $account->transactions->sortByDesc('date'),
         ]);
     }
 
@@ -50,31 +50,7 @@ class AccountController extends Controller
 
     public function destroy(string $id): RedirectResponse
     {
-        $account = Account::findOrFail($id);
-
-        $transactionsAsInitiator = $account->transactionsInitiated;
-        $transactionsAsTarget = $account->transactionsReceived;
-
-        foreach ($transactionsAsInitiator as $transaction) {
-            $targetAccount = $transaction->targetAccount;
-            if ($targetAccount) {
-                $adjustment = ($transaction->status === 'debit') ? -$transaction->amount : $transaction->amount;
-                $targetAccount->balance += $adjustment;
-                $targetAccount->save();
-            }
-        }
-
-        foreach ($transactionsAsTarget as $transaction) {
-            $initiatorAccount = $transaction->account;
-            if ($initiatorAccount) {
-                $adjustment = ($transaction->status === 'debit') ? $transaction->amount : -$transaction->amount;
-                $initiatorAccount->balance += $adjustment;
-                $initiatorAccount->save();
-            }
-        }
-
-        $account->delete();
-
-        return redirect()->back()->with('status', 'Account deleted and related balances updated.');
+        Account::destroy($id);
+        return redirect()->back()->with('status', 'Account deleted.');
     }
 }

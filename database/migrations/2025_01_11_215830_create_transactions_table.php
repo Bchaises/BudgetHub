@@ -20,11 +20,6 @@ return new class() extends Migration {
                 ->references('id')
                 ->on('accounts')
                 ->onDelete('cascade');
-            $table->foreignId('target_account_id')
-                ->nullable()
-                ->references('id')
-                ->on('accounts')
-                ->onDelete('cascade');
             $table->foreignId('category_id')
                 ->nullable()
                 ->references('id')
