@@ -17,7 +17,6 @@
                         <th class="p-4 font-medium">Amount</th>
                         <th class="p-4 font-medium">Status</th>
                         <th class="p-4 font-medium">Account</th>
-                        <th class="p-4 font-medium">Target Account</th>
                         <th class="p-4 font-medium">Category</th>
                         <th class="p-4 font-medium">Date</th>
                         <th class="p-4 font-medium">Actions</th>
@@ -31,7 +30,6 @@
                             <td class="p-4 text-gray-700">{{ $transaction->amount }}€</td>
                             <td class="p-4 text-gray-700"><div class="{{ $transaction->status == 'debit' ? "text-red-500" : "text-green-500" }}">{{ $transaction->status }}</div></td>
                             <td class="p-4 text-gray-700">{{ $transaction->account->title }}</td>
-                            <td class="p-4 text-gray-700">{{ $transaction->target_account?->title }}</td>
                             <td class="p-4 text-gray-700">{{ $transaction->category->title ?? 'None' }}</td>
                             <td class="p-4 text-gray-700">{{ date('d/m/Y', strtotime($transaction->date)) }}</td>
                             <td class="p-4 text-gray-700 flex items-center">
@@ -89,9 +87,9 @@
                     </div>
 
                     <div class="mt-2 flex flex-col">
-                        <label for="category" class="block text-sm/6 font-medium text-gray-900">Choisissez une categorie :</label>
+                        <label for="category_id" class="block text-sm/6 font-medium text-gray-900">Choisissez une categorie :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <select name="category" id="category" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                            <select name="category_id" id="category_id" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
                                 <option value="" >None</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->title }}</option>
@@ -101,9 +99,9 @@
                     </div>
 
                     <div class="mt-2 flex flex-col">
-                        <label for="account" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte :</label>
+                        <label for="account_id" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <select name="account" id="account" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                            <select name="account_id" id="account_id" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
                                 @foreach($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->title }}</option>
                                 @endforeach
@@ -112,9 +110,9 @@
                     </div>
 
                     <div class="mt-2 flex flex-col">
-                        <label for="target_account" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte à cibler :</label>
+                        <label for="target_account_id" class="block text-sm/6 font-medium text-gray-900">Choisissez un compte à cibler :</label>
                         <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <select name="target_account" id="target_account" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                            <select name="target_account_id" id="target_account_id" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
                                 <option value="">None</option>
                                 @foreach($accounts as $account)
                                     <option value="{{ $account->id }}">{{ $account->title }}</option>
@@ -123,11 +121,73 @@
                         </div>
                     </div>
 
-                    <x-datepicker/>
+                    <div class="mt-4 flex items-center">
+                        <input type="checkbox" id="is_recurring" name="is_recurring" class="mr-2">
+                        <label for="is_recurring" class="text-sm font-medium text-gray-900">Créer une transaction récurrente</label>
+                    </div>
+
+                    <div id="recurring_fields" class="mt-2 hidden">
+                        <div class="mt-2 flex flex-col">
+                            <label for="frequency" class="block text-sm/6 font-medium text-gray-900">Choisissez la fréquence :</label>
+                            <div class="mt-2 flex items-center rounded-md bg-white px-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+                                <select name="frequency" id="frequency" class="block min-w-0 grow py-2 pl-1 pr-3 text-base bg-white text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <label for="start_date" class="block text-sm/6 font-medium text-gray-900">Choisissez une date de début : </label>
+                            <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+                                <input type="date" value="{{ date('Y-m-d') }}" name="start_date" id="start_date" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" required>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <label for="end_date" class="block text-sm/6 font-medium text-gray-900">Choisissez une date de fin : </label>
+                            <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+                                <input type="date" name="end_date" id="end_date" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="single_date" class="mt-2">
+                        <div class="mt-2">
+                            <label for="date" class="block text-sm/6 font-medium text-gray-900">Choisissez une date : </label>
+                            <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+                                <input type="date" value="{{ date('Y-m-d') }}" name="date" id="date" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const checkbox = document.getElementById('is_recurring');
+                            const recurringFields = document.getElementById('recurring_fields');
+                            const singleDate = document.getElementById('single_date');
+
+                            checkbox.addEventListener('change', function () {
+                                if (this.checked) {
+                                    recurringFields.classList.remove('hidden');
+                                    singleDate.classList.add('hidden');
+                                } else {
+                                    recurringFields.classList.add('hidden');
+                                    singleDate.classList.remove('hidden');
+                                }
+                            });
+                        });
+                    </script>
 
                     <div class="mt-4">
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg">Sauvegarder</button>
                     </div>
+
+                    @isset($errors)
+                        {{ $errors }}
+                    @endisset
                 </form>
             </div>
         </div>

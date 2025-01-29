@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\RecurringTransaction;
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
 use App\Models\User;
@@ -36,41 +37,66 @@ class TransactionController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validate = $request->validate(Transaction::rules());
-        $account = Account::findOrFail($validate['account']);
-        $targetAccount = $validate['target_account'] !== null ? Account::findOrFail($validate['target_account']) : null;
+        if ($request['is_recurring'] === null) {
 
-        DB::transaction(function () use ($validate, $account, $targetAccount) {
-            $transaction = new Transaction();
-            $transaction->label = ucfirst($validate['label']);
-            $transaction->amount = $validate['amount'];
-            $transaction->status = $validate['status'];
-            $transaction->date = $validate['date'];
-            $transaction->account_id = $validate['account'];
-            $transaction->target_account_id = $validate['target_account'];
-            $transaction->category_id = $validate['category'];
+            $validate = $request->validate(array_merge(Transaction::rules(), [
+                'target_account_id' => 'nullable|exists:accounts,id|different:account_id',
+            ]));
 
-            $balanceChange = $transaction->status === 'debit'
-                ? -$transaction->amount
-                : $transaction->amount;
+            $account = Account::findOrFail($validate['account_id']);
+            $targetAccount = $validate['target_account_id'] !== null ? Account::findOrFail($validate['target_account_id']) : null;
 
-            if ($balanceChange !== 0) {
-                $account->update([
-                    'balance' => $account->balance + $balanceChange,
-                ]);
+            DB::transaction(function () use ($validate, $account, $targetAccount) {
+                $this->createTransaction($validate, $account);
 
                 if ($targetAccount) {
-                    $targetAccount->update([
-                        'balance' => $targetAccount->balance - $balanceChange,
-                    ]);
+                    $this->createTransaction([
+                        'label' => $validate['label'],
+                        'amount' => $validate['amount'],
+                        'status' => $validate['status'] === 'debit' ? 'credit' : 'debit',
+                        'date' => $validate['date'],
+                        'account_id' => $validate['target_account_id'],
+                        'category_id' => $validate['category_id'],
+                    ], $targetAccount);
                 }
-            }
+            });
+        } else {
+            $validate = $request->validate(RecurringTransaction::rules());
 
-            $transaction->save();
-            $transaction->users()->attach(Auth::id(), ['is_initiator' => true, 'created_at' => now(), 'updated_at' => now()]);
-        });
+            RecurringTransaction::create([
+                'label' => $validate['label'],
+                'amount' => $validate['amount'],
+                'status' => $validate['status'],
+                'frequency' => $validate['frequency'],
+                'start_date' => $validate['start_date'],
+                'end_date' => $validate['end_date'],
+                'account_id' => $validate['account_id'],
+                'category_id' => $validate['category_id'],
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Transaction created!');
+    }
+
+    private function createTransaction(array $data, Account $account): Transaction
+    {
+        $transaction = Transaction::create($data);
+
+        $balanceChange = $transaction->status === 'debit'
+            ? -$transaction->amount
+            : $transaction->amount;
+
+        if ($balanceChange !== 0) {
+            $account->increment('balance', $balanceChange);
+        }
+
+        $transaction->users()->attach(Auth::id(), [
+            'is_initiator' => true,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return $transaction;
     }
 
     public function update(string $id, Request $request): RedirectResponse
@@ -88,24 +114,15 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($id);
         $account = Account::findOrFail($transaction->account_id);
-        $targetAccount = $transaction->target_account_id !== null ? Account::findOrFail($transaction->target_account_id) : null;
 
-        DB::transaction(function () use ($transaction, $account, $targetAccount) {
+        DB::transaction(function () use ($transaction, $account) {
 
             $balanceChange = $transaction->status === 'debit'
                 ? $transaction->amount
                 : -$transaction->amount;
 
             if ($balanceChange !== 0) {
-                $account->update([
-                    'balance' => $account->balance + $balanceChange,
-                ]);
-
-                if ($targetAccount) {
-                    $targetAccount->update([
-                        'balance' => $targetAccount->balance - $balanceChange,
-                    ]);
-                }
+                $account->increment('balance', $balanceChange);
             }
 
             Transaction::destroy($transaction->id);

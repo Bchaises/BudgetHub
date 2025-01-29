@@ -12,6 +12,9 @@ class Transaction extends Model
         'label',
         'amount',
         'status',
+        'date',
+        'account_id',
+        'category_id',
     ];
 
     public static function rules(): array
@@ -21,20 +24,14 @@ class Transaction extends Model
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:debit,credit',
             'date' => 'required|date',
-            'account' => 'required|exists:accounts,id',
-            'target_account' => 'nullable|exists:accounts,id|different:account',
-            'category' => 'nullable|exists:transaction_categories,id',
+            'account_id' => 'required|exists:accounts,id',
+            'category_id' => 'nullable|exists:transaction_categories,id',
         ];
     }
 
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
-    }
-
-    public function targetAccount(): BelongsTo
-    {
-        return $this->belongsTo(Account::class, 'target_account_id');
     }
 
     public function category(): BelongsTo

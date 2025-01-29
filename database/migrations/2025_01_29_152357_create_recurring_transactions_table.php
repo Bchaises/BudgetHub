@@ -10,12 +10,14 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('recurring_transactions', function (Blueprint $table) {
             $table->id();
             $table->string('label');
             $table->double('amount');
             $table->enum('status', ['debit', 'credit']);
-            $table->date('date');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->enum('frequency', ['daily', 'weekly', 'monthly', 'yearly']);
             $table->foreignId('account_id')
                 ->references('id')
                 ->on('accounts')
@@ -34,6 +36,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('recuringTransactions');
     }
 };

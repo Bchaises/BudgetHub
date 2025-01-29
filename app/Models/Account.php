@@ -41,20 +41,8 @@ class Account extends Model
         return $this->belongsToMany(User::class, 'user_account');
     }
 
-    public function transactionsInitiated(): HasMany
+    public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'account_id');
-    }
-
-    public function transactionsReceived(): HasMany
-    {
-        return $this->hasMany(Transaction::class, 'target_account_id');
-    }
-
-    public function allTransactions()
-    {
-        return Transaction::where('account_id', $this->id)
-            ->orWhere('target_account_id', $this->id)
-            ->get();
+        return $this->hasMany(Transaction::class);
     }
 }

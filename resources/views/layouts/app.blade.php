@@ -24,8 +24,8 @@
             <main class="mx-32 h-screen w-screen">
 
                 <!-- Header -->
-                <header class="w-full my-8 text-2xl flex justify-between">
-                    <h1>{{ $title }}</h1>
+                <header class="w-full my-8 flex justify-between items-end">
+                    <h1 class="text-2xl">{{ $title }}</h1>
                     <p>{{ date('l M j Y') }}</p>
                 </header>
 
