@@ -13,12 +13,12 @@ class DashboardController extends Controller
     {
         $user = User::findOrFail(Auth::id());
         $accounts = $user->accounts;
-        $AccountsStat = $this->getDiffTransactionsAccounts($accounts);
+        $accountsStat = $this->getDiffTransactionsAccounts($accounts);
 
         return view('dashboard', [
             'accounts' => $accounts,
             'user' => $user,
-            'AccountsStat' => $AccountsStat
+            'accountsStat' => $accountsStat
         ]);
     }
 
