@@ -23,6 +23,7 @@
                         <div class="p-4">
                             <p><span>€</span>{{ $account->balance }}</p>
                             <p>{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
+                            <p>{{ $AccountsStat[$account->id] < 0 ? 'Diminution de '. $AccountsStat[$account->id] : 'Augmentation de +'.$AccountsStat[$account->id] }}</p>
                         </div>
                     </div>
                 </a>
