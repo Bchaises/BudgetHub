@@ -20,9 +20,17 @@
                         <div class="border-b p-4 rounded-t-lg bg-primary">
                             <h1 class="text-xl">{{ ucfirst($account->title) }}</h1>
                         </div>
-                        <div class="p-4">
+                        <div class="px-4 py-2">
                             <p><span>€</span>{{ $account->balance }}</p>
                             <p>{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
+                            <div class="flex space-x-2 items-center {{ $accountsStat[$account->id] < 0 ? 'text-red-500' : 'text-green-500' }}">
+                                @if( $accountsStat[$account->id] < 0)
+                                    <i class="fa-solid fa-lg fa-arrow-trend-down"></i> <p class="font-bold">{{ $accountsStat[$account->id]." €" }}</p>
+                                @else
+                                    <i class="fa-solid fa-lg fa-arrow-trend-up"></i> <p class="font-bold">{{ "+".$accountsStat[$account->id]." €" }}</p>
+                                @endif
+                                <p>from last month</p>
+                            </div>
                         </div>
                     </div>
                 </a>
