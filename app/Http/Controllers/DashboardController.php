@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +15,36 @@ class DashboardController extends Controller
         $user = User::findOrFail(Auth::id());
         $accounts = $user->accounts;
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
+        $ExpensesByCategories = $this->getExpensesByCategories();
 
         return view('dashboard', [
             'accounts' => $accounts,
             'user' => $user,
-            'accountsStat' => $accountsStat
+            'accountsStat' => $accountsStat,
+            'expensesByCategories' => $ExpensesByCategories,
         ]);
+    }
+
+    public function getExpensesByCategories(): array
+    {
+        $categories = TransactionCategory::all();
+        $result = [];
+
+        foreach ($categories as $category) {
+            $transactions = $category->transactions;
+            $sum = 0;
+            foreach ($transactions as $transaction) {
+                $sum += $transaction->status === 'debit' ?
+                    -$transaction->amount :
+                    $transaction->amount;
+            }
+            if ($sum != 0) {
+                $result[$category->title] = $sum;
+            }
+        }
+        asort($result);
+
+        return $result;
     }
 
     private function getDiffTransactionsAccounts(Collection $accounts): array

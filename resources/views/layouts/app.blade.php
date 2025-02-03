@@ -21,7 +21,7 @@
             @include('layouts.navigation')
 
             <!-- Page Content -->
-            <main class="mx-32 h-screen w-screen">
+            <main class="xl:mx-72 lg:mx-32 h-screen w-screen">
 
                 <!-- Header -->
                 <header class="w-full my-8 flex justify-between items-end">
