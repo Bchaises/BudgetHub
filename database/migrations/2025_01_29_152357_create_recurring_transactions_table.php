@@ -25,7 +25,7 @@ return new class() extends Migration {
             $table->foreignId('category_id')
                 ->nullable()
                 ->references('id')
-                ->on('transaction_categories')
+                ->on('categories')
                 ->onDelete('set null');
             $table->timestamps();
         });

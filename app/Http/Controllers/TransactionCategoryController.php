@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransactionCategory;
+use App\Models\Category;
 use Illuminate\View\View;
 
 class TransactionCategoryController extends Controller
@@ -11,7 +11,7 @@ class TransactionCategoryController extends Controller
     {
         return view('category.index', [
             'title' => 'Transaction Category',
-            'categories' => TransactionCategory::all()
+            'categories' => Category::all()
         ]);
     }
 
@@ -19,7 +19,7 @@ class TransactionCategoryController extends Controller
     {
         return view('category.show', [
             'title' => 'Transaction Category',
-            'category' => TransactionCategory::all(),
+            'category' => Category::all(),
         ]);
     }
 }

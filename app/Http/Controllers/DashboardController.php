@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TransactionCategory;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class DashboardController extends Controller
 
     public function getExpensesByCategories(): array
     {
-        $categories = TransactionCategory::all();
+        $categories = Category::all();
         $result = [];
 
         foreach ($categories as $category) {

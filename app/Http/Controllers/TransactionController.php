@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\RecurringTransaction;
 use App\Models\Transaction;
-use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class TransactionController extends Controller
         return view('transaction.index', [
             'transactions' => $user->transactions,
             'accounts' => $user->accounts,
-            'categories' => TransactionCategory::all(),
+            'categories' => Category::all(),
         ]);
     }
 
@@ -31,7 +31,7 @@ class TransactionController extends Controller
         return view('transaction.show', [
             'transaction' => $user->transactions->where('id', $id)->firstOrFail(),
             'accounts' => $user->accounts,
-            'categories' => TransactionCategory::all(),
+            'categories' => Category::all(),
         ]);
     }
 
