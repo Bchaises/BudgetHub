@@ -18,7 +18,8 @@ export default {
             colors: {
                 primary: {
                     DEFAULT: '#F7E2D8',
-                    dark: '#EEC5B2'
+                    dark: '#EEC5B2',
+                    light: '#f1eae7'
                 },
                 police: {
                     DEFAULT: '#383330',
