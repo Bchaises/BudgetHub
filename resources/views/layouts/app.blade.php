@@ -16,21 +16,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-default antialiased">
-        <div class="h-screen w-screen flex bg-gray-100 text-police">
+        <div class="h-screen flex bg-gray-100 text-police">
             <!-- Navigation Bar -->
             @include('layouts.navigation')
 
-            <!-- Page Content -->
-            <main class="xl:mx-72 lg:mx-32 h-screen w-screen">
-
+            <div class="flex flex-col flex-1">
                 <!-- Header -->
-                <header class="w-full my-8 flex justify-between items-end">
+                <header class="my-8 mx-11 flex justify-between items-end">
                     <h1 class="text-2xl">{{ $title }}</h1>
                     <p>{{ date('l M j Y') }}</p>
                 </header>
 
-                {{ $slot }}
-            </main>
+                <!-- Page Content -->
+                <main class="xl:mx-72 lg:mx-32 flex flex-col flex-grow">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>
