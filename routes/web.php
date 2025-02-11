@@ -35,8 +35,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes for Accounts
     Route::prefix('account')->controller(AccountController::class)->group(function () {
-        Route::get('/', 'index')->name('account.index');
-        Route::get('/{id}', 'show')->name('account.show');
+        Route::get('/create', 'index')->name('account.index');
+        Route::get('/{id?}', 'show')->name('account.show');
         Route::post('/', 'store')->name('account.store');
         Route::patch('/{id}/edit', 'update')->name('account.update');
         Route::delete('/{id}', 'destroy')->name('account.destroy');

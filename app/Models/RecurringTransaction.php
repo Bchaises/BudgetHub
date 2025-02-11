@@ -29,7 +29,7 @@ class RecurringTransaction extends Model
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'account_id' => 'required|exists:accounts,id',
-            'category_id' => 'nullable|exists:transaction_categories,id',
+            'category_id' => 'nullable|exists:categories,id',
         ];
     }
 
@@ -40,7 +40,7 @@ class RecurringTransaction extends Model
 
     public function category()
     {
-        return $this->belongsTo(TransactionCategory::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function shouldGenerate(): bool

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use App\Models\RecurringTransaction;
+use App\Models\Category;
 use App\Models\Transaction;
-use App\Models\TransactionCategory;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class TransactionController extends Controller
         return view('transaction.index', [
             'transactions' => $user->transactions,
             'accounts' => $user->accounts,
-            'categories' => TransactionCategory::all(),
+            'categories' => Category::all(),
         ]);
     }
 
@@ -31,49 +30,33 @@ class TransactionController extends Controller
         return view('transaction.show', [
             'transaction' => $user->transactions->where('id', $id)->firstOrFail(),
             'accounts' => $user->accounts,
-            'categories' => TransactionCategory::all(),
+            'categories' => Category::all(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        if ($request['is_recurring'] === null) {
+        $validate = $request->validate(array_merge(Transaction::rules(), [
+            'target_account_id' => 'nullable|exists:accounts,id|different:account_id',
+        ]));
 
-            $validate = $request->validate(array_merge(Transaction::rules(), [
-                'target_account_id' => 'nullable|exists:accounts,id|different:account_id',
-            ]));
+        $account = Account::findOrFail($validate['account_id']);
+        $targetAccount = $validate['target_account_id'] !== null ? Account::findOrFail($validate['target_account_id']) : null;
 
-            $account = Account::findOrFail($validate['account_id']);
-            $targetAccount = $validate['target_account_id'] !== null ? Account::findOrFail($validate['target_account_id']) : null;
+        DB::transaction(function () use ($validate, $account, $targetAccount) {
+            $this->createTransaction($validate, $account);
 
-            DB::transaction(function () use ($validate, $account, $targetAccount) {
-                $this->createTransaction($validate, $account);
-
-                if ($targetAccount) {
-                    $this->createTransaction([
-                        'label' => $validate['label'],
-                        'amount' => $validate['amount'],
-                        'status' => $validate['status'] === 'debit' ? 'credit' : 'debit',
-                        'date' => $validate['date'],
-                        'account_id' => $validate['target_account_id'],
-                        'category_id' => $validate['category_id'],
-                    ], $targetAccount);
-                }
-            });
-        } else {
-            $validate = $request->validate(RecurringTransaction::rules());
-
-            RecurringTransaction::create([
-                'label' => $validate['label'],
-                'amount' => $validate['amount'],
-                'status' => $validate['status'],
-                'frequency' => $validate['frequency'],
-                'start_date' => $validate['start_date'],
-                'end_date' => $validate['end_date'],
-                'account_id' => $validate['account_id'],
-                'category_id' => $validate['category_id'],
-            ]);
-        }
+            if ($targetAccount) {
+                $this->createTransaction([
+                    'label' => $validate['label'],
+                    'amount' => $validate['amount'],
+                    'status' => $validate['status'] === 'debit' ? 'credit' : 'debit',
+                    'date' => $validate['date'],
+                    'account_id' => $validate['target_account_id'],
+                    'category_id' => $validate['category_id'],
+                ], $targetAccount);
+            }
+        });
 
         return redirect()->back()->with('success', 'Transaction created!');
     }

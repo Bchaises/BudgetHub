@@ -30,7 +30,7 @@ class Account extends Model
         ];
 
         if (!$isUpdate) {
-            $rules['balance'] = 'required|decimal:2';
+            $rules['balance'] = 'required|decimal:0,2';
         }
 
         return $rules;

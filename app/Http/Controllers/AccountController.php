@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,12 +19,39 @@ class AccountController extends Controller
         ]);
     }
 
-    public function show(string $id): View
+    public function show(?string $id = null): View
     {
-        $account = User::findOrFail(Auth::id())->accounts->where('id', $id)->first();
+        $user = Auth::user();
+        $accounts = $user->accounts;
+
+        $categories = [];
+        foreach (Category::all() as $category) {
+            $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
+        }
+
+        $currentAccount = $id !== null ? $user->accounts()->where('id', $id)->first() : $user->accounts()->first();
+
+        $transactionsQuery = $currentAccount->transactions()
+            ->whereMonth('date', now()->month)
+            ->whereYear('date', now()->year);
+
+        $transactions = $transactionsQuery->get();
+
+        $totals = $transactionsQuery
+            ->selectRaw('status, SUM(amount) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $totalIncome = $totals['credit'] ?? 0;
+        $totalOutcome = $totals['debit'] ?? 0;
+
         return view('account.show', [
-            'account' => $account,
-            'transactions' => $account->transactions->sortByDesc('date'),
+            'currentAccount' => $currentAccount,
+            'accounts' => $accounts,
+            'transactions' => $transactions,
+            'categories' => $categories,
+            'totalIncome' => $totalIncome,
+            'totalOutcome' => $totalOutcome,
         ]);
     }
 

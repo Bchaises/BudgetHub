@@ -1,81 +1,76 @@
 <x-app-layout>
 
-    <x-slot:title>{{ "Here, your account \"$account->title\"" }}</x-slot:title>
+    <x-slot:title>{{ "Here is your account \"$currentAccount->title\"" }}</x-slot:title>
 
-    <div>
-        <a href="{{ route('dashboard') }}">Dashboard</a><a href="{{ route('account.index') }}"> / Accounts</a>
-    </div>
-
-    <div class="flex flex-col items-center">
-        <div class="w-2/3">
-            <div class="m-8">
-                <form method="POST" action="{{ route('account.update', ['id' => $account->id]) }}" class="flex flex-col ">
-                    @csrf <!-- {{ csrf_field() }} -->
-                    @method('PATCH')
-                    <div class="mt-2">
-                        <label for="title" class="block text-sm/6 font-medium text-gray-900">Entrez le titre du compte : </label>
-                        <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <input type="text" name="title" id="title" value="{{ $account->title }}" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6" required>
+    <!-- Accounts navigation -->
+    <section>
+        <div class="inline-flex justify-start flex-grow-0 items-center rounded-lg bg-gray-200 -space-x-3">
+            @foreach($accounts as $account)
+                <a href="{{ route('account.show', ['id' => $account->id]) }}" style="position: relative; z-index: {{ $loop->remaining * 10 }};" >
+                    <div class="border border-primary rounded-lg w-60 pl-5 pr-4 py-1 {{ $account->id === $currentAccount->id ? 'bg-primary' : 'bg-gray-200' }}">
+                        <div class="flex justify-between items-center">
+                            {{ $account->title }}
+                            <i class="fa-solid fa-user"></i>
                         </div>
                     </div>
-
-                    <div class="mt-2">
-                        <label for="description" class="block text-sm/6 font-medium text-gray-900">Entrez la description de ce compte : </label>
-                        <div class="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                            <input type="text" name="description" id="description" value="{{ $account->description }}" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                        </div>
-                    </div>
-
-                    <div class="mt-2">
-                        <label for="balance" class="block text-sm/6 font-medium text-gray-900">Entrez la balance de votre compte : </label>
-                        <div class="mt-2">
-                            <div class="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
-                                <div class="shrink-0 select-none text-base text-gray-500 sm:text-sm/6">€</div>
-                                <input disabled type="text" name="balance" id="balance" value="{{ $account->balance }}" class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                <div class="grid shrink-0 grid-cols-1 focus-within:relative">
-                                    <div class="col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pl-3 pr-2.5 text-base text-gray-500 placeholder:text-gray-400">
-                                        EUR
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white p-2 px-4 rounded-lg">Sauvegarder</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="overflow-x-auto rounded-lg shadow-lg m-8 w-full">
-                <table class="table-auto border-collapse w-full text-left text-sm bg-white">
-                    <thead>
-                    <tr class="bg-gray-100 text-gray-800 border-b">
-                        <th class="p-4 font-medium">ID</th>
-                        <th class="p-4 font-medium">Label</th>
-                        <th class="p-4 font-medium">Amount</th>
-                        <th class="p-4 font-medium">Status</th>
-                        <th class="p-4 font-medium">Account</th>
-                        <th class="p-4 font-medium">Category</th>
-                        <th class="p-4 font-medium">Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($transactions as $transaction)
-                        <tr class="hover:bg-gray-50 border-b">
-                            <td class="p-4 text-gray-700">{{ $transaction->id }}</td>
-                            <td class="p-4 text-gray-700">{{ $transaction->label }}</td>
-                            <td class="p-4 text-gray-700">{{ $transaction->amount }}</td>
-                            <td class="p-4 text-gray-700"><div class="{{ $transaction->status == 'debit' ? "text-red-500" : "text-green-500" }}">{{ $transaction->status }}</div></td>
-                            <td class="p-4 text-gray-700">{{ $transaction->account->title }}</td>
-                            <td class="p-4 text-gray-700">{{ $transaction->category->title ?? 'None' }}</td>
-                            <td class="p-4 text-gray-700">{{ date('d/m/Y', strtotime($transaction->date)) }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
+                </a>
+            @endforeach
         </div>
-    </div>
+    </section>
+
+    <!-- Transaction form -->
+    <section class="mt-8">
+        <div class="border-2 border-primary rounded-lg p-4 flex">
+            <form action="{{ route('transaction.store') }}" method="POST" class="flex flex-grow items-center">
+                @csrf
+
+                <x-select-input
+                    name="status"
+                    :options="['debit' => [ 'icon' => 'fa-solid fa-arrow-up-from-bracket', 'label' => 'Expense'], 'credit' => [ 'icon' => 'fa-solid fa-arrow-right-to-bracket fa-rotate-90', 'label' => 'Income']]"
+                    selected="debit"
+                    iconSelected="fa-solid fa-arrow-up-from-bracket"
+                    labelSelected="Expense"
+                    buttonClass="focus:ring-2 !focus:ring-0 focus:ring-primary focus:ring-offset-2"
+                />
+
+                <div class="ml-4 inline-flex flex-grow">
+                    <input type="date" value="{{ date('Y-m-d') }}" name="date" id="date" class="pl-4 p-2 text-sm min-w-56 bg-primary-light outline-none rounded-l-lg" required>
+
+                    <div class="border border-primary mx-1"></div>
+
+                    <input type="text" value="" name="label" id="label" placeholder="Label" class="p-2 text-sm bg-primary-light outline-none flex-grow" required>
+
+                    <div class="border border-primary mx-1"></div>
+
+                    <x-select-input
+                        name="category_id"
+                        :options="$categories"
+                        labelSelected="Category"
+                        containerClass="w-56"
+                        buttonClass="rounded-none"
+                    />
+
+                    <div class="border border-primary mx-1"></div>
+
+                    <input type="text" value="" placeholder="0.00" name="amount" id="amount" class="p-2 text-sm outline-none bg-primary-light text-end" required>
+                    <div class="pr-4 p-2 bg-primary-light rounded-r-lg">
+                        <i class="fa-solid fa-euro-sign text-primary-dark"></i>
+                    </div>
+                </div>
+
+                <input name="account_id" id="account_id" value="{{ $currentAccount->id }}" hidden>
+                <input name="target_account_id" id="target_account_id" value="" hidden>
+
+                <button type="submit" class="ml-4 min-w-40 inline-flex items-center justify-center px-2 py-2 bg-primary border border-transparent rounded-lg text-base tracking-widest hover:bg-primary-dark focus:bg-primary active:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition ease-in-out duration-150">
+                    Add
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Transactions list -->
+    <section class="mt-8 flex flex-col flex-grow">
+        @livewire('transactions-list', ['accountId' => $currentAccount->id, 'totalIncome' => $totalIncome, 'totalOutcome' => $totalOutcome])
+    </section>
 </x-app-layout>
 
