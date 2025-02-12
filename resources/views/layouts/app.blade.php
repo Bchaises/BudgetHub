@@ -16,7 +16,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-default antialiased">
-        <div class="h-screen flex bg-gray-100 text-police">
+        <div class="flex min-h-screen bg-gray-100 text-police">
             <!-- Navigation Bar -->
             @include('layouts.navigation')
 
@@ -28,7 +28,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="xl:mx-72 lg:mx-32 flex flex-col flex-grow">
+                <main class="2xl:mx-72 xl:mx-72 lg:mx-16 flex flex-col flex-grow">
                     {{ $slot }}
                 </main>
             </div>
