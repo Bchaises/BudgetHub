@@ -28,7 +28,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="2xl:mx-72 xl:mx-72 lg:mx-16 flex flex-col flex-grow">
+                <main class="2xl:mx-72 xl:mx-40 mx-16 flex flex-col flex-grow">
                     {{ $slot }}
                 </main>
             </div>

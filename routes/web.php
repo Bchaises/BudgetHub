@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}', 'show')->name('transaction.show')->where('id', '[0-9]+');
         Route::post('/', 'store')->name('transaction.store');
         Route::patch('/{id}/edit', 'update')->name('transaction.update');
-        Route::delete('{id}', 'destroy')->name('transaction.destroy');
+        Route::delete('/{id}', 'destroy')->name('transaction.destroy');
     });
 
     // Routes for Categories
@@ -42,10 +43,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('account.destroy');
     });
 
+    // Routes for recurring transactions
+    Route::get('/account/{id}/recurring', [RecurringTransactionController::class, 'show'])->name('recurring.show');
+
     // Route for Profile
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'edit')->name('profile.edit');
-        Route::patch('/', 'update')->name('profile.update');
+        Route::patch('/information', 'updateInformation')->name('profile.update.information');
+        Route::patch('/email', 'updateEmail')->name('profile.update.email');
         Route::delete('/', 'destroy')->name('profile.destroy');
     });
 
@@ -55,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{invitation}', 'destroy')->name('invitation.destroy');
         Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');
     });
+
+
 });
 
 require __DIR__.'/auth.php';
