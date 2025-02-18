@@ -21,6 +21,10 @@ export default {
                     dark: '#EEC5B2',
                     light: '#f1eae7'
                 },
+                danger: {
+                    DEFAULT: '#FF7A63',
+                    dark: '#c55f4d'
+                },
                 police: {
                     DEFAULT: '#383330',
                     light: '#84807d'

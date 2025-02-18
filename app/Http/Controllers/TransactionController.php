@@ -86,17 +86,24 @@ class TransactionController extends Controller
     {
         $validated = $request->validate(Transaction::rules());
 
-        $transaction = Transaction::findOrFail($id);
+        $user = Auth::user();
+        $transaction = $user->transactions()->where('id', $id)->first();
+        $account = $transaction->account()->where('id', $validated['account_id'])->first();
 
-        $transaction->fill($validated)->save();
+        DB::transaction(function () use ($transaction, $account, $validated) {
+            $balanceChange = $transaction->amount - $validated['amount'];
+            $account->increment('balance', $balanceChange);
+            $transaction->fill($validated)->save();
+        });
 
         return redirect()->back()->with('success', 'Transaction updated!');
     }
 
     public function destroy(string $id): RedirectResponse
     {
-        $transaction = Transaction::findOrFail($id);
-        $account = Account::findOrFail($transaction->account_id);
+        $user = Auth::user();
+        $transaction = $user->transactions()->where('id', $id)->get()->first();
+        $account = $transaction->account()->get()->first();
 
         DB::transaction(function () use ($transaction, $account) {
 

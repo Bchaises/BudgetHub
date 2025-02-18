@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Account;
+use App\Models\Category;
 use App\Models\Transaction;
 use Livewire\Component;
 
@@ -57,6 +58,11 @@ class TransactionsList extends Component
         $totalIncome = $totals['credit'] ?? 0;
         $totalOutcome = $totals['debit'] ?? 0;
 
-        return view('livewire.transactions-list', compact('transactions'), ['account' => Account::find($this->accountId), 'totalIncome' => $totalIncome, 'totalOutcome' => $totalOutcome]);
+        $categories = [];
+        foreach (Category::all() as $category) {
+            $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
+        }
+
+        return view('livewire.transactions-list', compact('transactions'), ['account' => Account::find($this->accountId), 'totalIncome' => $totalIncome, 'totalOutcome' => $totalOutcome, 'categories' => $categories]);
     }
 }

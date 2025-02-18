@@ -24,14 +24,16 @@
                         <div class="px-4 py-2">
                             <p class="text-xl font-bold"><span>€ </span>{{ $account->balance }}</p>
                             <p>{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
-                            <div class="flex text-xs space-x-2 items-center {{ $accountsStat[$account->id] < 0 ? 'text-red-500' : 'text-green-500' }}">
-                                @if( $accountsStat[$account->id] < 0)
-                                    <i class="fa-solid fa-lg fa-arrow-trend-down"></i> <p>{{ $accountsStat[$account->id]." €" }}</p>
-                                @elseif( $accountsStat[$account->id] > 0)
-                                    <i class="fa-solid fa-lg fa-arrow-trend-up"></i> <p>{{ "+".$accountsStat[$account->id]." €" }}</p>
-                                @endif
-                                <p>from last month</p>
-                            </div>
+                            @if($accountsStat[$account->id] !== 0)
+                                <div class="flex text-xs space-x-2 items-center {{ $accountsStat[$account->id] < 0 ? 'text-red-500' : 'text-green-500' }}">
+                                    @if( $accountsStat[$account->id] < 0)
+                                        <i class="fa-solid fa-lg fa-arrow-trend-down"></i> <p>{{ $accountsStat[$account->id]." €" }}</p>
+                                    @elseif( $accountsStat[$account->id] > 0)
+                                        <i class="fa-solid fa-lg fa-arrow-trend-up"></i> <p>{{ "+".$accountsStat[$account->id]." €" }}</p>
+                                    @endif
+                                    <p>from last month</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </a>
