@@ -48,7 +48,10 @@ class TransactionsList extends Component
             ->whereMonth('date', $this->currentMonth)
             ->whereYear('date', $this->currentYear);
 
-        $transactions = $transactionsQuery->get();
+        $transactions = $transactionsQuery
+            ->groupBy('id', 'date')
+            ->orderBy('date', 'desc')
+            ->get();
 
         $totals = $transactionsQuery
             ->selectRaw('status, SUM(amount) as total')

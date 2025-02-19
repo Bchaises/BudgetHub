@@ -24,7 +24,7 @@ class AccountController extends Controller
         $user = Auth::user();
         $accounts = $user->accounts;
 
-        $categories = [];
+        $categories[''] = ['icon' => 'fa-solid fa-xmark', 'label' => 'None'];
         foreach (Category::all() as $category) {
             $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
         }
@@ -34,8 +34,6 @@ class AccountController extends Controller
         $transactionsQuery = $currentAccount->transactions()
             ->whereMonth('date', now()->month)
             ->whereYear('date', now()->year);
-
-        $transactions = $transactionsQuery->get();
 
         $totals = $transactionsQuery
             ->selectRaw('status, SUM(amount) as total')
@@ -48,7 +46,6 @@ class AccountController extends Controller
         return view('account.show', [
             'currentAccount' => $currentAccount,
             'accounts' => $accounts,
-            'transactions' => $transactions,
             'categories' => $categories,
             'totalIncome' => $totalIncome,
             'totalOutcome' => $totalOutcome,

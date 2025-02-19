@@ -32,10 +32,6 @@
 
         <div x-show="open" @click.away="open = false" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
             <ul class="py-1">
-                <li @click="selected = ''; open = false; iconSelected = 'fa-solid fa-xmark'; labelSelected = 'None'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
-                    <span class="mr-2"><i class="fa-solid fa-xmark"></i></span>
-                    <span>None</span>
-                </li>
                 @foreach ($options as $value => $data)
                     <li @click="selected = '{{ $value }}'; open = false; iconSelected = '{{ $data['icon'] }}'; labelSelected = '{{ $data['label'] }}'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
                         <span class="mr-2"><i class="{{ $data['icon'] }}"></i></span>
