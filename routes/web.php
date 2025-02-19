@@ -45,6 +45,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes for recurring transactions
     Route::get('/account/{id}/recurring', [RecurringTransactionController::class, 'show'])->name('recurring.show');
+    Route::post('/', [RecurringTransactionController::class, 'store'])->name('recurring.store');
+    Route::patch('/{id}/edit', [RecurringTransactionController::class, 'update'])->name('recurring.update');
+    Route::delete('/{id}', [RecurringTransactionController::class, 'destroy'])->name('recurring.destroy');
 
     // Route for Profile
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
