@@ -32,9 +32,9 @@ jobs:
 
             echo "🧹 Running Laravel optimizations..."
             php artisan migrate:fresh --seed
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
+            php artisan config:cache --no-interaction
+            php artisan route:cache --no-interaction
+            php artisan view:cache --no-interaction
 
             echo "✅ Deployment done!"
 
