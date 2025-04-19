@@ -28,13 +28,14 @@ jobs:
             npm install
 
             echo "⚙️ Building frontend..."
+            npm ci
             npm run build
 
             echo "🧹 Running Laravel optimizations..."
-            php artisan migrate:fresh --seed
-            php artisan config:cache --no-interaction
-            php artisan route:cache --no-interaction
-            php artisan view:cache --no-interaction
+            php artisan migrate:fresh --seed --force
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan route:cache
 
             echo "✅ Deployment done!"
 
