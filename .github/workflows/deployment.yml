@@ -31,7 +31,7 @@ jobs:
             npm run build
 
             echo "🧹 Running Laravel optimizations..."
-            make fresh
+            php artisan migrate:fresh --seed
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
