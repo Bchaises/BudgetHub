@@ -55,14 +55,14 @@
         <div class="flex flex-wrap">
             @foreach($accounts as $account)
                 <a href="{{ route('account.show', ['id' => $account->id]) }}">
-                    <div class="rounded-lg shadow-lg mr-10 basis-auto h-full min-w-72 max-w-96 cursor-pointer hover:shadow-2xl transition duration-300">
-                        <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
-                            <h1 class="text-xl">{{ ucfirst($account->title) }}</h1>
-                            <i class="fa-solid fa-euro-sign fa-xl"></i>
+                    <div class="rounded-lg shadow-lg mr-6 basis-auto h-full w-72 cursor-pointer hover:shadow-xl transition duration-300">
+                        <div class="flex justify-between items-center border-b px-2 py-1 rounded-t-lg bg-primary">
+                            <h1 class="">{{ ucfirst($account->title) }}</h1>
+                            <i class="fa-solid fa-euro-sign"></i>
                         </div>
                         <div class="px-4 py-2 flex flex-col justify-center">
-                            <p class="text-xl font-bold"><span>€ </span>{{ $account->balance }}</p>
-                            <p>{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
+                            <p class="text-2xl font-bold"><span>€ </span>{{ $account->balance }}</p>
+                            <p class="text-sm">{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
                             @if($accountsStat[$account->id] !== 0)
                                 <div class="flex text-xs space-x-2 items-center {{ $accountsStat[$account->id] < 0 ? 'text-red-500' : 'text-green-500' }}">
                                     @if( $accountsStat[$account->id] < 0)
