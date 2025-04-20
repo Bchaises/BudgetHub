@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :notifications="$notifications">
 
     <x-slot:title>{{ $currentAccount ? "Here is your account \"$currentAccount->title\"" : "No accounts to show" }}</x-slot:title>
 

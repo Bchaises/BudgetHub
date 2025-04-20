@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Invitation;
 use App\Models\RecurringTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class RecurringTransactionController
         $user = Auth::user();
         $account = $user->accounts()->where('id', $accountId)->get()->first();
         $categories[''] = ['icon' => 'fa-solid fa-xmark', 'label' => 'None'];
+        $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
         foreach (Category::all() as $category) {
             $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
         }
@@ -24,7 +26,8 @@ class RecurringTransactionController
         return view('recurring-transaction.show', [
             'account' => $account,
             'categories' => $categories,
-            'recurringTransactions' => $recurringTransactions
+            'recurringTransactions' => $recurringTransactions,
+            'notifications' => $notifications,
         ]);
     }
 
