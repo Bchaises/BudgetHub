@@ -10,7 +10,7 @@
                style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #4CAF50; text-decoration: none; border-radius: 5px; font-size: 16px; margin: 5px;">
                 Accepter
             </a>
-            <a href="{{ route('invitation.respond', ['token' => $invitation->token]).'?status=declined' }}"
+            <a href="{{ route('invitation.respond', ['token' => $invitation->token]).'?status=rejected' }}"
                style="display: inline-block; padding: 10px 20px; color: #fff; background-color: #F44336; text-decoration: none; border-radius: 5px; font-size: 16px; margin: 5px;">
                 Refuser
             </a>

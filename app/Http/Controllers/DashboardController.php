@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +17,15 @@ class DashboardController extends Controller
         $accounts = $user->accounts;
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
         $ExpensesByCategories = $this->getExpensesByCategories();
+        $invitations = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE' , 'pending')->get();
 
         return view('dashboard', [
             'accounts' => $accounts,
             'user' => $user,
             'accountsStat' => $accountsStat,
             'expensesByCategories' => $ExpensesByCategories,
+            'invitations' => $invitations,
+            'invitationCount' => $invitations->count(),
         ]);
     }
 

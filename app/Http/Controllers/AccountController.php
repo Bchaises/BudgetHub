@@ -19,6 +19,16 @@ class AccountController extends Controller
         ]);
     }
 
+    public function edit(string $id): View
+    {
+        $account = User::find(Auth::id())->accounts->find($id);
+
+        return view('account.edit', [
+            'account' => $account,
+            'invitations' => $account->invitations,
+        ]);
+    }
+
     public function show(?string $id = null): View
     {
         $user = Auth::user();
@@ -31,17 +41,22 @@ class AccountController extends Controller
 
         $currentAccount = $id !== null ? $user->accounts()->where('id', $id)->first() : $user->accounts()->first();
 
-        $transactionsQuery = $currentAccount->transactions()
-            ->whereMonth('date', now()->month)
-            ->whereYear('date', now()->year);
+        $totalIncome = 0;
+        $totalOutcome = 0;
 
-        $totals = $transactionsQuery
-            ->selectRaw('status, SUM(amount) as total')
-            ->groupBy('status')
-            ->pluck('total', 'status');
+        if ($currentAccount) {
+            $transactionsQuery = $currentAccount->transactions()
+                ->whereMonth('date', now()->month)
+                ->whereYear('date', now()->year);
 
-        $totalIncome = $totals['credit'] ?? 0;
-        $totalOutcome = $totals['debit'] ?? 0;
+            $totals = $transactionsQuery
+                ->selectRaw('status, SUM(amount) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status');
+
+            $totalIncome = $totals['credit'] ?? 0;
+            $totalOutcome = $totals['debit'] ?? 0;
+        }
 
         return view('account.show', [
             'currentAccount' => $currentAccount,
@@ -54,7 +69,7 @@ class AccountController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validate = $request->validate(Account::rules());
+        $validate = $request->validateWithBag('accountCreation', Account::rules());
 
         $account = Account::create($validate);
         $account->users()->attach(Auth::id(), ['role' => 'owner', 'created_at' => now(), 'updated_at' => now()]);
@@ -70,12 +85,20 @@ class AccountController extends Controller
 
         $account->fill($validate)->save();
 
-        return redirect()->back()->with('success', 'Bank account updated successfully!');
+        return redirect()->back()->with('status', 'account-updated');
     }
 
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Request $request, string $id): RedirectResponse
     {
+        $account = User::find(Auth::id())->accounts->find($id);
+        if ($request->get('confirm_message') !== $account->title) {
+            return redirect()->back()
+                ->withErrors(
+                    ['confirm_message' => 'Wrong confirm message.']
+                )
+                ->withInput();
+        }
         Account::destroy($id);
-        return redirect()->back()->with('status', 'Account deleted.');
+        return redirect()->route('dashboard')->with('status', 'Account deleted.');
     }
 }

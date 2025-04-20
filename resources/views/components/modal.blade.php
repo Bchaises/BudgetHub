@@ -76,7 +76,7 @@
     >
         <header>
             <div class="p-4 bg-primary flex items-center justify-between overflow-hidden">
-                <h1 class="text-xl text-police flex-1 text-center">{{ __('Are you sure you want to delete your account?') }}</h1>
+                <h1 class="text-xl text-police flex-1 text-center">{{ $title }}</h1>
             </div>
         </header>
         {{ $slot }}

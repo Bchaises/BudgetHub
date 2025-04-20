@@ -36,10 +36,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Routes for Accounts
     Route::prefix('account')->controller(AccountController::class)->group(function () {
-        Route::get('/create', 'index')->name('account.index');
         Route::get('/{id?}', 'show')->name('account.show');
         Route::post('/', 'store')->name('account.store');
-        Route::patch('/{id}/edit', 'update')->name('account.update');
+        Route::get('/{id}/edit', 'edit')->name('account.edit');
+        Route::patch('/{id}/update', 'update')->name('account.update');
         Route::delete('/{id}', 'destroy')->name('account.destroy');
     });
 
@@ -57,11 +57,13 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', 'destroy')->name('profile.destroy');
     });
 
+    // Route for invitation
     Route::prefix('invitation')->controller(InvitationController::class)->group(function () {
         Route::get('/', 'index')->name('invitation.index');
         Route::post('/', 'store')->name('invitation.store');
         Route::delete('/{invitation}', 'destroy')->name('invitation.destroy');
         Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');
+        Route::get('/respondWithoutToken/{id}', 'respondWithoutToken')->name('invitation.respondWithoutToken');
     });
 
 
