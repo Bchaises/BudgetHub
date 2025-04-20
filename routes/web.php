@@ -59,7 +59,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Route for invitation
     Route::prefix('invitation')->controller(InvitationController::class)->group(function () {
-        Route::get('/', 'index')->name('invitation.index');
         Route::post('/', 'store')->name('invitation.store');
         Route::delete('/{invitation}', 'destroy')->name('invitation.destroy');
         Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');

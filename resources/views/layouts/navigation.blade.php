@@ -9,7 +9,6 @@
         <x-sidebar-link route="dashboard" icon="fa-solid fa-chart-pie" label="Dashboard" activeRoute="dashboard" />
         <x-sidebar-link route="account.show" icon="fa-solid fa-wallet" label="Accounts" activeRoute="account" />
         <x-sidebar-link route="profile.edit" icon="fa-solid fa-user" label="Profile" activeRoute="profile" />
-        <x-sidebar-link route="invitation.index" icon="fa-solid fa-envelope-open-text" label="Invitations" activeRoute="invitation" />
         <x-sidebar-link route="dashboard" icon="fa-solid fa-gear" label="Settings" activeRoute="setting" />
     </ul>
 </aside>
