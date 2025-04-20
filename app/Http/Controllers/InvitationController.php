@@ -72,7 +72,7 @@ class InvitationController
 
         $this->sendInvitationEmail($invitation, $receiver->email);
 
-        return redirect()->route('invitation.index')->with(['status' => 'invitation-sent']);
+        return redirect()->back()->with(['status' => 'invitation-sent']);
     }
 
     public function sendInvitationEmail(Invitation $invitation, string $email)
@@ -93,8 +93,9 @@ class InvitationController
         }
 
         $invitation->delete();
+        $invitation->account->users()->detach($invitation->receiver_id);
 
-        return redirect()->route('invitation.index')->with(['status' => 'invitation-deleted']);
+        return redirect()->back()->with(['status' => 'invitation-deleted']);
     }
 
     public function respond(Request $request, $token): RedirectResponse
@@ -107,7 +108,7 @@ class InvitationController
 
         $status = $request->query('status');
 
-        if (!in_array($status, ['accepted', 'declined'])) {
+        if (!in_array($status, ['accepted', 'rejected'])) {
             return redirect()->route('home')->withErrors(['error' => 'Invalid response.']);
         }
 
@@ -118,6 +119,33 @@ class InvitationController
         }
 
         return redirect()->route('dashboard')->with(['status' => 'Invitation ' . $status . '.']);
+    }
+
+    public function respondWithoutToken(Request $request, String $id): RedirectResponse
+    {
+        $invitation = Invitation::find($id);
+
+        if (!$invitation || $invitation->expired_at < now()) {
+            return redirect()->back()->withErrors(['error' => 'This invitation is invalid or has expired.']);
+        }
+
+        if (Auth::id() !== $invitation->receiver_id) {
+            return redirect()->back()->withErrors(['error' => 'Invalid request.']);
+        }
+
+        $status = $request->query('status');
+
+        if (!in_array($status, ['accepted', 'rejected'])) {
+            return redirect()->back()->withErrors(['error' => 'Invalid response.']);
+        }
+
+        $invitation->update(['status' => $status]);
+
+        if ($status === 'accepted') {
+            $invitation->account->users()->attach($invitation->receiver_id, ['role' => $invitation->role]);
+        }
+
+        return redirect()->back()->with(['status' => 'Invitation ' . $status . '.']);
     }
 
 }

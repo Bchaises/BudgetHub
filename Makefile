@@ -28,19 +28,18 @@ down:
 .PHONY: migrate
 migrate:
 	@echo "📦 Application des migrations..."
-	php artisan migrate
+	php artisan migrate --seed
 
-# Roll-Back et migrate la base de données
-.PHONY: refresh
-refresh:
+# Reset et migrate la base de données
+.PHONY: fresh
+fresh:
 	@echo "♻️ roll-back et application des migrations..."
-	php artisan migrate:refresh
+	php artisan migrate:fresh --seed
 
-# Appliquer les migrations avec un reset
-.PHONY: migrate-reset
-migrate-reset:
-	@echo "♻️ Réinitialisation et application des migrations..."
-	php artisan migrate:reset && php artisan migrate
+# Appliquer les seeders de la base de données
+.PHONY: seed
+seed:
+	php artisan db:seed
 
 # Installer les dépendances Composer
 .PHONY: install

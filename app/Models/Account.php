@@ -30,7 +30,7 @@ class Account extends Model
         ];
 
         if (!$isUpdate) {
-            $rules['balance'] = 'required|decimal:0,2';
+            $rules['balance'] = 'required|min:0|decimal:0,2';
         }
 
         return $rules;
@@ -44,6 +44,11 @@ class Account extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class);
     }
 
     public function recurringTransactions(): HasMany
