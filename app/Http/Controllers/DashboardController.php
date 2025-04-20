@@ -17,15 +17,14 @@ class DashboardController extends Controller
         $accounts = $user->accounts;
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
         $ExpensesByCategories = $this->getExpensesByCategories();
-        $invitations = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
+        $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
 
         return view('dashboard', [
             'accounts' => $accounts,
             'user' => $user,
             'accountsStat' => $accountsStat,
             'expensesByCategories' => $ExpensesByCategories,
-            'invitations' => $invitations,
-            'invitationCount' => $invitations->count(),
+            'notifications' => $notifications,
         ]);
     }
 

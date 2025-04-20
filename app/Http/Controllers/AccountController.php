@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Category;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,10 +23,12 @@ class AccountController extends Controller
     public function edit(string $id): View
     {
         $account = User::find(Auth::id())->accounts->find($id);
+        $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
 
         return view('account.edit', [
             'account' => $account,
             'invitations' => $account->invitations,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -33,6 +36,7 @@ class AccountController extends Controller
     {
         $user = Auth::user();
         $accounts = $user->accounts;
+        $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
 
         $categories[''] = ['icon' => 'fa-solid fa-xmark', 'label' => 'None'];
         foreach (Category::all() as $category) {
@@ -64,6 +68,7 @@ class AccountController extends Controller
             'categories' => $categories,
             'totalIncome' => $totalIncome,
             'totalOutcome' => $totalOutcome,
+            'notifications' => $notifications,
         ]);
     }
 

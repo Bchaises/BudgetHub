@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :notifications="$notifications">
 
     <x-slot:title>{{ "Here is your recurring transactions of \"$account->title\"" }}</x-slot:title>
 
