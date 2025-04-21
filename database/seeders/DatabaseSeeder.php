@@ -15,86 +15,98 @@ class DatabaseSeeder extends Seeder
     {
         DB::table('categories')->insert([
             [
-                'title' => 'Food',
-                'color' => '#A3D9A5',  // Pastel Green
-                'icon' => 'fa-utensils',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Daily Life',
-                'color' => '#F3A2B4',  // Pastel Pink
-                'icon' => 'fa-house-user',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Children & Schooling',
-                'color' => '#F7D59D',  // Pastel Yellow
-                'icon' => 'fa-child',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Health',
-                'color' => '#B4E1F1',  // Pastel Blue
-                'icon' => 'fa-heartbeat',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Housing / Home',
-                'color' => '#D0B9B3',  // Pastel Beige
-                'icon' => 'fa-home',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Vehicle',
-                'color' => '#A2C2E3',  // Pastel Blue
-                'icon' => 'fa-car',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Digital',
-                'color' => '#B8C9E0',  // Pastel Light Blue
-                'icon' => 'fa-laptop',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Leisure',
-                'color' => '#F5C2D3',  // Pastel Light Pink
-                'icon' => 'fa-gamepad',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'title' => 'Holidays / Weekend',
-                'color' => '#E0C1FF',  // Pastel Lavender
-                'icon' => 'fa-sun',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
+                'id' => 1,
                 'title' => 'Animals',
-                'color' => '#F0E6D6',  // Pastel Beige
+                'color' => '#C4B49D',  // Darker pastel beige
                 'icon' => 'fa-paw',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
+                'id' => 2,
+                'title' => 'Children & Schooling',
+                'color' => '#D4A744',  // Darker pastel yellow/orange
+                'icon' => 'fa-child',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 3,
+                'title' => 'Daily Life',
+                'color' => '#C45E70',  // Darker pastel pink
+                'icon' => 'fa-house-user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 4,
+                'title' => 'Digital',
+                'color' => '#7B8FAA',  // Darker pastel light blue
+                'icon' => 'fa-laptop',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 5,
+                'title' => 'Food',
+                'color' => '#5BAA63',  // Darker pastel green
+                'icon' => 'fa-utensils',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 6,
+                'title' => 'Health',
+                'color' => '#6FB7DA',  // Darker pastel blue
+                'icon' => 'fa-heartbeat',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 7,
+                'title' => 'Holidays / Weekend',
+                'color' => '#A985D4',  // Darker pastel lavender
+                'icon' => 'fa-sun',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 8,
+                'title' => 'Housing / Home',
+                'color' => '#9E847B',  // Darker pastel beige
+                'icon' => 'fa-home',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 9,
+                'title' => 'Leisure',
+                'color' => '#CC7F96',  // Darker pastel pink
+                'icon' => 'fa-gamepad',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 10,
+                'title' => 'Other Expenses',
+                'color' => '#9E8FB3',  // Darker pastel lavender
+                'icon' => 'fa-wallet',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 11,
                 'title' => 'Taxes',
-                'color' => '#D5E1E4',  // Pastel Light Blue
+                'color' => '#A0B8C1',  // Darker pastel light blue
                 'icon' => 'fa-file-invoice',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Other Expenses',
-                'color' => '#D6C8E2',  // Pastel Lavender
-                'icon' => 'fa-wallet',
+                'id' => 12,
+                'title' => 'Vehicle',
+                'color' => '#6D9BC4',  // Darker pastel blue
+                'icon' => 'fa-car',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

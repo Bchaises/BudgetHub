@@ -1,12 +1,13 @@
 <x-app-layout :notifications="$notifications">
 
     <x-slot:title>{{ "Hi, Welcome back ".strtolower($user->name)." 👋!" }}</x-slot:title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <div class="w-full mt-8">
+    <div class="w-full">
         <div class="flex flex-wrap">
             @foreach($accounts as $account)
                 <a href="{{ route('account.show', ['id' => $account->id]) }}">
-                    <div class="rounded-lg shadow-lg mr-6 basis-auto h-full w-72 cursor-pointer hover:shadow-xl transition duration-300">
+                    <div class="rounded-lg shadow-lg mr-6 basis-auto h-full w-72 cursor-pointer hover:shadow-xl transition duration-300 bg-white">
                         <div class="flex justify-between items-center border-b px-2 py-1 rounded-t-lg bg-primary">
                             <h1 class="">{{ ucfirst($account->title) }}</h1>
                             <i class="fa-solid fa-euro-sign"></i>
@@ -98,29 +99,126 @@
             </div>
         </div>
 
-        <div class="flex mt-16">
+        <div class="flex mt-6">
+            <livewire:monthly-transaction-by-category-chart :account-id="$accounts->first()->id" />
 
-            <div class="basis-2/3 mr-12 shadow-lg">
-                <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
-                    <h1 class="text-xl">Monthly expenses</h1>
+            <div class="basis-1/3 shadow-lg rounded-lg overflow-hidden bg-white">
+                <div class="flex justify-between items-center border-b p-3 bg-primary">
+                    <h1 class="text-xl">Expenses by categories this month</h1>
                     <i class="fa-solid fa-euro-sign fa-xl"></i>
                 </div>
+                <div class="p-4 space-y-3 text-sm">
 
-            </div>
+                    @php
+                        $total = $expensesByCategories->sum('amount');
+                        $currentOffset = 0;
+                    @endphp
 
-            <div class="basis-1/3 shadow-lg">
-                <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
-                    <h1 class="text-xl">Monthly expenses by categories</h1>
-                    <i class="fa-solid fa-euro-sign fa-xl"></i>
-                </div>
-                <div class="flex flex-col space-y-2 p-4">
-                    @foreach($expensesByCategories as $key => $expense)
-                        <div class="flex justify-between">
-                            <div>{{ $key }}</div>
-                            <div>{{ $expense }} €</div>
+                    <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
+                        @foreach($expensesByCategories as $cat)
+                            @php
+                                $percent = $total > 0 ? ($cat->amount / $total * 100) : 0;
+                                $left = $currentOffset;
+                                $currentOffset += $percent;
+                            @endphp
+                            <div class="absolute top-0 h-full"
+                                 style="
+                                    width: {{ $percent }}%;
+                                    left: {{ $left }}%;
+                                    background-color: {{ $cat->color }};
+                                    "
+                                 title="{{ $cat->title }} ({{ round($percent) }}%)"
+                            ></div>
+                        @endforeach
+                    </div>
+
+                    @foreach($expensesByCategories as $cat)
+                        @php
+                            $percent = $total > 0 ? round($cat->amount / $total * 100) : 0;
+                        @endphp
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full" style="background-color: {{ $cat->color }}"></span>
+                                <span>{{ $cat->title }}</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-400">{{ number_format($cat->amount, 2) }} €</span>
+                                <span class="font-bold">{{ $percent }}%</span>
+                            </div>
                         </div>
                     @endforeach
                 </div>
+            </div>
+        </div>
+
+        <div class="flex my-6">
+            <div class="basis-1/3 shadow-lg mr-6 rounded-lg overflow-hidden bg-white">
+                <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
+                    <h1 class="text-xl">Monthly Budget</h1>
+                    <i class="fa-solid fa-euro-sign fa-xl"></i>
+                </div>
+                <div class="flex flex-col space-y-2 p-4">
+
+                </div>
+            </div>
+
+            <div class="basis-2/3 shadow-lg rounded-lg overflow-hidden bg-white">
+                <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
+                    <h1 class="text-xl">Monthly expenses</h1>
+                    <i class="fa-solid fa-chart-simple fa-xl"></i>
+                </div>
+
+                <div class="p-2">
+                    <canvas id="myChart2"></canvas>
+                </div>
+
+                <script>
+                    const ctx2 = document.getElementById('myChart2');
+                    const months2 = [
+                        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+                    ];
+                    const credits2 = [1000, 800, 1200, 900, 1100, 950, 1300, 1250, 1400, 1000, 1050, 1150];
+                    const debits2 = [700, 600, 900, 500, 800, 750, 1000, 950, 1100, 800, 850, 950];
+                    new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: months2,
+                            datasets: [
+                                {
+                                    label: 'Crédits',
+                                    data: credits2,
+                                    backgroundColor: 'rgba( 236, 112, 99, 1)',
+                                    borderRadius: 4,
+                                    barPercentage: 0.75
+                                },
+                                {
+                                    label: 'Débits',
+                                    data: debits2,
+                                    backgroundColor: 'rgba( 93, 173, 226 , 1)',
+                                    borderRadius: 4,
+                                    barPercentage: 0.75
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        display: false
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                </script>
             </div>
         </div>
     </div>

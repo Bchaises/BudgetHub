@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Invitation;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -16,38 +16,36 @@ class DashboardController extends Controller
         $user = User::findOrFail(Auth::id());
         $accounts = $user->accounts;
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
-        $ExpensesByCategories = $this->getExpensesByCategories();
+        $expensesByCategories = $this->getExpensesByCategories($accounts->first()->id);
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
 
         return view('dashboard', [
             'accounts' => $accounts,
             'user' => $user,
             'accountsStat' => $accountsStat,
-            'expensesByCategories' => $ExpensesByCategories,
+            'expensesByCategories' => $expensesByCategories,
             'notifications' => $notifications,
         ]);
     }
 
-    public function getExpensesByCategories(): array
+    public function getExpensesByCategories(String $accountId): Collection
     {
-        $categories = Category::all();
-        $result = [];
-
-        foreach ($categories as $category) {
-            $transactions = $category->transactions;
-            $sum = 0;
-            foreach ($transactions as $transaction) {
-                $sum += $transaction->status === 'debit' ?
-                    -$transaction->amount :
-                    $transaction->amount;
-            }
-            if ($sum != 0) {
-                $result[$category->title] = $sum;
-            }
-        }
-        asort($result);
-
-        return $result;
+        return DB::table('categories')
+            ->leftJoin('transactions', function ($join) {
+                $join->on('transactions.category_id', '=', 'categories.id')
+                    ->where('transactions.status', '=', 'debit')
+                    ->whereRaw('EXTRACT(MONTH FROM transactions.date) = ?', [date('n')]);
+            })
+            ->leftJoin('user_transaction', 'transactions.id', '=', 'user_transaction.transaction_id')
+            ->where('user_transaction.user_id', '=', Auth::id())
+            ->select(
+                'categories.title',
+                'categories.color',
+                DB::raw('COALESCE(SUM(transactions.amount),0) as amount')
+            )
+            ->groupBy('categories.title', 'categories.color')
+            ->orderBy('amount', 'desc')
+            ->get();
     }
 
     private function getDiffTransactionsAccounts(Collection $accounts): array
