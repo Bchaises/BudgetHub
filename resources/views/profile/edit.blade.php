@@ -8,8 +8,8 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="grid lg:grid-cols-12 gap-10">
+    <div class="mb-6">
+        <div class="grid lg:grid-cols-12 gap-6">
 
             <div class="lg:col-span-5">
                 @include('profile.partials.update-profile-information-form')

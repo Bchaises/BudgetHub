@@ -77,7 +77,6 @@
                         </div>
                         <p>{{ date('l M j Y') }}</p>
                     </div>
-
                 </header>
 
                 <!-- Page Content -->
