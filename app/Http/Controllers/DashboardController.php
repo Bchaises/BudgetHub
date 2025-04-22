@@ -16,7 +16,12 @@ class DashboardController extends Controller
         $user = User::findOrFail(Auth::id());
         $accounts = $user->accounts;
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
-        $expensesByCategories = $this->getExpensesByCategories($accounts->first()->id);
+
+        $expensesByCategories = null;
+        if (!$accounts->isEmpty()) {
+            $expensesByCategories = $this->getExpensesByCategories($accounts->first()->id);
+        }
+
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
 
         return view('dashboard', [
@@ -38,6 +43,7 @@ class DashboardController extends Controller
             })
             ->leftJoin('user_transaction', 'transactions.id', '=', 'user_transaction.transaction_id')
             ->where('user_transaction.user_id', '=', Auth::id())
+            ->where('account_id', $accountId)
             ->select(
                 'categories.title',
                 'categories.color',

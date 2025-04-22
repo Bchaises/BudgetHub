@@ -13,8 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->truncate();
-        DB::table('categories')->insert([
+        DB::table('categories')->upsert([
             [
                 'id' => 1,
                 'title' => 'Animals',
@@ -73,7 +72,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'title' => 'Housing / Home',
+                'title' => 'Housing',
                 'color' => '#9E847B',  // Darker pastel beige
                 'icon' => 'fa-home',
                 'created_at' => now(),
@@ -105,12 +104,12 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => 12,
-                'title' => 'Vehicle',
+                'title' => 'Transports',
                 'color' => '#6D9BC4',  // Darker pastel blue
                 'icon' => 'fa-car',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ], ['id'], ['title', 'color', 'icon', 'updated_at']);
     }
 }
