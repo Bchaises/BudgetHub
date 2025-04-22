@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'title' => 'Housing / Home',
+                'title' => 'Housing',
                 'color' => '#9E847B',  // Darker pastel beige
                 'icon' => 'fa-home',
                 'created_at' => now(),
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'id' => 12,
-                'title' => 'Vehicle',
+                'title' => 'Transports',
                 'color' => '#6D9BC4',  // Darker pastel blue
                 'icon' => 'fa-car',
                 'created_at' => now(),
