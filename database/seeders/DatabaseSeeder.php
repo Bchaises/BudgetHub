@@ -13,8 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('categories')->truncate();
-        DB::table('categories')->insert([
+        DB::table('categories')->upsert([
             [
                 'id' => 1,
                 'title' => 'Animals',
@@ -111,6 +110,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ], ['id'], ['title', 'color', 'icon', 'updated_at']);
     }
 }
