@@ -38,6 +38,7 @@ class DashboardController extends Controller
             })
             ->leftJoin('user_transaction', 'transactions.id', '=', 'user_transaction.transaction_id')
             ->where('user_transaction.user_id', '=', Auth::id())
+            ->where('account_id', $accountId)
             ->select(
                 'categories.title',
                 'categories.color',
