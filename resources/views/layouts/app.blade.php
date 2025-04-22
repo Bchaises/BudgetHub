@@ -28,24 +28,6 @@
                     <h1 class="text-2xl">{{ $title }}</h1>
                     <div class="flex flex-row gap-6 items-center">
                         <div class="flex flex-row gap-2">
-                            <!-- Profil Dropdown -->
-                            <div class="relative" x-data="{ openProfile: false }">
-                                <button @click="openProfile = !openProfile" type="button" class="relative inline-flex justify-center items-center size-11 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
-                                    <i class="fa-solid fa-user fa-xl text-primary-dark"></i>
-                                </button>
-
-                                <div x-show="openProfile" @click.away="openProfile = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-left z-50">
-                                    <p class="text-sm text-gray-700 mb-3">Mon compte</p>
-                                    <div class="flex flex-col gap-2">
-                                        <a href="{{ route('profile.edit') }}" class="w-full text-left text-sm text-gray-700 hover:underline">Profile</a>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <button type="submit" class="w-full text-left text-sm text-danger hover:underline">Log Out</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Notifications -->
                             <div class="relative" x-data="{ openNotifications: false }">
                                 <button @click="openNotifications = !openNotifications" type="button" class="relative inline-flex justify-center items-center size-11 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
@@ -72,6 +54,23 @@
                                     @empty
                                         <p class="text-sm text-gray-600">No notifications</p>
                                     @endforelse
+                                </div>
+                            </div>
+                            <!-- Profil Dropdown -->
+                            <div class="relative" x-data="{ openProfile: false }">
+                                <button @click="openProfile = !openProfile" type="button" class="relative inline-flex justify-center items-center size-11 text-sm font-semibold rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                                    <i class="fa-solid fa-user fa-xl text-primary-dark"></i>
+                                </button>
+
+                                <div x-show="openProfile" @click.away="openProfile = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-left z-50">
+                                    <p class="text-sm text-gray-700 mb-3">Mon compte</p>
+                                    <div class="flex flex-col gap-2">
+                                        <a href="{{ route('profile.edit') }}" class="w-full text-left text-sm text-gray-700 hover:underline">Profile</a>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="w-full text-left text-sm text-danger hover:underline">Log Out</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
