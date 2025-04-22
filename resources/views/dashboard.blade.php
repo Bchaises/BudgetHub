@@ -100,7 +100,8 @@
         </div>
 
         <div class="flex mt-6">
-            <livewire:monthly-transaction-by-category-chart :account-id="$accounts->first()->id" />
+
+            <livewire:monthly-transaction-by-category-chart />
 
             <div class="basis-1/3 shadow-lg rounded-lg overflow-hidden bg-white">
                 <div class="flex justify-between items-center border-b p-3 bg-primary">
@@ -109,44 +110,46 @@
                 </div>
                 <div class="p-4 space-y-3 text-sm">
 
-                    @php
-                        $total = $expensesByCategories->sum('amount');
-                        $currentOffset = 0;
-                    @endphp
+                    @if($expensesByCategories)
+                        @php
+                            $total = $expensesByCategories->sum('amount');
+                            $currentOffset = 0;
+                        @endphp
 
-                    <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
-                        @foreach($expensesByCategories as $cat)
-                            @php
-                                $percent = $total > 0 ? ($cat->amount / $total * 100) : 0;
-                                $left = $currentOffset;
-                                $currentOffset += $percent;
-                            @endphp
-                            <div class="absolute top-0 h-full"
-                                 style="
+                        <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
+                            @foreach($expensesByCategories as $cat)
+                                @php
+                                    $percent = $total > 0 ? ($cat->amount / $total * 100) : 0;
+                                    $left = $currentOffset;
+                                    $currentOffset += $percent;
+                                @endphp
+                                <div class="absolute top-0 h-full"
+                                     style="
                                     width: {{ $percent }}%;
                                     left: {{ $left }}%;
                                     background-color: {{ $cat->color }};
                                     "
-                                 title="{{ $cat->title }} ({{ round($percent) }}%)"
-                            ></div>
-                        @endforeach
-                    </div>
-
-                    @foreach($expensesByCategories as $cat)
-                        @php
-                            $percent = $total > 0 ? round($cat->amount / $total * 100) : 0;
-                        @endphp
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-3 h-3 rounded-full" style="background-color: {{ $cat->color }}"></span>
-                                <span>{{ $cat->title }}</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-gray-400">{{ number_format($cat->amount, 2) }} €</span>
-                                <span class="font-bold">{{ $percent }}%</span>
-                            </div>
+                                     title="{{ $cat->title }} ({{ round($percent) }}%)"
+                                ></div>
+                            @endforeach
                         </div>
-                    @endforeach
+
+                        @foreach($expensesByCategories as $cat)
+                            @php
+                                $percent = $total > 0 ? round($cat->amount / $total * 100) : 0;
+                            @endphp
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <span class="w-3 h-3 rounded-full" style="background-color: {{ $cat->color }}"></span>
+                                    <span>{{ $cat->title }}</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-gray-400">{{ number_format($cat->amount, 2) }} €</span>
+                                    <span class="font-bold">{{ $percent }}%</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
