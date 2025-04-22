@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Account;
 use App\Models\Category;
 use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Container\Attributes\Auth;
 use Livewire\Component;
 
 class TransactionsList extends Component
@@ -17,7 +19,7 @@ class TransactionsList extends Component
 
     public function mount($accountId)
     {
-        $this->accountId = $accountId;
+        $this->accountId = $accountId ?? User::find(auth()->id())->accounts()->first()->id;
         $this->currentMonth = now()->month;
         $this->currentYear = now()->year;
     }
@@ -44,16 +46,16 @@ class TransactionsList extends Component
 
     public function render()
     {
-        $transactionsQuery = Transaction::where('account_id', $this->accountId)
+        $transactions = Transaction::where('account_id', $this->accountId)
             ->whereMonth('date', $this->currentMonth)
-            ->whereYear('date', $this->currentYear);
-
-        $transactions = $transactionsQuery
+            ->whereYear('date', $this->currentYear)
             ->groupBy('id', 'date')
             ->orderBy('date', 'desc')
             ->get();
 
-        $totals = $transactionsQuery
+        $totals = Transaction::where('account_id', $this->accountId)
+            ->whereMonth('date', $this->currentMonth)
+            ->whereYear('date', $this->currentYear)
             ->selectRaw('status, SUM(amount) as total')
             ->groupBy('status')
             ->pluck('total', 'status');

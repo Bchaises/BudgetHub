@@ -85,7 +85,7 @@
 
         <!-- Transactions list -->
         <section class="mt-8 flex flex-col flex-grow">
-            @livewire('transactions-list', ['accountId' => $currentAccount->id, 'totalIncome' => $totalIncome, 'totalOutcome' => $totalOutcome, 'categories' => $categories])
+            <livewire:transactions-list :account-id="$currentAccount->id"/>
         </section>
     @else
         <section class="flex justify-center">
