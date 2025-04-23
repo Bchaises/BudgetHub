@@ -62,10 +62,17 @@ class TransactionsList extends Component
         $totalIncome = $totals['credit'] ?? 0;
         $totalOutcome = $totals['debit'] ?? 0;
 
-        $categories = [];
-        foreach (Category::all() as $category) {
-            $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
-        }
+        $categories = Category::query()
+            ->orderBy('order')
+            ->get()
+            ->mapWithKeys(fn ($cat) => [
+                $cat->id => [
+                    'icon' => $cat->icon,
+                    'label' => $cat->title,
+                ]
+            ])
+            ->toArray();
+        $categories[null] = ['icon' => 'fa-ban', 'label' => 'None'];
 
         return view('livewire.transactions-list', compact('transactions'), ['account' => Account::find($this->accountId), 'totalIncome' => $totalIncome, 'totalOutcome' => $totalOutcome, 'categories' => $categories]);
     }

@@ -23,9 +23,9 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Category Selector -->
-                        <div x-data="{ open: false, selected: '{{ $transaction->catergory->title ?? '' }}', iconSelected: '{{ $transaction->category?->icon !== null ? 'fa-solid '.$transaction->category->icon : 'fa-solid fa-xmark' }}', 'labelSelected': '{{ $transaction->category->title ?? 'None' }}' }" @class(['relative w-40'])>
+                        <div x-data="{ open: false, selected: '{{ $transaction->catergory->title ?? '' }}', iconSelected: '{{ $transaction->category?->icon !== null ? 'fa-solid '.$transaction->category->icon : 'fa-solid fa-ban' }}', 'labelSelected': '{{ $transaction->category->title ?? 'None' }}' }" @class(['relative w-40'])>
                             <button :disabled="!edit" type="button" @click="open = !open" @class(['w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center'])>
-                                <i :class="iconSelected"></i>
+                                <i class="fa-solid" :class="iconSelected"></i>
                                 <span class="ml-2" x-text="labelSelected"></span>
                                 <i x-show="edit" class="fa-solid fa-chevron-down w-5 h-5 ml-auto"></i>
                             </button>
@@ -34,13 +34,9 @@
 
                             <div x-show="open" @click.away="open = false" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                                 <ul class="py-1">
-                                    <li @click="selected = ''; open = false; iconSelected = 'fa-solid fa-xmark'; labelSelected = 'None'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
-                                        <span class="mr-2"><i class="fa-solid fa-xmark"></i></span>
-                                        <span>None</span>
-                                    </li>
                                     @foreach ($categories as $value => $data)
                                         <li @click="selected = '{{ $value }}'; open = false; iconSelected = '{{ $data['icon'] }}'; labelSelected = '{{ $data['label'] }}'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
-                                            <span class="mr-2"><i class="{{ $data['icon'] }}"></i></span>
+                                            <span class="mr-2"><i class="fa-solid {{ $data['icon'] }}"></i></span>
                                             <span>{{ $data['label'] }}</span>
                                         </li>
                                     @endforeach
@@ -116,7 +112,7 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="flex flex-col justify-between items-center 2xl:w-2/3 xl:w-4/5 w-full  border shadow-2xl rounded-t-lg">
+    <div class="flex flex-col justify-between items-center 2xl:w-2/3 xl:w-4/5 w-full border shadow-2xl rounded-t-lg">
         <div class="flex justify-evenly w-full my-8">
             <div class="flex flex-col items-center">
                 <p class="text-xl font-bold">{{ '+ '.$totalIncome.' €' }}</p>

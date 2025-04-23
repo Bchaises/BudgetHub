@@ -112,7 +112,7 @@
 
                                 <div x-data="{ open: false, selected: '{{ $recurringTransaction->catergory->title ?? '' }}', iconSelected: '{{ $recurringTransaction->category?->icon !== null ? 'fa-solid '.$recurringTransaction->category->icon : 'fa-solid fa-xmark' }}', labelSelected: '{{ $transaction->category->title ?? 'None' }}' }" class="relative w-full sm:w-40 flex-shrink-0">
                                     <button :disabled="!edit" type="button" @click="open = !open" class="w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center">
-                                        <i :class="iconSelected"></i>
+                                        <i class="fa-solid" :class="iconSelected"></i>
                                         <span class="ml-2" x-text="labelSelected"></span>
                                         <i x-show="edit" class="fa-solid fa-chevron-down w-5 h-5 ml-auto"></i>
                                     </button>
@@ -121,7 +121,7 @@
                                         <ul class="py-1">
                                             @foreach ($categories as $value => $data)
                                                 <li @click="selected = '{{ $value }}'; open = false; iconSelected = '{{ $data['icon'] }}'; labelSelected = '{{ $data['label'] }}'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
-                                                    <span class="mr-2"><i class="{{ $data['icon'] }}"></i></span>
+                                                    <span class="mr-2"><i class="fa-solid {{ $data['icon'] }}"></i></span>
                                                     <span>{{ $data['label'] }}</span>
                                                 </li>
                                             @endforeach

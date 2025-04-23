@@ -16,11 +16,18 @@ class RecurringTransactionController
     {
         $user = Auth::user();
         $account = $user->accounts()->where('id', $accountId)->get()->first();
-        $categories[''] = ['icon' => 'fa-solid fa-xmark', 'label' => 'None'];
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
-        foreach (Category::all() as $category) {
-            $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
-        }
+        $categories = Category::query()
+            ->orderBy('order')
+            ->get()
+            ->mapWithKeys(fn ($cat) => [
+                $cat->id => [
+                    'icon' => $cat->icon,
+                    'label' => $cat->title,
+                ]
+            ])
+            ->toArray();
+        $categories[null] = ['icon' => 'fa-ban', 'label' => 'None'];
         $recurringTransactions = RecurringTransaction::where('account_id', $accountId)->groupBy('id')->orderBy('id', 'desc')->get();
 
         return view('recurring-transaction.show', [
