@@ -77,6 +77,8 @@
                                 id="balance"
                                 name="balance"
                                 type="number"
+                                min="0"
+                                step="0.01"
                                 class="mt-4 block w-full"
                                 placeholder="0.00"
                                 required
