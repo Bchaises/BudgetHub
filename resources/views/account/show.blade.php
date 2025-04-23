@@ -64,7 +64,7 @@
                     <div class="border border-primary mx-1"></div>
 
                     <div class="flex items-stretch">
-                        <input type="number" value="" placeholder="0.00" name="amount" id="amount"
+                        <input type="number" min="0" step="0.01" value="" placeholder="0.00" name="amount" id="amount"
                                class="p-2 w-24 text-sm outline-none bg-primary-light text-end" required>
                         <div class="p-2 bg-primary-light rounded-r-lg">
                             <i class="fa-solid fa-euro-sign text-primary-dark"></i>
@@ -142,6 +142,8 @@
                         id="balance"
                         name="balance"
                         type="number"
+                        min="0"
+                        step="0.01"
                         class="mt-4 block w-full"
                         placeholder="0.00"
                         required

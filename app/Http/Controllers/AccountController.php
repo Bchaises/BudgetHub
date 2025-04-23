@@ -37,11 +37,17 @@ class AccountController extends Controller
         $user = Auth::user();
         $accounts = $user->accounts;
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
-
-        $categories[''] = ['icon' => 'fa-solid fa-xmark', 'label' => 'None'];
-        foreach (Category::all() as $category) {
-            $categories[$category->id] = ['icon' => 'fa-solid '.$category->icon, 'label' => $category->title];
-        }
+        $categories = Category::query()
+            ->orderBy('order')
+            ->get()
+            ->mapWithKeys(fn ($cat) => [
+                $cat->id => [
+                    'icon' => $cat->icon,
+                    'label' => $cat->title,
+                ]
+            ])
+            ->toArray();
+        $categories[null] = ['icon' => 'fa-ban', 'label' => 'None'];
 
         $currentAccount = $id !== null ? $user->accounts()->where('id', $id)->first() : $user->accounts()->first();
 

@@ -23,7 +23,7 @@
         'w-full rounded-lg py-2 px-3 text-left bg-primary focus:outline-none transition ease-in-out duration-150 flex items-center',
         $buttonClass
         ])>
-            <i :class="iconSelected"></i>
+            <i class="fa-solid" :class="iconSelected"></i>
             <span class="ml-2" x-text="labelSelected"></span>
             <i class="fa-solid fa-chevron-down w-5 h-5 ml-auto"></i>
         </button>
@@ -34,7 +34,7 @@
             <ul class="py-1">
                 @foreach ($options as $value => $data)
                     <li @click="selected = '{{ $value }}'; open = false; iconSelected = '{{ $data['icon'] }}'; labelSelected = '{{ $data['label'] }}'" class="cursor-pointer px-4 py-2 hover:bg-gray-100 flex items-center">
-                        <span class="mr-2"><i class="{{ $data['icon'] }}"></i></span>
+                        <span class="mr-2"><i class="fa-solid {{ $data['icon'] }}"></i></span>
                         <span>{{ $data['label'] }}</span>
                     </li>
                 @endforeach
