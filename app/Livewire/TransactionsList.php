@@ -19,8 +19,8 @@ class TransactionsList extends Component
     public function mount($accountId, $currentMonth, $currentYear)
     {
         $this->accountId = $accountId ?? User::find(auth()->id())->accounts()->first()->id;
-        $this->currentMonth = $currentMonth ?? now()->month;
-        $this->currentYear = $currentYear ?? now()->year;
+        $this->currentMonth = $currentMonth;
+        $this->currentYear = $currentYear;
     }
 
     public function previousMonth()
