@@ -58,6 +58,11 @@ class TransactionController extends Controller
             }
         });
 
+        session([
+            'last_transaction_date' => $validate['date'],
+            'last_transaction_status' => $validate['status'],
+        ]);
+
         return redirect()->back()->with('success', 'Transaction created!');
     }
 

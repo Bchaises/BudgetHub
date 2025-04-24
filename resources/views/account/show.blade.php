@@ -32,19 +32,31 @@
             <form action="{{ route('transaction.store') }}" method="POST" class="flex flex-wrap gap-4 items-stretch">
                 @csrf
 
+                @php
+                    if ($status = session('last_transaction_status')){
+                        $statusLabelSelected = $status === 'debit' ? 'Expense' : 'Income';
+                        $statusIconSelected = $status  === 'debit' ? 'fa-arrow-up-from-bracket' : 'fa-arrow-right-to-bracket fa-rotate-90';
+                    }
+                @endphp
+
                 <x-select-input
                     name="status"
-                    :options="['debit' => [ 'icon' => 'fa-solid fa-arrow-up-from-bracket', 'label' => 'Expense'], 'credit' => [ 'icon' => 'fa-solid fa-arrow-right-to-bracket fa-rotate-90', 'label' => 'Income']]"
-                    selected="debit"
-                    iconSelected="fa-solid fa-arrow-up-from-bracket"
-                    labelSelected="Expense"
+                    :options="['debit' => [ 'icon' => 'fa-arrow-up-from-bracket', 'label' => 'Expense'], 'credit' => [ 'icon' => 'fa-arrow-right-to-bracket fa-rotate-90', 'label' => 'Income']]"
+                    selected="{{ $status ?? 'debit' }}"
+                    iconSelected="{{$statusIconSelected ?? 'fa-arrow-up-from-bracket'}}"
+                    labelSelected="{{$statusLabelSelected ?? 'Expense'}}"
                     buttonClass="focus:ring-2 !focus:ring-0 focus:ring-primary focus:ring-offset-2"
                 />
 
                 <div class="flex flex-col sm:flex-row flex-grow min-w-0">
 
-                    <input type="date" value="{{ date('Y-m-d') }}" name="date" id="date"
-                           class="pl-4 p-2 text-sm bg-primary-light outline-none rounded-l-lg flex-shrink-0 sm:max-w-[10rem]" required>
+                    <input
+                        type="date"
+                        value="{{ old('date', session('last_transaction_date', now()->format('Y-m-d'))) }}"
+                        name="date" id="date"
+                        class="pl-4 p-2 text-sm bg-primary-light outline-none rounded-l-lg flex-shrink-0 sm:max-w-[10rem]"
+                        required
+                    >
 
                     <div class="border border-primary mx-1"></div>
 
@@ -85,7 +97,11 @@
 
         <!-- Transactions list -->
         <section class="mt-8 flex flex-col flex-grow">
-            <livewire:transactions-list :account-id="$currentAccount->id"/>
+            <livewire:transactions-list
+                currentMonth="{{ date('m', strtotime(session('last_transaction_date'))) ?? now()->month }}"
+                currentYear="{{ date('Y', strtotime(session('last_transaction_date'))) ?? now()->year }}"
+                :account-id="$currentAccount->id"
+            />
         </section>
     @else
         <section class="flex justify-center">
