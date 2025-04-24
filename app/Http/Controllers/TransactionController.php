@@ -97,7 +97,15 @@ class TransactionController extends Controller
 
         DB::transaction(function () use ($transaction, $account, $validated) {
             $balanceChange = $transaction->amount - $validated['amount'];
-            $account->increment('balance', $balanceChange);
+
+            if ($transaction->status === 'debit') {
+                $account->increment('balance', $balanceChange);
+            }
+
+            if ($transaction->status === 'credit') {
+                $account->decrement('balance', $balanceChange);
+            }
+
             $transaction->fill($validated)->save();
         });
 
