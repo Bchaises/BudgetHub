@@ -98,8 +98,8 @@
         <!-- Transactions list -->
         <section class="mt-8 flex flex-col flex-grow">
             <livewire:transactions-list
-                currentMonth="{{ date('m', strtotime(session('last_transaction_date'))) ?? now()->month }}"
-                currentYear="{{ date('Y', strtotime(session('last_transaction_date'))) ?? now()->year }}"
+                currentMonth="{{ session('last_transaction_date') !== null ? date('m', strtotime(session('last_transaction_date'))) : now()->month }}"
+                currentYear="{{ session('last_transaction_date') !== null ? date('m', strtotime(session('last_transaction_date'))) : now()->year }}"
                 :account-id="$currentAccount->id"
             />
         </section>
