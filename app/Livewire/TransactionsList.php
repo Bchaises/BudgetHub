@@ -16,11 +16,11 @@ class TransactionsList extends Component
 
     protected $listeners = ['changeMonth'];
 
-    public function mount($accountId)
+    public function mount($accountId, $currentMonth, $currentYear)
     {
         $this->accountId = $accountId ?? User::find(auth()->id())->accounts()->first()->id;
-        $this->currentMonth = now()->month;
-        $this->currentYear = now()->year;
+        $this->currentMonth = $currentMonth ?? now()->month;
+        $this->currentYear = $currentYear ?? now()->year;
     }
 
     public function previousMonth()
