@@ -112,6 +112,7 @@
                 </div>
                 <div class="p-4 space-y-3 text-sm">
 
+                @if(isset($expensesByCategories))
                     @if(count($expensesByCategories) > 0)
                         @php
                             $total = $expensesByCategories->sum('amount');
@@ -127,10 +128,10 @@
                                 @endphp
                                 <div class="absolute top-0 h-full"
                                      style="
-                                    width: {{ $percent }}%;
-                                    left: {{ $left }}%;
-                                    background-color: {{ $cat->color }};
-                                    "
+                                width: {{ $percent }}%;
+                                left: {{ $left }}%;
+                                background-color: {{ $cat->color }};
+                                "
                                      title="{{ $cat->title }} ({{ round($percent) }}%)"
                                 ></div>
                             @endforeach
@@ -156,6 +157,7 @@
                             <p>Nothing on {{ date('M Y') }}</p>
                         </div>
                     @endif
+                @endif
                 </div>
             </div>
         </div>
