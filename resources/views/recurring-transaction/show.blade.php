@@ -141,7 +141,7 @@
 
                                 <div class="border border-primary mx-1"></div>
 
-                                <input type="text" :disabled="!edit" value="{{ $recurringTransaction->amount }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200 w-20 flex-shrink-0" required>
+                                <input type="text" :disabled="!edit" value="{{ number_format((float) $recurringTransaction->amount, 2, ',', ' ') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200 w-20 flex-shrink-0" required>
                                 <div class="pr-4 p-2 bg-gray-200 flex-shrink-0 rounded-r-lg">
                                     <i class="fa-solid fa-euro-sign text-primary-dark"></i>
                                 </div>
