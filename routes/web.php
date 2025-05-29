@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecurringTransactionController;
 use App\Http\Controllers\TransactionCategoryController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransferController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('welcome'))->name('home');
@@ -15,6 +16,12 @@ Route::get('/', fn () => view('welcome'))->name('home');
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
+
+    // Routes for transactions between two bank accounts
+    Route::prefix('transfer')->controller(TransferController::class)->group(function () {
+        Route::get('/', 'index')->name('transfer.index');
+        Route::post('/create', 'create')->name('transfer.create');
+    });
 
     // Routes for Transactions
     Route::prefix('transaction')->controller(TransactionController::class)->group(function () {
