@@ -23,7 +23,13 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Category Selector -->
-                        <div x-data="{ open: false, selected: '{{ $transaction->catergory->title ?? '' }}', iconSelected: '{{ $transaction->category?->icon !== null ? 'fa-solid '.$transaction->category->icon : 'fa-solid fa-ban' }}', 'labelSelected': '{{ $transaction->category->title ?? 'None' }}' }" @class(['relative w-40'])>
+                        <div x-data="{ open: false, selected: '', iconSelected: '', labelSelected: '' }"
+                             x-init="
+                                selected = '{{ $transaction->category->id ?? '' }}';
+                                iconSelected = '{{ $transaction->category?->icon ?? 'fa-ban' }}';
+                                labelSelected = '{{ $transaction->category->title ?? 'None' }}';
+                             "
+                             class="relative w-40">
                             <button :disabled="!edit" type="button" @click="open = !open" @class(['w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center'])>
                                 <i class="fa-solid" :class="iconSelected"></i>
                                 <span class="ml-2" x-text="labelSelected"></span>
@@ -57,7 +63,7 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Amount -->
-                        <input type="text" :disabled="!edit" value="{{ $transaction->amount }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
+                        <input type="text" :disabled="!edit" value="{{ number_format((float) $transaction->amount, 2, '.', ' ') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
 
                         <!-- Account -->
                         <input hidden value="{{ $account->id }}" name="account_id" id="account_id">
@@ -115,15 +121,15 @@
     <div class="flex flex-col justify-between items-center 2xl:w-2/3 xl:w-4/5 w-full border shadow-2xl rounded-t-lg">
         <div class="flex justify-evenly w-full my-8">
             <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ '+ '.$totalIncome.' €' }}</p>
+                <p class="text-xl font-bold">{{ '+ '.number_format((float) $totalIncome, 2, ',', ' ').' €' }}</p>
                 <p class="text-green-400">Total Income</p>
             </div>
             <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ '- '.$totalOutcome.' €' }}</p>
+                <p class="text-xl font-bold">{{ '- '.number_format((float) $totalOutcome, 2, ',', ' ').' €' }}</p>
                 <p class="text-red-400">Total Outcome</p>
             </div>
             <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ $account->balance.' €' }}</p>
+                <p class="text-xl font-bold">{{ number_format((float) $account->balance, 2, ',', ' ').' €' }}</p>
                 <p class="text-blue-300">Money Left</p>
             </div>
         </div>

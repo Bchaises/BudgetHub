@@ -49,7 +49,7 @@ class TransactionsList extends Component
             ->whereMonth('date', $this->currentMonth)
             ->whereYear('date', $this->currentYear)
             ->groupBy('id', 'date')
-            ->orderBy('date', 'desc')
+            ->orderByRaw('date DESC, created_at DESC')
             ->get();
 
         $totals = Transaction::where('account_id', $this->accountId)
@@ -59,8 +59,8 @@ class TransactionsList extends Component
             ->groupBy('status')
             ->pluck('total', 'status');
 
-        $totalIncome = $totals['credit'] ?? 0;
-        $totalOutcome = $totals['debit'] ?? 0;
+        $totalIncome = isset($totals['credit']) ? strval(round($totals['credit'], 2)) : 0;
+        $totalOutcome = isset($totals['debit']) ? strval(round($totals['debit'], 2)) : 0;
 
         $categories = Category::query()
             ->orderBy('order')

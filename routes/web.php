@@ -44,10 +44,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Routes for recurring transactions
-    Route::get('/account/{id}/recurring', [RecurringTransactionController::class, 'show'])->name('recurring.show');
-    Route::post('/', [RecurringTransactionController::class, 'store'])->name('recurring.store');
-    Route::patch('/{id}/edit', [RecurringTransactionController::class, 'update'])->name('recurring.update');
-    Route::delete('/{id}', [RecurringTransactionController::class, 'destroy'])->name('recurring.destroy');
+    Route::prefix('recurring')->controller(RecurringTransactionController::class)->group(function () {
+        Route::get('/account/{id}/recurring', 'show')->name('recurring.show');
+        Route::post('/', 'store')->name('recurring.store');
+        Route::patch('/{id}/edit', 'update')->name('recurring.update');
+        Route::delete('/{id}', 'destroy')->name('recurring.destroy');
+    });
 
     // Route for Profile
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
@@ -64,8 +66,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');
         Route::get('/respondWithoutToken/{id}', 'respondWithoutToken')->name('invitation.respondWithoutToken');
     });
-
-
 });
 
 require __DIR__.'/auth.php';

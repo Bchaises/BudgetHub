@@ -105,7 +105,7 @@
         </section>
     @else
         <section class="flex justify-center">
-                <div class="rounded-lg shadow-lg mr-12 basis-auto h-full min-w-72 max-w-96">
+                <div class="rounded-lg shadow-lg mr-12 basis-auto h-full min-w-72 max-w-96 bg-white">
                     <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
                         <h1 class="text-xl">No Accounts</h1>
                     </div>

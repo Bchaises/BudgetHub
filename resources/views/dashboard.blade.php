@@ -13,14 +13,14 @@
                             <i class="fa-solid fa-euro-sign"></i>
                         </div>
                         <div class="px-4 py-2 flex flex-col justify-center">
-                            <p class="text-2xl font-bold"><span>€ </span>{{ $account->balance }}</p>
+                            <p class="text-2xl font-bold"><span>€ </span>{{ number_format($account->balance, 2, ',', ' ') }}</p>
                             <p class="text-sm">{{ strlen($account->description) > 50 ? substr($account->description,0, 50). '...' : $account->description }}</p>
                             @if($accountsStat[$account->id] !== 0)
                                 <div class="flex text-xs space-x-2 items-center {{ $accountsStat[$account->id] < 0 ? 'text-red-500' : 'text-green-500' }}">
                                     @if( $accountsStat[$account->id] < 0)
-                                        <i class="fa-solid fa-lg fa-arrow-trend-down"></i> <p>{{ $accountsStat[$account->id]." €" }}</p>
+                                        <i class="fa-solid fa-lg fa-arrow-trend-down"></i> <p>{{ str_replace('-', '- ', number_format((float) $accountsStat[$account->id], 2, ',', ' '))." €" }}</p>
                                     @elseif( $accountsStat[$account->id] > 0)
-                                        <i class="fa-solid fa-lg fa-arrow-trend-up"></i> <p>{{ "+".$accountsStat[$account->id]." €" }}</p>
+                                        <i class="fa-solid fa-lg fa-arrow-trend-up"></i> <p>{{ "+ ".number_format((float) $accountsStat[$account->id], 2, ',', ' ')." €" }}</p>
                                     @endif
                                     <p>from last month</p>
                                 </div>
@@ -112,7 +112,8 @@
                 </div>
                 <div class="p-4 space-y-3 text-sm">
 
-                    @if($expensesByCategories)
+                @if(isset($expensesByCategories))
+                    @if(count($expensesByCategories) > 0)
                         @php
                             $total = $expensesByCategories->sum('amount');
                             $currentOffset = 0;
@@ -127,10 +128,10 @@
                                 @endphp
                                 <div class="absolute top-0 h-full"
                                      style="
-                                    width: {{ $percent }}%;
-                                    left: {{ $left }}%;
-                                    background-color: {{ $cat->color }};
-                                    "
+                                width: {{ $percent }}%;
+                                left: {{ $left }}%;
+                                background-color: {{ $cat->color }};
+                                "
                                      title="{{ $cat->title }} ({{ round($percent) }}%)"
                                 ></div>
                             @endforeach
@@ -146,12 +147,17 @@
                                     <span>{{ $cat->title }}</span>
                                 </div>
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-gray-400">{{ number_format($cat->amount, 2) }} €</span>
+                                    <span class="text-gray-400">{{ number_format($cat->amount, 2, ',', ' ') }} €</span>
                                     <span class="font-bold">{{ $percent }}%</span>
                                 </div>
                             </div>
                         @endforeach
+                    @else
+                        <div class="m-auto text-center">
+                            <p>Nothing on {{ date('M Y') }}</p>
+                        </div>
                     @endif
+                @endif
                 </div>
             </div>
         </div>
