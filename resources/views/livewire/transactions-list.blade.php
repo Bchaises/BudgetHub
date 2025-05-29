@@ -57,7 +57,7 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Amount -->
-                        <input type="text" :disabled="!edit" value="{{ number_format((float) $transaction->amount, 2, ',', ' ') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
+                        <input type="text" :disabled="!edit" value="{{ number_format((float) $transaction->amount, 2, '.', ' ') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
 
                         <!-- Account -->
                         <input hidden value="{{ $account->id }}" name="account_id" id="account_id">
