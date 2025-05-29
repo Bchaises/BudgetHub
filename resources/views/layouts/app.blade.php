@@ -62,13 +62,14 @@
                                     <i class="fa-solid fa-user fa-xl text-primary-dark"></i>
                                 </button>
 
-                                <div x-show="openProfile" @click.away="openProfile = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-left z-50">
-                                    <p class="text-sm text-gray-700 mb-3">Mon compte</p>
-                                    <div class="flex flex-col gap-2">
-                                        <a href="{{ route('profile.edit') }}" class="w-full text-left text-sm text-gray-700 hover:underline">Profile</a>
+                                <div x-show="openProfile" @click.away="openProfile = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg text-left z-50">
+                                    <div class="flex flex-col">
+                                        <a href="{{ route('profile.edit') }}" class="w-full rounded-t-lg text-left text-sm text-gray-700 p-3 hover:bg-gray-50">
+                                            Profile
+                                        </a>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <button type="submit" class="w-full text-left text-sm text-danger hover:underline">Log Out</button>
+                                            <button type="submit" class="w-full text-left text-sm text-danger rounded-b-lg p-3 hover:bg-gray-50">Log Out</button>
                                         </form>
                                     </div>
                                 </div>
