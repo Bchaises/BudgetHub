@@ -113,7 +113,7 @@
                 </div>
             </div>
         @empty
-            <div>Nothing on {{ date('M Y') }}</div>
+            <div>Nothing this month</div>
         @endforelse
     </div>
 

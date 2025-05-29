@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Category;
 use App\Models\Invitation;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -83,6 +84,17 @@ class AccountController extends Controller
         $validate = $request->validateWithBag('accountCreation', Account::rules());
 
         $account = Account::create($validate);
+        $balance = (float) $account->balance;
+        if ($balance > 0) {
+            Transaction::create([
+                'label' => 'Initial balance',
+                'amount' => $balance,
+                'status' => 'credit',
+                'date' => now()->toDateString(),
+                'account_id' => $account->id,
+                'category_id' => null,
+            ]);
+        }
         $account->users()->attach(Auth::id(), ['role' => 'owner', 'created_at' => now(), 'updated_at' => now()]);
 
         return redirect()->back()->with('success', 'Bank account created successfully!');
