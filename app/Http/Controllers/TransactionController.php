@@ -109,6 +109,11 @@ class TransactionController extends Controller
             $transaction->fill($validated)->save();
         });
 
+        session([
+            'last_transaction_date' => $validated['date'],
+            'last_transaction_status' => $validated['status'],
+        ]);
+
         return redirect()->back()->with('success', 'Transaction updated!');
     }
 
@@ -130,6 +135,11 @@ class TransactionController extends Controller
 
             Transaction::destroy($transaction->id);
         });
+
+        session([
+            'last_transaction_date' => $transaction->date,
+            'last_transaction_status' => $transaction->status,
+        ]);
 
         return redirect()->back()->with('success', 'Transaction deleted!');
     }
