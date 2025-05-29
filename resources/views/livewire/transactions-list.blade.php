@@ -23,7 +23,13 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Category Selector -->
-                        <div x-data="{ open: false, selected: '{{ $transaction->catergory->title ?? '' }}', iconSelected: '{{ $transaction->category?->icon !== null ? 'fa-solid '.$transaction->category->icon : 'fa-solid fa-ban' }}', 'labelSelected': '{{ $transaction->category->title ?? 'None' }}' }" @class(['relative w-40'])>
+                        <div x-data="{ open: false, selected: '', iconSelected: '', labelSelected: '' }"
+                             x-init="
+                                selected = '{{ $transaction->category->id ?? '' }}';
+                                iconSelected = '{{ $transaction->category?->icon ?? 'fa-ban' }}';
+                                labelSelected = '{{ $transaction->category->title ?? 'None' }}';
+                             "
+                             class="relative w-40">
                             <button :disabled="!edit" type="button" @click="open = !open" @class(['w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center'])>
                                 <i class="fa-solid" :class="iconSelected"></i>
                                 <span class="ml-2" x-text="labelSelected"></span>
@@ -107,7 +113,7 @@
                 </div>
             </div>
         @empty
-            <div>Nothing this month</div>
+            <div>Nothing on {{ date('M Y') }}</div>
         @endforelse
     </div>
 
