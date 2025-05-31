@@ -25,11 +25,25 @@ class AccountController extends Controller
     {
         $account = User::find(Auth::id())->accounts->find($id);
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
+        $budgets = $account->budgets->sortBy('created_at');
+        $categories = Category::query()
+            ->orderBy('order')
+            ->get()
+            ->mapWithKeys(fn ($cat) => [
+                $cat->id => [
+                    'icon' => $cat->icon,
+                    'label' => $cat->title,
+                ]
+            ])
+            ->toArray();
+        $categories[null] = ['icon' => 'fa-ban', 'label' => 'None'];
 
         return view('account.edit', [
             'account' => $account,
             'invitations' => $account->invitations,
             'notifications' => $notifications,
+            'budgets' => $budgets,
+            'categories' => $categories,
         ]);
     }
 

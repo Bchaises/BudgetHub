@@ -23,6 +23,67 @@
             @include('layouts.navigation')
 
             <div class="flex flex-col flex-1">
+
+                <!-- Display messages -->
+                <div class="fixed top-24 right-4 z-50 space-y-2">
+                    <!-- Error messages -->
+                    @if ($errors->any())
+                        @foreach ($errors->all() as $index => $error)
+                            @php
+                                $delay = $index * 200;
+                            @endphp
+
+                            <div
+                                x-data="{ show: false }"
+                                x-init="
+                                setTimeout(() => {
+                                    show = true;
+                                    setTimeout(() => show = false, 5000);
+                                }, {{ $delay }});
+                            "
+                                x-show="show"
+                                x-transition:enter="transition duration-300 ease-out"
+                                x-transition:enter-start="opacity-0 translate-x-4"
+                                x-transition:enter-end="opacity-100 translate-x-0"
+                                x-transition:leave="transition duration-500 ease-in"
+                                x-transition:leave-start="opacity-100 translate-x-0"
+                                x-transition:leave-end="opacity-0 translate-x-4"
+                                class="min-w-80 flex items-center p-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 shadow"
+                                role="alert"
+                            >
+                                <svg class="shrink-0 inline w-4 h-4 me-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <div>{{ $error }}</div>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    <!-- success message -->
+                    @if (session('success'))
+                        <div
+                            x-data="{ show: true }"
+                            x-init="setTimeout(() => show = false, 5000)"
+                            x-show="show"
+                            x-transition:enter="transition duration-300 ease-out"
+                            x-transition:enter-start="opacity-0 translate-x-4"
+                            x-transition:enter-end="opacity-100 translate-x-0"
+                            x-transition:leave="transition duration-500 ease-in"
+                            x-transition:leave-start="opacity-100 translate-x-0"
+                            x-transition:leave-end="opacity-0 translate-x-4"
+                            class="min-w-80 flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50" role="alert"
+                        >
+                            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                            </svg>
+                            <span class="sr-only">Info</span>
+                            <div>
+                                {{ session('success') }}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Header -->
                 <header class="my-8 mx-11 flex justify-between items-center">
                     <h1 class="text-2xl">{{ $title }}</h1>

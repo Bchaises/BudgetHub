@@ -55,4 +55,9 @@ class Account extends Model
     {
         return $this->hasMany(RecurringTransaction::class);
     }
+
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
+    }
 }
