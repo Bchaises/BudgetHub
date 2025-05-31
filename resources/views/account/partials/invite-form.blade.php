@@ -16,7 +16,6 @@
                     <div>
                         <x-input-label for="receiver_mail" :value="__('Email')" />
                         <x-text-input id="receiver_email" name="receiver_email" type="email" class="mt-1 block w-full" placeholder="john.doe@example.com" required autocomplete="email" />
-                        <x-input-error class="mt-2" :messages="$errors->get('receiver_email')" />
                     </div>
 
                     <input hidden name="account" value="{{ $account->id }}"/>
