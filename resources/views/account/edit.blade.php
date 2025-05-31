@@ -10,7 +10,7 @@
     </section>
 
     <div class="py-12">
-        <div class="grid lg:grid-cols-12 gap-10 flex items-stretch">
+        <div class="grid lg:grid-cols-12 gap-10 items-stretch">
 
             <div class="lg:col-span-5">
                 @include('account.partials.update-account-information-form')

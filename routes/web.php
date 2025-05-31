@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileController;
@@ -58,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('recurring.destroy');
     });
 
-    // Route for Profile
+    // Routes for Profile
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'edit')->name('profile.edit');
         Route::patch('/information', 'updateInformation')->name('profile.update.information');
@@ -66,12 +67,18 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/', 'destroy')->name('profile.destroy');
     });
 
-    // Route for invitation
+    // Routes for invitation
     Route::prefix('invitation')->controller(InvitationController::class)->group(function () {
         Route::post('/', 'store')->name('invitation.store');
         Route::delete('/{invitation}', 'destroy')->name('invitation.destroy');
         Route::get('/respond/{token}', [InvitationController::class, 'respond'])->name('invitation.respond');
         Route::get('/respondWithoutToken/{id}', 'respondWithoutToken')->name('invitation.respondWithoutToken');
+    });
+
+    // Routes for budget
+    Route::prefix('budget')->controller(BudgetController::class)->group(function () {
+        Route::post('/', 'store')->name('budget.store');
+        Route::delete('/{id}', 'destroy')->name('budget.destroy');
     });
 });
 
