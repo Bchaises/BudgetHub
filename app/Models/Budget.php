@@ -18,7 +18,7 @@ class Budget extends Model
         return [
             'account_id' => 'required|exists:accounts,id',
             'category_id' => 'required|exists:categories,id',
-            'amount' => 'required|numeric|min:0',
+            'amount' => 'required|numeric|min:0|max:10000000',
         ];
     }
 
