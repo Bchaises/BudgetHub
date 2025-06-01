@@ -16,9 +16,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="font-default antialiased">
-        <div class="flex min-h-screen bg-gray-100 text-police">
+        <div class="flex max-w-screen min-h-screen bg-gray-100 text-police">
             <!-- Navigation Bar -->
             @include('layouts.navigation')
 
@@ -141,7 +142,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="2xl:mx-72 xl:mx-40 mx-16 flex flex-col flex-grow">
+                <main class="2xl:mx-52 xl:mx-24 mx-10 flex flex-col flex-grow">
                     {{ $slot }}
                 </main>
             </div>

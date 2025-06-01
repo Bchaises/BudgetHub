@@ -1,5 +1,5 @@
 
-<div class="basis-2/3 mr-6 shadow-lg rounded-lg overflow-hidden bg-white">
+<div class="shadow-lg rounded-lg overflow-hidden bg-white">
     <div class="flex justify-between items-center border-b p-3 bg-primary">
         <h1 class="text-xl">Monthly expenses by category</h1>
         <i class="fa-solid fa-chart-simple fa-xl"></i>

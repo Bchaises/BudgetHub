@@ -3,32 +3,30 @@
     <x-slot:title>{{ $currentAccount ? "Here is your account \"$currentAccount->title\"" : "No accounts to show" }}</x-slot:title>
 
     <!-- Accounts navigation -->
-    <section>
-        <div class="flex justify-between items-center">
-            <div class="inline-flex justify-start flex-grow-0 items-center rounded-lg bg-gray-200 -space-x-3">
-                @foreach($accounts as $account)
-                    <a href="{{ route('account.show', ['id' => $account->id]) }}" style="position: relative; z-index: {{ $loop->remaining * 10 }};" >
-                        <div class="border border-primary rounded-lg w-60 pl-5 pr-4 py-1 {{ $account->id === $currentAccount->id ? 'bg-primary' : 'bg-gray-200' }}">
-                            <div class="flex justify-between items-center">
-                                {{ $account->title }}
-                                <i class="fa-solid fa-user"></i>
-                            </div>
+    <div class="flex justify-between items-center">
+        <div class="inline-flex justify-start flex-grow-0 items-center rounded-lg bg-gray-200 -space-x-3">
+            @foreach($accounts as $account)
+                <a href="{{ route('account.show', ['id' => $account->id]) }}" style="position: relative; z-index: {{ $loop->remaining * 10 }};" >
+                    <div class="border border-primary rounded-lg w-60 pl-5 pr-4 py-1 {{ $account->id === $currentAccount->id ? 'bg-primary' : 'bg-gray-200' }}">
+                        <div class="flex justify-between items-center">
+                            {{ $account->title }}
+                            <i class="fa-solid fa-user"></i>
                         </div>
-                    </a>
-                @endforeach
-            </div>
-
-            @if($currentAccount)
-                <div class="flex space-x-2">
-                    <a href="{{ route('recurring.show', ['id' => $currentAccount->id])}}"><i class="fa-solid fa-clock"></i></a>
-                    <a href="{{ route('account.edit', ['id' => $currentAccount->id]) }}"><i class="fa-solid fa-gear"></i></a>
-                </div>
-            @endif
+                    </div>
+                </a>
+            @endforeach
         </div>
-    </section>
+
+        @if($currentAccount)
+            <div class="flex space-x-2">
+                <a href="{{ route('recurring.show', ['id' => $currentAccount->id])}}"><i class="fa-solid fa-clock"></i></a>
+                <a href="{{ route('account.edit', ['id' => $currentAccount->id]) }}"><i class="fa-solid fa-gear"></i></a>
+            </div>
+        @endif
+    </div>
 
     @if($currentAccount)
-        <section class="mt-8 border-2 border-primary rounded-lg p-4">
+        <div class="mt-8 border-2 border-primary rounded-lg p-4">
             <form action="{{ route('transaction.store') }}" method="POST" class="flex flex-wrap gap-4 items-stretch">
                 @csrf
 
@@ -92,32 +90,32 @@
                     Add
                 </button>
             </form>
-        </section>
+        </div>
 
 
         <!-- Transactions list -->
-        <section class="mt-8 flex flex-col flex-grow">
+        <div class="mt-8 flex flex-col flex-grow">
             <livewire:transactions-list
                 currentMonth="{{ session('last_transaction_date') !== null ? date('m', strtotime(session('last_transaction_date'))) : now()->month }}"
                 currentYear="{{ session('last_transaction_date') !== null ? date('Y', strtotime(session('last_transaction_date'))) : now()->year }}"
                 :account-id="$currentAccount->id"
             />
-        </section>
+        </div>
     @else
-        <section class="flex justify-center">
-                <div class="rounded-lg shadow-lg mr-12 basis-auto h-full min-w-72 max-w-96 bg-white">
-                    <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
-                        <h1 class="text-xl">No Accounts</h1>
-                    </div>
-                    <div class="p-4">
-                        <p class="mb-4">You have to create an Account before accessing this page</p>
-                        <x-primary-button
-                            x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', 'account-creation')"
-                        >Create Account</x-primary-button>
-                    </div>
+        <div class="flex justify-center">
+            <div class="rounded-lg shadow-lg mr-12 basis-auto h-full min-w-72 max-w-96 bg-white">
+                <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
+                    <h1 class="text-xl">No Accounts</h1>
                 </div>
-        </section>
+                <div class="p-4">
+                    <p class="mb-4">You have to create an Account before accessing this page</p>
+                    <x-primary-button
+                        x-data=""
+                        x-on:click.prevent="$dispatch('open-modal', 'account-creation')"
+                    >Create Account</x-primary-button>
+                </div>
+            </div>
+        </div>
 
         <x-modal
             class="absolute"
