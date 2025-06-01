@@ -2,7 +2,7 @@
 
     <x-slot:title>{{ "Hi, Welcome back ".strtolower($user->name)." 👋!" }}</x-slot:title>
 
-    <div class="">
+    <div class="mb-8">
         <div class="flex gap-6 flex-wrap">
             @foreach($accounts as $account)
                 <a href="{{ route('account.show', ['id' => $account->id]) }}">
