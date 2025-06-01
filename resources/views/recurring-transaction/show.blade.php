@@ -110,13 +110,22 @@
                                 <input type="text" :disabled="!edit" value="{{ $recurringTransaction->frequency }}" name="frequency" id="frequency" placeholder="frequency" class="p-2 text-sm bg-gray-200 outline-none flex-grow min-w-0" required>
                                 <div class="border border-primary mx-1"></div>
 
-                                <div x-data="{ open: false, selected: '{{ $recurringTransaction->catergory->title ?? '' }}', iconSelected: '{{ $recurringTransaction->category?->icon !== null ? 'fa-solid '.$recurringTransaction->category->icon : 'fa-solid fa-xmark' }}', labelSelected: '{{ $transaction->category->title ?? 'None' }}' }" class="relative w-full sm:w-40 flex-shrink-0">
-                                    <button :disabled="!edit" type="button" @click="open = !open" class="w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center">
+                                <!-- Category Selector -->
+                                <div x-data="{ open: false, selected: '', iconSelected: '', labelSelected: '' }"
+                                     x-init="
+                                selected = '{{ $recurringTransaction->category->id ?? '' }}';
+                                iconSelected = '{{ $recurringTransaction->category?->icon ?? 'fa-ban' }}';
+                                labelSelected = '{{ $recurringTransaction->category->title ?? 'None' }}';
+                             "
+                                     class="relative w-40">
+                                    <button :disabled="!edit" type="button" @click="open = !open" @class(['w-full py-2 px-3 text-left bg-gray-200 focus:outline-none transition ease-in-out duration-150 flex items-center'])>
                                         <i class="fa-solid" :class="iconSelected"></i>
                                         <span class="ml-2" x-text="labelSelected"></span>
                                         <i x-show="edit" class="fa-solid fa-chevron-down w-5 h-5 ml-auto"></i>
                                     </button>
-                                    <input :disabled="!edit" type="hidden" name="category_id" x-model="selected">
+
+                                    <input :disabled="!edit" type="hidden" name="category_id" id="" x-model="selected">
+
                                     <div x-show="open" @click.away="open = false" class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                                         <ul class="py-1">
                                             @foreach ($categories as $value => $data)
