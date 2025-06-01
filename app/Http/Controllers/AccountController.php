@@ -49,8 +49,8 @@ class AccountController extends Controller
 
     public function show(?string $id = null): View
     {
-        $user = Auth::user();
-        $accounts = $user->accounts;
+        $user = Auth()->user();
+        $accounts = $user->accounts->sortBy('id');
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
         $categories = Category::query()
             ->orderBy('order')
@@ -64,7 +64,7 @@ class AccountController extends Controller
             ->toArray();
         $categories[null] = ['icon' => 'fa-ban', 'label' => 'None'];
 
-        $currentAccount = $id !== null ? $user->accounts()->where('id', $id)->first() : $user->accounts()->first();
+        $currentAccount = $id !== null ? $accounts->where('id', $id)->first() : $accounts->first();
 
         $totalIncome = 0;
         $totalOutcome = 0;

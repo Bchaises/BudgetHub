@@ -1,5 +1,5 @@
 <div class="flex flex-grow flex-col justify-between items-center">
-    <div style="max-height: 780px;" class="flex flex-col space-y-4 items-center overflow-y-auto px-4">
+    <div style="height: 27rem" class="flex flex-col space-y-4 items-center overflow-y-auto px-4">
         @forelse($transactions as $transaction)
             <div class="flex items-center group" x-data="{ edit: false }" >
                 <form method="POST" action="{{ route('transaction.update', ['id' => $transaction->id]) }}"  class="flex items-center">
@@ -63,7 +63,7 @@
                         <div class="border border-primary mx-1"></div>
 
                         <!-- Amount -->
-                        <input type="text" :disabled="!edit" value="{{ number_format((float) $transaction->amount, 2, '.', ' ') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
+                        <input type="text" :disabled="!edit" value="{{ number_format((float) $transaction->amount,2, '.', '') }}" name="amount" id="amount" class="p-2 text-sm text-end outline-none bg-gray-200" required>
 
                         <!-- Account -->
                         <input hidden value="{{ $account->id }}" name="account_id" id="account_id">
@@ -118,7 +118,7 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="flex flex-col justify-between items-center 2xl:w-2/3 xl:w-4/5 w-full border shadow-2xl rounded-t-lg">
+    <div class="absolute bottom-0 flex flex-col justify-between items-center 2xl:w-1/2 xl:w-4/5 w-full border shadow-2xl rounded-t-lg">
         <div class="flex justify-evenly w-full my-8">
             <div class="flex flex-col items-center">
                 <p class="text-xl font-bold">{{ '+ '.number_format((float) $totalIncome, 2, ',', ' ').' €' }}</p>

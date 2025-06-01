@@ -79,7 +79,14 @@ class RecurringTransaction extends Model
                 'category_id' => $this->category_id,
             ]);
 
-            $this->account->increment('balance', $this->status === 'debit' ? -$this->amount : $this->amount);
+            switch ($this->status) {
+                case 'debit':
+                    $this->account->decrement('balance', $this->amount);
+                    break;
+                case 'credit':
+                    $this->account->increment('balance', $this->amount);
+                    break;
+            }
         });
     }
 }
