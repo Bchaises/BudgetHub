@@ -1,7 +1,6 @@
-
 <div class="shadow-lg rounded-lg overflow-hidden bg-white">
     <div class="flex justify-between items-center border-b p-3 bg-primary">
-        <h1 class="text-xl">Monthly expenses by category</h1>
+        <h2 class="text-xl">Monthly Expenses by Category for {{ now()->format('Y') }}</h2>
         <i class="fa-solid fa-chart-simple fa-xl"></i>
     </div>
     <div>
@@ -15,7 +14,7 @@
                 'July', 'August', 'September', 'October', 'November', 'December'
             ];
 
-            const expenses = @json((array_values($expenses)));
+            const expenses = @json((array_values($monthlyExpensesByCategories)));
             let dataset = []
 
             expenses.forEach( (element) => {
