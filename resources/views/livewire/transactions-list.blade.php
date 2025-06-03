@@ -1,5 +1,5 @@
-<div class="flex flex-grow flex-col justify-between items-center">
-    <div style="height: 27rem" class="flex flex-col space-y-4 items-center overflow-y-auto px-4">
+<div style="height : calc(100vh - 285px);" class="flex flex-col items-center">
+    <div style="" class="flex flex-col flex-1 space-y-4 items-center overflow-y-auto px-4">
         @forelse($transactions as $transaction)
             <div class="flex items-center group" x-data="{ edit: false }" >
                 <form method="POST" action="{{ route('transaction.update', ['id' => $transaction->id]) }}"  class="flex items-center">
@@ -118,34 +118,34 @@
     </div>
 
     <!-- Summary Section -->
-    <div class="absolute bottom-0 flex flex-col justify-between items-center 2xl:w-1/2 xl:w-4/5 w-full border shadow-2xl rounded-t-lg">
-        <div class="flex justify-evenly w-full my-8">
-            <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ '+ '.number_format((float) $totalIncome, 2, ',', ' ').' €' }}</p>
-                <p class="text-green-400">Total Income</p>
+    <div class="flex flex-col w-4/5 justify-between items-center border shadow-2xl rounded-t-lg">
+            <div class="flex justify-evenly w-full my-8">
+                <div class="flex flex-col items-center">
+                    <p class="text-xl font-bold">{{ '+ '.number_format((float) $totalIncome, 2, ',', ' ').' €' }}</p>
+                    <p class="text-green-400">Total Income</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-xl font-bold">{{ '- '.number_format((float) $totalOutcome, 2, ',', ' ').' €' }}</p>
+                    <p class="text-red-400">Total Outcome</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <p class="text-xl font-bold">{{ number_format((float) $account->balance, 2, ',', ' ').' €' }}</p>
+                    <p class="text-blue-300">Money Left</p>
+                </div>
             </div>
-            <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ '- '.number_format((float) $totalOutcome, 2, ',', ' ').' €' }}</p>
-                <p class="text-red-400">Total Outcome</p>
-            </div>
-            <div class="flex flex-col items-center">
-                <p class="text-xl font-bold">{{ number_format((float) $account->balance, 2, ',', ' ').' €' }}</p>
-                <p class="text-blue-300">Money Left</p>
-            </div>
-        </div>
 
-        <!-- Month Selector -->
-        <div class="mb-8 p-2 flex bg-gray-300 rounded-lg">
-            <button wire:click="previousMonth()" class="mr-4 ml-2">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
-            <div class="w-40 text-center">
-                <span class="text-lg">{{ \Carbon\Carbon::create($currentYear, $currentMonth)->format('F Y') }}</span>
+            <!-- Month Selector -->
+            <div class="mb-8 p-2 flex bg-gray-300 rounded-lg">
+                <button wire:click="previousMonth()" class="mr-4 ml-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="w-40 text-center">
+                    <span class="text-lg">{{ \Carbon\Carbon::create($currentYear, $currentMonth)->format('F Y') }}</span>
+                </div>
+                <button wire:click="nextMonth()" class="ml-4 mr-2">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
-            <button wire:click="nextMonth()" class="ml-4 mr-2">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
         </div>
-    </div>
 </div>
 
