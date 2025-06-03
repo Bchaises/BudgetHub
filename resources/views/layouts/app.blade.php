@@ -19,7 +19,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="font-default antialiased">
-        <div class="pl-20 flex max-w-screen min-h-screen bg-gray-100 text-police">
+        <div class="md:pl-20 flex max-w-screen min-h-screen bg-gray-100 text-police">
             <!-- Navigation Bar -->
             @include('layouts.navigation')
 

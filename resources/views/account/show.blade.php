@@ -94,7 +94,7 @@
 
 
         <!-- Transactions list -->
-        <div class="mt-8 flex flex-col flex-grow">
+        <div class="mt-8">
             <livewire:transactions-list
                 currentMonth="{{ session('last_transaction_date') !== null ? date('m', strtotime(session('last_transaction_date'))) : now()->month }}"
                 currentYear="{{ session('last_transaction_date') !== null ? date('Y', strtotime(session('last_transaction_date'))) : now()->year }}"
