@@ -75,6 +75,7 @@ class DashboardController extends Controller
 
     private function getMonthlyExpensesByCategories(String $accountId): array
     {
+        $results = [];
         $data = DB::table('categories')
             ->select(
                 'categories.id',
