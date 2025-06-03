@@ -24,7 +24,7 @@ class DashboardController extends Controller
             ->sortBy('id');
 
         $requestAccountId = $request->get('accountId');
-        $currentAccount = $user->accounts()->where('id', $requestAccountId)->first() ?? $accounts->first();
+        $currentAccount = $user->accounts()->where('id', $requestAccountId)->with(['budgets.category'])->first() ?? $accounts->first();
 
         $accountsStat = $this->getDiffTransactionsAccounts($accounts);
 
@@ -116,11 +116,11 @@ class DashboardController extends Controller
         return $results;
     }
 
-//    public function getExpensesByBudget(Account $account): Collection
-//    {
-//        $transactions = $account->transactions()->
-//        return DB::table('budgets');
-//    }
+    //    public function getExpensesByBudget(Account $account): Collection
+    //    {
+    //        $transactions = $account->transactions()->
+    //        return DB::table('budgets');
+    //    }
 
     private function getMonthlyExpenses(Account $account): array
     {

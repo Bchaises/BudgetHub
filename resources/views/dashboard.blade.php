@@ -38,10 +38,11 @@
                     </a>
 
                     {{-- Bouton de changement de compte actif, en dehors du <a> principal --}}
-                    <form method="GET" action="{{ route('dashboard') }}" class="absolute bottom-1 right-2">
+                    <form method="GET" action="{{ route('dashboard') }}" class="absolute bottom-1 right-1">
                         <input type="hidden" name="accountId" value="{{ $account->id }}">
                         <button
                             type="submit"
+                            style="width: 30px; height: 30px;"
                             class="p-1 rounded hover:bg-gray-100 transition"
                             title="Afficher ce compte sur le dashboard"
                         >
@@ -129,11 +130,11 @@
                 @include('account.partials.monthly-expenses-by-categories')
             </div>
 
-            <div class="lg:col-span-4 shadow-lg rounded-lg overflow-hidden bg-white">
+            <div class="lg:col-span-4">
                 @include('account.partials.expenses-by-categories-this-month')
             </div>
 
-            <div class="lg:col-span-4 shadow-lg rounded-lg overflow-hidden bg-white">
+            <div class="lg:col-span-4">
                 @include('account.partials.budget-progress')
             </div>
 
