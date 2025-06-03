@@ -138,7 +138,7 @@
                 @include('account.partials.budget-progress')
             </div>
 
-            <div class="lg:col-span-8 shadow-lg rounded-lg overflow-hidden bg-white">
+            <div class="lg:col-span-8">
                 @include('account.partials.monthly-credits-and-debits')
             </div>
         </div>

@@ -1,10 +1,12 @@
-<div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
-    <h1 class="text-xl">Monthly Credits and Debits for {{ now()->format('Y') }}</h1>
-    <i class="fa-solid fa-chart-simple fa-xl"></i>
-</div>
+<div class="shadow-lg">
+    <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
+        <h1 class="text-xl">Monthly Credits and Debits for {{ now()->format('Y') }}</h1>
+        <i class="fa-solid fa-chart-simple fa-xl"></i>
+    </div>
 
-<div class="p-2">
-    <canvas id="myChart2"></canvas>
+    <div class="p-2 rounded-b-lg overflow-hidden bg-white">
+        <canvas id="myChart2"></canvas>
+    </div>
 </div>
 
 <script>

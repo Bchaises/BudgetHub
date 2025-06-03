@@ -1,9 +1,9 @@
-<div class="flex flex-col h-full">
+<div class="shadow-lg flex flex-col h-full">
     <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
         <h1 class="text-xl">Budget Progress for {{ now()->format('F Y') }}</h1>
         <i class="fa-solid fa-euro-sign fa-xl"></i>
     </div>
-    <div class="shadow-lg rounded-lg overflow-hidden bg-white h-full">
+    <div class="rounded-b-lg overflow-hidden bg-white h-full">
         @if(!$currentAccount->budgets->isEmpty())
             <div class="flex flex-col space-y-4 p-4">
                 @foreach($currentAccount->budgets as $index => $budget)
@@ -16,10 +16,10 @@
                     <div
                         x-data="{ show: false }"
                         x-init="
-            setTimeout(() => {
-                show = true;
-            }, {{ $delay }});
-            "
+                        setTimeout(() => {
+                            show = true;
+                        }, {{ $delay }});
+                        "
                         x-show="show"
                         x-transition:enter="transition duration-300 ease-out"
                         x-transition:enter-start="opacity-0 translate-x-4"
