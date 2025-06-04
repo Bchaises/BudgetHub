@@ -7,7 +7,7 @@
         @if(isset($expensesByCategories))
             @if(count($expensesByCategories) > 0)
                 @php
-                    $total = $expensesByCategories->sum('amount');
+                    $total = array_sum(array_column($expensesByCategories, 'sum'));
                     $currentOffset = 0;
                 @endphp
 
@@ -16,7 +16,7 @@
                     <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
                         @foreach($expensesByCategories as $cat)
                             @php
-                                $percent = $total > 0 ? ($cat->amount / $total * 100) : 0;
+                                $percent = $total > 0 ? ($cat['sum'] / $total * 100) : 0;
                                 $left = $currentOffset;
                                 $currentOffset += $percent;
                             @endphp
@@ -24,16 +24,16 @@
                                  style="
                                     width: {{ $percent }}%;
                                     left: {{ $left }}%;
-                                    background-color: {{ $cat->color }};
+                                    background-color: {{ $cat['color'] }};
                                     "
-                                 title="{{ $cat->title }} ({{ round($percent) }}%)"
+                                 title="{{ $cat['title'] }} ({{ round($percent) }}%)"
                             ></div>
                         @endforeach
                     </div>
 
                     @foreach($expensesByCategories as $index => $cat)
                         @php
-                            $percent = $total > 0 ? round($cat->amount / $total * 100) : 0;
+                            $percent = $total > 0 ? round($cat['sum'] / $total * 100) : 0;
                             $delay = $index * 200;
                         @endphp
                         <div
@@ -52,11 +52,11 @@
                             x-transition:enter-end="opacity-100 translate-x-0"
                             class="flex justify-between items-center">
                             <div class="flex items-center space-x-2">
-                                <span class="w-3 h-3 rounded-full" style="background-color: {{ $cat->color }}"></span>
-                                <span>{{ $cat->title }}</span>
+                                <span class="w-3 h-3 rounded-full" style="background-color: {{ $cat['color'] }}"></span>
+                                <span>{{ $cat['title'] }}</span>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <span class="text-gray-400">{{ number_format($cat->amount, 2, ',', ' ') }} €</span>
+                                <span class="text-gray-400">{{ number_format($cat['sum'], 2, ',', ' ') }} €</span>
                                 <span class="font-bold">{{ $percent }}%</span>
                             </div>
                         </div>
