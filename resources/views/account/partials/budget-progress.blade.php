@@ -4,13 +4,13 @@
         <i class="fa-solid fa-euro-sign fa-xl"></i>
     </div>
     <div class="rounded-b-lg overflow-hidden bg-white h-full">
-        @if(!$currentAccount->budgets->isEmpty())
+        @if(!$budgets->isEmpty())
             <div class="flex flex-col space-y-4 p-4">
-                @foreach($currentAccount->budgets as $index => $budget)
+                @foreach($budgets as $index => $budget)
                     @php
-                        $expenses = (double) $expensesByCategories->where('id', '==', $budget->category_id)->first()?->amount;
+                        $expenses = (double) collect($expensesByCategories)->where('id', $budget->category_id)->first()['sum'];
                         $category = $budget->category;
-                        $percent = null !== $expenses ? $expenses / $budget->amount * 100 : 0;
+                        $percent = round(null !== $expenses ? $expenses / $budget->amount * 100 : 0);
                         $delay = $index * 200;
                     @endphp
                     <div
@@ -41,9 +41,9 @@
                             <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
                                 <div class="absolute top-0 h-full"
                                      style="
-            width: {{ $percent }}%;
-            background-color: {{ $category->color }};
-            "
+                                        width: {{ $percent }}%;
+                                        background-color: {{ $category->color }};
+                                        "
                                 ></div>
                             </div>
                         </div>

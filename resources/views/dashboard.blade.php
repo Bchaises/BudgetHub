@@ -84,8 +84,6 @@
                                 required
                             />
 
-                            <x-input-error :messages="$errors->accountCreation->get('title')" class="mt-2" />
-
                             <x-text-input
                                 id="description"
                                 name="description"
@@ -93,8 +91,6 @@
                                 class="mt-4 block w-full"
                                 placeholder="{{ __('Description') }}"
                             />
-
-                            <x-input-error :messages="$errors->accountCreation->get('description')" class="mt-2" />
 
                             <x-money-input
                                 id="balance"
@@ -106,8 +102,6 @@
                                 placeholder="0.00"
                                 required
                             />
-
-                            <x-input-error :messages="$errors->accountCreation->get('balance')" class="mt-2" />
                         </div>
 
                         <div class="mt-6 flex space-x-4">
