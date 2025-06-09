@@ -1,4 +1,4 @@
-<div class="shadow-lg flex flex-col h-full">
+<div class="shadow-lg rounded-lg flex flex-col h-full">
     <div class="flex justify-between items-center border-b p-3 bg-primary rounded-t-lg">
         <h1 class="text-xl">Spending by Category for {{ now()->format('F Y') }}</h1>
         <i class="fa-solid fa-euro-sign fa-xl"></i>

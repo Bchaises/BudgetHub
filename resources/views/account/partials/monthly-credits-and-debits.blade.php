@@ -1,4 +1,4 @@
-<div class="shadow-lg">
+<div class="shadow-lg rounded-lg">
     <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
         <h1 class="text-xl">Monthly Credits and Debits for {{ now()->format('Y') }}</h1>
         <i class="fa-solid fa-chart-simple fa-xl"></i>

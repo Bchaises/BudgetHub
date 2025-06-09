@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->get()
             ->sortBy('id');
 
-        // setup du compte affiché sur le dashboard
+        // Setup du compte affiché sur le dashboard
         $currentAccount = $accounts->first();
         $accountId = $request->get('accountId') ?? session('accountId');
         if ($accountId) {
@@ -39,6 +39,7 @@ class DashboardController extends Controller
         $monthlyExpenses = $this->getMonthlyExpenses($currentAccount);
         $monthlyExpensesByCategories = $this->getMonthlyExpensesByCategories($currentAccount);
         $expensesByCategories = $this->getExpensesByCategories($currentAccount);
+        $budgetProgress = $this->getBudgetProgress($currentAccount);
 
         return view('dashboard', [
             'accounts' => $accounts,
@@ -49,34 +50,62 @@ class DashboardController extends Controller
             'monthlyExpenses' => $monthlyExpenses,
             'monthlyExpensesByCategories' => $monthlyExpensesByCategories,
             'currentAccount' => $currentAccount,
-            'budgets' => $currentAccount->budgets,
+            'budgetProgress' => $budgetProgress,
         ]);
     }
 
     private function getExpensesByCategories(Account $account): array
     {
-        $result = [];
-        $categories = Category::all();
+        $categories = Category::with(['transactions' => function ($query) use ($account) {
+            $query->whereMonth('date', date('m'))
+                ->where('account_id', $account->id);
+        }])->get();
 
-        foreach ($categories as $category) {
-            $sum = $category
-                ->transactions()
-                ->whereMonth('date', date('m'))
-                ->where('account_id', $account->id)
-                ->where('status', 'debit')
-                ->sum('amount');
+        $result = $categories->map(function ($category) {
+            $sum = $category->transactions->reduce(function ($carry, $transaction) {
+                return $carry + ($transaction->status === 'debit' ? $transaction->amount : -$transaction->amount);
+            }, 0);
 
-            $result[] = [
+            return [
                 'id' => $category->id,
                 'title' => $category->title,
                 'color' => $category->color,
                 'sum' => $sum,
             ];
-        }
-        return collect($result)->sortByDesc('sum')->values()->all();
+        });
+
+        return $result->sortByDesc('sum')->values()->all();
     }
 
-    public function getMonthlyExpensesByCategories(Account $account): array
+    private function getBudgetProgress(Account $account): array
+    {
+        $result = [];
+        $budgets = $account->budgets()->with(['category.transactions' => function ($query) use ($account) {
+            $query->whereMonth('date', date('m'))
+                ->where('account_id', $account->id);
+        }])->get();
+
+        foreach ($budgets as $budget) {
+            $category = $budget->category;
+            $transactions = $category->transactions;
+
+            $total = $transactions->reduce(function ($carry, $transaction) {
+                return $carry + ($transaction->status === 'debit' ? $transaction->amount : -$transaction->amount);
+            }, 0);
+
+            $progress = $budget->amount > 0 ? round($total / $budget->amount * 100) : 0;
+
+            $result[] = [
+                'category' => $category,
+                'progress' => $progress,
+            ];
+        }
+
+        return collect($result)->sortByDesc('progress')->values()->all();
+    }
+
+
+    private function getMonthlyExpensesByCategories(Account $account): array
     {
         $result = [];
         $categories = Category::all();
