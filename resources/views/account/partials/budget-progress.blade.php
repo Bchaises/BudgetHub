@@ -1,16 +1,14 @@
-<div class="shadow-lg flex flex-col h-full">
+<div class="shadow-lg rounded-lg flex flex-col h-full">
     <div class="flex justify-between items-center border-b p-3 rounded-t-lg bg-primary">
         <h1 class="text-xl">Budget Progress for {{ now()->format('F Y') }}</h1>
         <i class="fa-solid fa-euro-sign fa-xl"></i>
     </div>
     <div class="rounded-b-lg overflow-hidden bg-white h-full">
-        @if(!$budgets->isEmpty())
+        @if(!empty($budgetProgress))
             <div class="flex flex-col space-y-4 p-4">
-                @foreach($budgets as $index => $budget)
+                @foreach($budgetProgress as $index => $budget)
                     @php
-                        $expenses = (double) collect($expensesByCategories)->where('id', $budget->category_id)->first()['sum'];
-                        $category = $budget->category;
-                        $percent = round(null !== $expenses ? $expenses / $budget->amount * 100 : 0);
+                        $category = $budget['category'];
                         $delay = $index * 200;
                     @endphp
                     <div
@@ -35,13 +33,13 @@
                         <div class="relative flex flex-col flex-1 gap-2">
                             <div class="flex flex-row justify-between">
                                 <p>{{ $category->title }}</p>
-                                <p>{{ $percent }}%</p>
+                                <p>{{ $budget['progress'] }}%</p>
                             </div>
 
                             <div class="relative w-full h-2.5 rounded-full overflow-hidden bg-gray-200">
                                 <div class="absolute top-0 h-full"
                                      style="
-                                        width: {{ $percent }}%;
+                                        width: {{ $budget['progress'] }}%;
                                         background-color: {{ $category->color }};
                                         "
                                 ></div>

@@ -1,4 +1,4 @@
-<div class="shadow-lg rounded-lg overflow-hidden bg-white">
+<div class="shadow-lg rounded-lg overflow-hidden bg-white h-full">
     <div class="flex justify-between items-center border-b p-3 bg-primary">
         <h2 class="text-xl">Monthly Expenses by Category for {{ now()->format('Y') }}</h2>
         <i class="fa-solid fa-chart-simple fa-xl"></i>
