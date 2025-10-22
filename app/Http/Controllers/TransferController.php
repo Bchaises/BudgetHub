@@ -18,7 +18,7 @@ class TransferController extends Controller
     public function index(): View
     {
         $user = User::findOrFail(Auth::id());
-        $accounts = $user->accounts->sortByDesc('id');
+        $accounts = $user->accounts()->orderBy('id')->get();
         $notifications = Invitation::where('receiver_id', Auth::id())->where('status', 'LIKE', 'pending')->get();
         $categories = Category::query()
             ->orderBy('order')
