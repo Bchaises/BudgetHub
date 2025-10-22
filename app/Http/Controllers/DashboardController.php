@@ -113,7 +113,6 @@ class DashboardController extends Controller
         foreach ($categories as $category) {
             $transactions = $category->transactions()
                 ->where('account_id', $account->id)
-                ->where('status', 'debit')
                 ->get();
 
             $result[$category->id] = [
@@ -123,10 +122,10 @@ class DashboardController extends Controller
             ];
 
             for ($month = 1; $month <= 12; $month++) {
-                $total = $transactions->filter(function ($transaction) use ($month) {
-                    return Carbon::parse($transaction->date)->month === $month;
-                })->sum('amount');
-                $result[$category->id]['months'][$month - 1] = $total;
+                $total = $transactions
+                    ->filter(fn ($t) => Carbon::parse($t->date)->month === $month)
+                    ->sum(fn ($tr) => $tr->status === 'debit' ? $tr->amount : -$tr->amount);
+                $result[$category->id]['months'][$month - 1] = max($total, 0);
             };
         }
 
