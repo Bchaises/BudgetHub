@@ -17,7 +17,7 @@ jobs:
         with:
           php-version: '8.3'
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Copy .env.test
         run: php -r "file_exists('.env') || copy('.env.test', '.env');"
       - name: Clear Composer cache
