@@ -115,7 +115,6 @@ class DashboardController extends Controller
         foreach ($categories as $category) {
             $transactions = $category->transactions()
                 ->where('account_id', $account->id)
-                ->where('status', 'debit')
                 ->whereYear('date', date('Y'))
                 ->get();
 
