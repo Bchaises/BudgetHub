@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+use function Symfony\Component\Clock\now;
+
 class DashboardController extends Controller
 {
     public function show(Request $request): View
@@ -58,6 +60,7 @@ class DashboardController extends Controller
     {
         $categories = Category::with(['transactions' => function ($query) use ($account) {
             $query->whereMonth('date', date('m'))
+                ->whereYear('date', date('Y'))
                 ->where('account_id', $account->id);
         }])->get();
 
@@ -82,6 +85,7 @@ class DashboardController extends Controller
         $result = [];
         $budgets = $account->budgets()->with(['category.transactions' => function ($query) use ($account) {
             $query->whereMonth('date', date('m'))
+                ->whereYear('date', date('Y'))
                 ->where('account_id', $account->id);
         }])->get();
 
@@ -113,6 +117,8 @@ class DashboardController extends Controller
         foreach ($categories as $category) {
             $transactions = $category->transactions()
                 ->where('account_id', $account->id)
+                ->where('status', 'debit')
+                ->whereYear('date', date("Y"))
                 ->get();
 
             $result[$category->id] = [
@@ -134,7 +140,9 @@ class DashboardController extends Controller
 
     private function getMonthlyExpenses(Account $account): array
     {
-        $transactions = $account->transactions;
+        $transactions = $account->transactions()
+            ->whereYear('date', date("Y"))
+            ->get();
 
         // Initialiser les mois à zéro
         $monthlyCredits = array_fill(1, 12, 0);
