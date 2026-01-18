@@ -114,15 +114,6 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => 13,
-                'title' => 'Renovation',
-                'color' => '#FA989A',
-                'icon' => 'fa-brush',
-                'order' => 10,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
                 'id' => 10,
                 'title' => 'Other',
                 'color' => '#D5BBED',
